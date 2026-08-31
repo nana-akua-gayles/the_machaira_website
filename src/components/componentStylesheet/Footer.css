@@ -1,0 +1,282 @@
+/* =========================================
+   MACHAIRA FOOTER
+========================================= */
+
+.footer {
+  width: 100%;
+  margin-top: 80px;
+
+  background: #111827;
+  color: white;
+
+  padding: 70px 0 25px;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  padding: 0 60px;
+
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.5fr;
+
+  gap: 70px;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.footer-brand h2 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+}
+
+.footer-brand h2 span {
+  font-size: 22px;
+}
+
+.footer-brand p {
+  margin: 8px 0 18px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.footer-brand > span {
+  color: #b9bec8;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   FOOTER COLUMNS
+========================================= */
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.footer-column h3 {
+  margin: 0 0 8px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.footer-column a {
+  width: fit-content;
+
+  color: #b9bec8;
+
+  text-decoration: none;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 14px;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.footer-column a:hover {
+  color: white;
+
+  transform: translateX(3px);
+}
+
+
+/* =========================================
+   NEWSLETTER
+========================================= */
+
+.footer-newsletter p {
+  margin: 0;
+
+  max-width: 300px;
+
+  color: #b9bec8;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+.newsletter-input {
+  width: 100%;
+  max-width: 330px;
+
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  margin-top: 8px;
+
+  padding: 4px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.newsletter-input input {
+  flex: 1;
+
+  height: 100%;
+
+  padding: 0 16px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 13px;
+}
+
+.newsletter-input input::placeholder {
+  color: #8f96a3;
+}
+
+.newsletter-input button {
+  width: 40px;
+  height: 40px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #a41414;
+
+  color: white;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.newsletter-input button:hover {
+  background: #c01818;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================
+   BOTTOM
+========================================= */
+
+.footer-bottom {
+  max-width: 1400px;
+
+  margin: 55px auto 0;
+
+  padding: 22px 60px 0;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #8f96a3;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 13px;
+}
+
+.footer-bottom div {
+  display: flex;
+
+  gap: 22px;
+}
+
+.footer-bottom a {
+  color: #8f96a3;
+
+  text-decoration: none;
+
+  transition: color 0.25s ease;
+}
+
+.footer-bottom a:hover {
+  color: white;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 50px;
+
+    padding: 0 40px;
+  }
+
+  .footer-bottom {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .footer {
+    padding-top: 50px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+
+    padding: 0 25px;
+  }
+
+  .footer-bottom {
+    margin-top: 40px;
+
+    padding: 20px 25px 0;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+}
