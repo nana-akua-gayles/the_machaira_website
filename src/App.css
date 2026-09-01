@@ -1,0 +1,19 @@
+@import '@fontsource/montserrat';
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Montserrat', sans-serif;
+  
+  /* Exact requested color palette */
+  --color-parchment: #FFFFFF;
+  --color-burgundy-primary: #991313;
+  --color-navy-dark: #101A2B;
+  --color-charcoal-text: #111827;
+  --color-cool-gray: #4D5057;
+  --color-soft-gray: #B9BEC8;
+}
+
+body {
+  background-color: var(--color-parchment);
+  color: var(--color-charcoal-text);
+}

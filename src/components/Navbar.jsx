@@ -25,7 +25,7 @@ function Navbar() {
         <NavLink to="/" className="navbar-logo">
 
           <div className="logo-name">
-            Machaira <span>🔥</span>
+            Machaira 
           </div>
 
           <div className="logo-subtitle">
