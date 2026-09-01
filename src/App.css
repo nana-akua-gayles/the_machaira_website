@@ -3,37 +3,17 @@
 
 @theme {
   --font-sans: 'Montserrat', sans-serif;
+  
+  /* Exact requested color palette */
+  --color-parchment: #FFFFFF;
+  --color-burgundy-primary: #991313;
+  --color-navy-dark: #101A2B;
+  --color-charcoal-text: #111827;
+  --color-cool-gray: #4D5057;
+  --color-soft-gray: #B9BEC8;
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    margin: 0;
-    background: #ffffff;
-    color: #111827;
-    font-family: var(--font-sans);
-  }
-
-  button,
-  input,
-  textarea,
-  select {
-    font-family: inherit;
-  }
-
-  button {
-    cursor: pointer;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  #root {
-    min-height: 100vh;
-  }
+body {
+  background-color: var(--color-parchment);
+  color: var(--color-charcoal-text);
 }
