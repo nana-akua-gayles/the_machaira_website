@@ -1,3 +1,11 @@
+@import '@fontsource/montserrat';
+
+/* Apply Montserrat to everything inside the Navbar component */
+.navbar, 
+.navbar * {
+  font-family: 'Montserrat', sans-serif;
+}
+
 /* =========================================
    MACHAIRA NAVBAR
 ========================================= */
@@ -6,13 +14,9 @@
   position: fixed;
   top: 0;
   left: 0;
-
   width: 100%;
-
   z-index: 1000;
-
   padding: 0;
-
   transition:
     top 0.4s ease,
     padding 0.4s ease;
@@ -26,25 +30,17 @@
 .navbar-container {
   width: 100%;
   max-width: none;
-
   min-height: 92px;
-
   margin: 0;
   padding: 0 18px 0 24px;
-
   display: flex;
   align-items: center;
-
   background: rgba(255, 255, 255, 0.96);
-
   border: none;
   border-radius: 0;
-
   box-shadow: none;
-
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
   transition:
     min-height 0.4s ease,
     max-width 0.4s ease,
@@ -62,12 +58,9 @@
 .navbar-logo {
   flex: 0 0 220px;
   margin-left: 0;
-
   text-decoration: none;
   color: #101a2b;
-
   line-height: 1;
-
   transition: transform 0.3s ease;
 }
 
@@ -76,30 +69,21 @@
 }
 
 .logo-name {
-  font-family: Georgia, "Times New Roman", serif;
-
   font-size: 27px;
   font-weight: 700;
-
   letter-spacing: -0.8px;
-
   white-space: nowrap;
 }
 
 .logo-name span {
   font-size: 22px;
-
   margin-left: 3px;
 }
 
 .logo-subtitle {
   margin-top: 5px;
-
-  font-family: Arial, sans-serif;
-
   font-size: 12px;
   font-weight: 600;
-
   color: #111;
 }
 
@@ -111,32 +95,21 @@
 .navbar-links {
   flex: 1;
   min-width: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 30px;
-
   margin: 0 10px 0 12px;
 }
 
 .nav-link {
   position: relative;
-
   text-decoration: none;
-
   color: #4d5057;
-
-  font-family: Arial, sans-serif;
-
   font-size: 14px;
   font-weight: 500;
-
   white-space: nowrap;
-
   padding: 34px 0;
-
   transition:
     color 0.25s ease,
     transform 0.25s ease;
@@ -144,25 +117,18 @@
 
 .nav-link:hover {
   color: #991313;
-
   transform: translateY(-1px);
 }
 
 .nav-link::after {
   content: "";
-
   position: absolute;
-
   left: 50%;
   bottom: 23px;
-
   width: 0;
   height: 2px;
-
   background: #a41414;
-
   transform: translateX(-50%);
-
   transition: width 0.3s ease;
 }
 
@@ -173,7 +139,6 @@
 
 .nav-link.active {
   color: #a41414;
-
   font-weight: 600;
 }
 
@@ -184,12 +149,9 @@
 
 .navbar-actions {
   flex: 0 0 auto;
-
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   margin-left: 2px;
 }
 
@@ -202,26 +164,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   height: 35px;
   min-width: 82px;
-
   padding: 0 18px;
-
   border-radius: 999px;
-
   background: #991313;
   color: white;
-
   text-decoration: none;
-
-  font-family: Arial, sans-serif;
-
   font-size: 14px;
   font-weight: 600;
-
   white-space: nowrap;
-
   transition:
     background 0.25s ease,
     transform 0.25s ease,
@@ -230,11 +182,8 @@
 
 .login-button:hover {
   background: #7f0e0e;
-
   transform: translateY(-2px);
-
-  box-shadow:
-    0 8px 18px rgba(153, 19, 19, 0.18);
+  box-shadow: 0 8px 18px rgba(153, 19, 19, 0.18);
 }
 
 
@@ -244,22 +193,14 @@
 
 .search-box {
   flex: 0 1 200px;
-
   width: 200px;
-
   height: 35px;
-
   display: flex;
   align-items: center;
-
   padding: 0 14px;
-
   border: 1px solid rgba(0, 0, 0, 0.11);
-
   border-radius: 999px;
-
   background: rgba(255, 255, 255, 0.72);
-
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease,
@@ -268,39 +209,25 @@
 
 .search-box:focus-within {
   background: white;
-
   border-color: rgba(153, 19, 19, 0.35);
-
-  box-shadow:
-    0 0 0 4px rgba(153, 19, 19, 0.06);
+  box-shadow: 0 0 0 4px rgba(153, 19, 19, 0.06);
 }
 
 .search-icon {
   flex: 0 0 auto;
-
   color: #777;
-
   font-size: 21px;
-
   line-height: 1;
-
   margin-right: 8px;
 }
 
 .search-box input {
   min-width: 0;
-
   width: 100%;
-
   border: none;
   outline: none;
-
   background: transparent;
-
-  font-family: Arial, sans-serif;
-
   font-size: 13px;
-
   color: #222;
 }
 
@@ -315,29 +242,19 @@
 
 .navbar-scrolled {
   top: 14px;
-
   padding: 0 24px;
 }
 
 .navbar-scrolled .navbar-container {
   width: 100%;
   max-width: 1470px;
-
   min-height: 76px;
-
   margin: 0 auto;
-
   padding: 0 20px 0 22px;
-
   background: rgba(255, 255, 255, 0.90);
-
   border: 1px solid rgba(0, 0, 0, 0.08);
-
   border-radius: 22px;
-
-  box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.09);
-
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -348,14 +265,12 @@
 
 .navbar-scrolled .navbar-links {
   gap: 26px;
-
   margin-left: 8px;
   margin-right: 8px;
 }
 
 .navbar-scrolled .nav-link {
   padding: 27px 0;
-
   font-size: 13.5px;
 }
 
@@ -373,15 +288,12 @@
 
 .navbar-scrolled .search-box {
   flex-basis: 185px;
-
   width: 185px;
-
   height: 43px;
 }
 
 .navbar-scrolled .login-button {
   height: 43px;
-
   min-width: 84px;
   padding: 0 16px;
 }
@@ -411,7 +323,6 @@
 
   .navbar-links {
     gap: 22px;
-
     margin-left: 8px;
     margin-right: 8px;
   }
@@ -426,13 +337,11 @@
 
   .search-box {
     flex-basis: 190px;
-
     width: 190px;
   }
 
   .login-button {
     min-width: 80px;
-
     padding: 0 16px;
   }
 }
@@ -468,15 +377,12 @@
 
   .search-box {
     flex-basis: 175px;
-
     width: 175px;
   }
 
   .login-button {
     min-width: 78px;
-
     padding: 0 14px;
-
     font-size: 13px;
   }
 
@@ -502,7 +408,6 @@
 
   .navbar-container {
     min-height: 70px;
-
     padding: 0 14px 0 18px;
   }
 
@@ -524,9 +429,7 @@
 
   .login-button {
     height: 40px;
-
     min-width: 82px;
-
     padding: 0 18px;
   }
 
@@ -538,20 +441,16 @@
     font-size: 11px;
   }
 
-
   /* Mobile scrolled */
 
   .navbar-scrolled {
     top: 10px;
-
     padding: 0 12px;
   }
 
   .navbar-scrolled .navbar-container {
     min-height: 62px;
-
     padding: 0 18px;
-
     border-radius: 17px;
   }
 
