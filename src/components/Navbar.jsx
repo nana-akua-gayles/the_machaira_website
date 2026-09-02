@@ -84,7 +84,7 @@ function Navbar() {
           </NavLink>
 
         <NavLink
-            to="/partner"
+            to="/partnership"
             className={({ isActive }) =>
               isActive ? "nav-link active" : "nav-link"
             }
