@@ -19,7 +19,6 @@ function DevotionalExperience() {
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[#991313]">🔥</span>
 
               <span className="text-sm font-medium text-[#374151]">
                 Streak
