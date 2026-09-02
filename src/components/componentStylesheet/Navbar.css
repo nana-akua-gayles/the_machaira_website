@@ -52,15 +52,19 @@
 
 
 /* =========================================
-   LOGO
+   LOGO (FIXED WIDTH & FLUID SCALING)
 ========================================= */
 
 .navbar-logo {
-  flex: 0 0 220px;
+  flex: 0 0 clamp(130px, 14vw, 190px);
   margin-left: 0;
   text-decoration: none;
   color: #101a2b;
   line-height: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
   transition: transform 0.3s ease;
 }
 
@@ -68,23 +72,23 @@
   transform: translateY(-1px);
 }
 
-.logo-name {
-  font-size: 27px;
-  font-weight: 700;
-  letter-spacing: -0.8px;
-  white-space: nowrap;
+.logo-image-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.logo-name span {
-  font-size: 22px;
-  margin-left: 3px;
-}
-
-.logo-subtitle {
-  margin-top: 5px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #111;
+.logo-image-overflow {
+  height: clamp(120px, 17vw, 770px); 
+  width: auto;
+  object-fit: contain;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  pointer-events: none;
 }
 
 
@@ -260,7 +264,7 @@
 }
 
 .navbar-scrolled .navbar-logo {
-  flex-basis: 205px;
+  flex-basis: clamp(120px, 13vw, 170px);
 }
 
 .navbar-scrolled .navbar-links {
@@ -276,14 +280,6 @@
 
 .navbar-scrolled .nav-link::after {
   bottom: 16px;
-}
-
-.navbar-scrolled .logo-name {
-  font-size: 25px;
-}
-
-.navbar-scrolled .logo-subtitle {
-  font-size: 11px;
 }
 
 .navbar-scrolled .search-box {
@@ -307,18 +303,6 @@
 
   .navbar-container {
     padding: 0 18px 0 20px;
-  }
-
-  .navbar-logo {
-    flex-basis: 205px;
-  }
-
-  .logo-name {
-    font-size: 25px;
-  }
-
-  .logo-name span {
-    font-size: 20px;
   }
 
   .navbar-links {
@@ -355,10 +339,6 @@
 
   .navbar-container {
     padding: 0 14px 0 18px;
-  }
-
-  .navbar-logo {
-    flex-basis: 185px;
   }
 
   .navbar-links {
@@ -432,16 +412,6 @@
     min-width: 82px;
     padding: 0 18px;
   }
-
-  .logo-name {
-    font-size: 23px;
-  }
-
-  .logo-subtitle {
-    font-size: 11px;
-  }
-
-  /* Mobile scrolled */
 
   .navbar-scrolled {
     top: 10px;

@@ -94,7 +94,7 @@ function Footer() {
       <div className="footer-bottom">
 
         <span>
-          © {new Date().getFullYear()} Machaira. All rights reserved.
+          © {new Date().getFullYear()} Machaira with Apostle Bennie. All rights reserved.
         </span>
 
         <div>

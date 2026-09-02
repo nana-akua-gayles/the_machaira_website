@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./componentStylesheet/Navbar.css";
+import logoImage from "../assets/images/Mlogo.png";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -21,31 +22,39 @@ function Navbar() {
     <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
       <div className="navbar-container">
 
-        {/* Logo */}
+        {/* Logo with Overflowing Large Image */}
         <NavLink to="/" className="navbar-logo">
-
-          <div className="logo-name">
-            Machaira 
+          <div className="logo-image-wrapper">
+            <img 
+              src={logoImage} 
+              alt="Machaira Logo" 
+              className="logo-image-overflow"
+            />
           </div>
-
-          <div className="logo-subtitle">
-            with Apostle Bennie
-          </div>
-
         </NavLink>
 
 
         {/* Navigation */}
         <nav className="navbar-links">
 
-          <NavLink
+        <NavLink
             to="/"
             className={({ isActive }) =>
               isActive ? "nav-link active" : "nav-link"
             }
           >
-            Newsfeed
+            Home
           </NavLink>
+
+        <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            About
+          </NavLink>
+
 
           <NavLink
             to="/devotional"
@@ -53,25 +62,16 @@ function Navbar() {
               isActive ? "nav-link active" : "nav-link"
             }
           >
-            Devotional
+           Today's Devotional
           </NavLink>
 
           <NavLink
-            to="/episodes"
+            to="/newsfeed"
             className={({ isActive }) =>
               isActive ? "nav-link active" : "nav-link"
             }
           >
-            Previous Episodes
-          </NavLink>
-
-          <NavLink
-            to="/blog"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            Church Blog
+            Newsfeed
           </NavLink>
 
           <NavLink
@@ -82,6 +82,16 @@ function Navbar() {
           >
             Discussion Forum
           </NavLink>
+
+        <NavLink
+            to="/partner"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            Be a Partner
+          </NavLink>
+
 
         </nav>
 
