@@ -72,33 +72,6 @@ function DevotionalExperience() {
         </div>
       </div>
 
-      {/* Current series */}
-      <div className="mt-3 rounded-2xl border border-black/10 p-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-medium text-[#374151]">
-              Current Series
-            </p>
-
-            <h3 className="mt-1 text-sm font-semibold text-[#111827]">
-              Living by Faith
-            </h3>
-
-            <p className="mt-1 text-xs font-medium text-[#991313]">
-              5 of 7 Devotionals
-            </p>
-          </div>
-
-          <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-xl bg-[#E5E7EB]">
-            <img
-              src="/images/living-by-faith.jpg"
-              alt="Living by Faith"
-              className="h-full w-full object-cover"
-            />
-          </div>
-        </div>
-      </div>
-
       {/* Download */}
       <button
         type="button"
