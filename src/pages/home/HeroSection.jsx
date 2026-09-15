@@ -1,5 +1,5 @@
 import React from 'react';
-import localFallbackImage from '../../assets/images/book2.png';
+import localFallbackImage from '../../assets/images/book1.png';
 
 export default function HeroSection({ slide, quoteItem, textAnimState, animatingQuote }) {
   const bannerImage = slide?.image || localFallbackImage;

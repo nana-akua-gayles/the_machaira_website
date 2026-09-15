@@ -106,7 +106,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-32 text-center space-y-4 bg-[#FBF9F5]">
         <h2 className="text-xl font-medium tracking-tight text-[#2B2625]">Unable to load content</h2>
         <p className="text-sm text-[#6E6563] max-w-md mx-auto">
-          Please check your Supabase connection, environment variables, or ensure data exists in your database tables.
+          Please check your internet connection.
         </p>
       </div>
     );
