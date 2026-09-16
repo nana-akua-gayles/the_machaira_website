@@ -10,6 +10,16 @@ export default function NewsfeedSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Helper to extract the first sentence from full body text if description is missing
+  const extractFirstSentence = (text) => {
+    if (!text) return '';
+    // Matches text up to the first terminal punctuation (. ! ?)
+    const match = text.match(/[^.!?]+[.!?]+/);
+    if (match) return match[0].trim();
+    // Fallback if no punctuation is found, just slice the first 120 characters
+    return text.length > 120 ? text.substring(0, 120).trim() + '...' : text;
+  };
+
   // Fetch dynamic news sorted strictly by latest updated/creation date
   useEffect(() => {
     async function fetchNewsData() {
@@ -184,7 +194,7 @@ export default function NewsfeedSection() {
         {/* Left Column (Top Story & Sleek Middle Feed) */}
         <motion.div style={{ y: smoothYLeft }} className="lg:col-span-8 space-y-10">
           
-          {/* TOP STORY SECTION (Featured Image filling container using object-cover) */}
+          {/* TOP STORY SECTION */}
           {topStory && (
             <motion.div 
               initial="hidden"
@@ -217,11 +227,9 @@ export default function NewsfeedSection() {
                   <h2 className="text-2xl sm:text-3xl font-bold leading-snug text-[#2B2625] group-hover:text-[#5A181C] transition-colors">
                     {topStory.title}
                   </h2>
-                  {topStory.description && (
-                    <p className="text-xs sm:text-sm text-[#6E6563] font-normal leading-relaxed">
-                      {topStory.description}
-                    </p>
-                  )}
+                  <p className="text-xs sm:text-sm text-[#6E6563] font-normal leading-relaxed">
+                    {topStory.description || extractFirstSentence(topStory.body || topStory.content)}
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -257,7 +265,11 @@ export default function NewsfeedSection() {
                       <h3 className="text-sm sm:text-base font-bold text-[#2B2625] group-hover:text-[#5A181C] transition-colors leading-snug">
                         {story.title}
                       </h3>
-                      {story.date && <span className="text-[11px] text-[#6E6563] font-medium">{story.date}</span>}
+                      {/* Pulling description or extracted first sentence of body */}
+                      <p className="text-xs text-[#6E6563] font-light line-clamp-2">
+                        {story.description || extractFirstSentence(story.body || story.content)}
+                      </p>
+                      {story.date && <span className="text-[11px] text-[#6E6563] font-medium block">{story.date}</span>}
                     </div>
                   </motion.article>
                 ))}
@@ -267,7 +279,7 @@ export default function NewsfeedSection() {
 
         </motion.div>
 
-        {/* Right Column Sidebar (Green dot removed) */}
+        {/* Right Column Sidebar */}
         {sideNews.length > 0 && (
           <motion.div 
             style={{ y: smoothYRight }}
@@ -301,11 +313,9 @@ export default function NewsfeedSection() {
                     <h4 className="text-sm sm:text-base font-bold text-white group-hover/item:text-stone-200 transition-colors leading-snug">
                       {news.title}
                     </h4>
-                    {news.description && (
-                      <p className="text-xs text-stone-300 font-light leading-relaxed">
-                        {news.description}
-                      </p>
-                    )}
+                    <p className="text-xs text-stone-300 font-light leading-relaxed">
+                      {news.description || extractFirstSentence(news.body || news.content)}
+                    </p>
                   </div>
                 </div>
               ))}

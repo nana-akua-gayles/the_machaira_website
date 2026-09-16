@@ -33,16 +33,13 @@ function Footer() {
             Devotional
           </NavLink>
 
-          <NavLink to="/blog">
-            Ministry Blog
-          </NavLink>
 
           <NavLink to="/forum">
             Discussion Forum
           </NavLink>
 
-          <NavLink to="/partner">
-            Partner with Us
+          <NavLink to="/testimonies">
+            Testimonies
           </NavLink>
 
         </div>
@@ -60,8 +57,8 @@ function Footer() {
             Partner With Us
           </NavLink>
 
-          <NavLink to="/testimonies">
-            Testimonies
+        <NavLink to="/blog">
+            Ministry Blog
           </NavLink>
 
         </div>

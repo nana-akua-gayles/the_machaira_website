@@ -19,7 +19,7 @@ export default function ExploreCardsSection() {
 
         {/* Card 1: Discussion Forum */}
         <a 
-          href="#forum" 
+          href="/forum" 
           className="group relative bg-white/70 backdrop-blur-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_rgb(90,24,28,0.12)] hover:border-[#5A181C]/30 flex flex-col justify-between animate-in fade-in slide-in-from-bottom-6 fill-mode-backwards"
           style={{ animationDelay: '200ms' }}
         >
@@ -59,7 +59,7 @@ export default function ExploreCardsSection() {
 
         {/* Card 2: Ministry Blog */}
         <a 
-          href="#blog" 
+          href="/blog" 
           className="group relative bg-white/70 backdrop-blur-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_rgb(90,24,28,0.12)] hover:border-[#5A181C]/30 flex flex-col justify-between animate-in fade-in slide-in-from-bottom-6 fill-mode-backwards"
           style={{ animationDelay: '300ms' }}
         >
@@ -99,7 +99,7 @@ export default function ExploreCardsSection() {
 
         {/* Card 3: Testimonies */}
         <a 
-          href="#testimonies" 
+          href="/testimonies" 
           className="group relative bg-white/70 backdrop-blur-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_rgb(90,24,28,0.12)] hover:border-[#5A181C]/30 flex flex-col justify-between animate-in fade-in slide-in-from-bottom-6 fill-mode-backwards"
           style={{ animationDelay: '400ms' }}
         >

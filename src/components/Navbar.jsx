@@ -46,16 +46,6 @@ function Navbar() {
             Home
           </NavLink>
 
-        <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            About
-          </NavLink>
-
-
           <NavLink
             to="/devotional"
             className={({ isActive }) =>
@@ -63,6 +53,16 @@ function Navbar() {
             }
           >
            Today's Devotional
+          </NavLink>
+
+
+        <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            About Author
           </NavLink>
 
           <NavLink
