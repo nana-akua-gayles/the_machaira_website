@@ -3,11 +3,21 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
 
 // Pages
+//HOME
 import Home from "./pages/home/Home";
+
+//ABOUT
 import About from "./pages/about/About";
+
+//CHURCH BLOG
 import ChurchBlog from "./pages/churchBlog/ChurchBlog";
+
+//DEVOTIONAL
 import Devotional from "./pages/devotional/Devotional";
 import DiscussionForum from "./pages/discussionForum/DiscussionForum";
+import DevotionalReader from "./pages/devotional/DevotionalReader";
+
+//PARTNERSHIP
 import Partnership from "./pages/partnership/Partnership";
 
 function App() {
@@ -35,6 +45,10 @@ function App() {
           <Route
             path="/devotional"
             element={<Devotional />}
+          />
+          <Route
+            path="/devotional/:id"
+            element={<DevotionalReader />}
           />
 
           {/* Church Blog */}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import DevotionalDateNav from "./DevotionalDateNav";
 import DevotionalAudio from "./DevotionalAudio";
 import heroImage from "../../../assets/devotionalImages/devotional-hero.png";
+import { useNavigate } from "react-router-dom";
 
 function formatDevotionalTitle(title) {
   if (!title) {
@@ -38,6 +39,7 @@ function DevotionalHero({
   const [showFullExcerpt, setShowFullExcerpt] = useState(false);
   const formatted = formatDevotionalTitle(devotional?.title);
   const hasDevotional = Boolean(devotional);
+  const navigate = useNavigate();
 
   return (
     <section className="relative min-h-[570px] overflow-hidden bg-white">
@@ -167,16 +169,14 @@ function DevotionalHero({
                 {/* Actions */}
                 <div className="mt-9 flex flex-wrap items-center gap-4">
 
-                  <button
-                    type="button"
-                    className="rounded-full bg-[#991313] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
-                  >
-                    <span className="mr-2">
-                      ▢
-                    </span>
-
-                    Read Devotional
-                  </button>
+                <button
+                  type="button"
+                  onClick={() => navigate(`/devotional/${devotional.id}`)}
+                  className="rounded-full bg-[#991313] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
+                >
+                  <span className="mr-2">▢</span>
+                  Read Devotional
+                </button>
 
                   <DevotionalAudio
                     audioUrl={devotional.audio_url}

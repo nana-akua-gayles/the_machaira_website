@@ -1,0 +1,368 @@
+/* =========================================
+   DEVOTIONAL READER CONTENT
+========================================= */
+
+.devotional-content {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #111827;
+  font-size: 17px;
+  line-height: 1.95;
+  letter-spacing: -0.01em;
+}
+
+/* Paragraphs */
+
+.devotional-content p {
+  margin: 0 0 1.5rem;
+}
+
+/* Links */
+
+.devotional-content a {
+  color: #991313;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(153, 19, 19, 0.3);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.devotional-content a:hover {
+  color: #7f0e0e;
+  border-color: #7f0e0e;
+}
+
+/* Blockquotes */
+
+.devotional-content blockquote {
+  position: relative;
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem 1.5rem 3.5rem;
+  border-left: 3px solid #991313;
+  border-radius: 0 16px 16px 0;
+  background: linear-gradient(
+    90deg,
+    rgba(153, 19, 19, 0.06),
+    rgba(153, 19, 19, 0.015)
+  );
+  color: #101a2b;
+  font-size: 19px;
+  line-height: 1.8;
+  font-style: italic;
+}
+
+/* Decorative quotation mark */
+
+.devotional-content blockquote::before {
+  content: "“";
+  position: absolute;
+  left: 1rem;
+  top: 0.4rem;
+  color: #991313;
+  font-family: Georgia, serif;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+/* Headings */
+
+.devotional-content h2,
+.devotional-content > h2:first-child {
+  margin-top: 0;
+}
+.devotional-content h3 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  color: #101a2b;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.devotional-content h2 {
+  font-size: 1.6rem;
+}
+
+.devotional-content h3 {
+  font-size: 1.3rem;
+}
+
+/* Images */
+
+.devotional-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2.5rem auto;
+  border-radius: 18px;
+}
+
+/* Lists */
+
+.devotional-content ul,
+.devotional-content ol {
+  margin: 1.5rem 0 2rem;
+  padding-left: 1.5rem;
+}
+
+.devotional-content li {
+  margin-bottom: 0.7rem;
+}
+
+/* Strong emphasis */
+
+.devotional-content strong {
+  color: #101a2b;
+  font-weight: 700;
+}
+
+/* Horizontal rules */
+
+.devotional-content hr {
+  margin: 3rem 0;
+  border: 0;
+  border-top: 1px solid rgba(17, 24, 39, 0.1);
+}
+
+.devotional-author-banner {
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+  padding: 1.75rem 2rem;
+  border-radius: 16px;
+  background: #101a2b;
+}
+
+.devotional-author-quote {
+  margin: 0 0 0.75rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.devotional-author-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.devotional-author-name {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.devotional-author-role {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .devotional-author-banner {
+    padding: 1.5rem;
+    border-radius: 14px;
+  }
+}
+
+.devotional-content > h2:first-child {
+  margin-top: 0;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .devotional-content {
+    max-width: 100%;
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .devotional-content p {
+    margin-bottom: 1.3rem;
+  }
+
+  .devotional-content blockquote {
+    margin: 2rem 0;
+    padding: 1.25rem 1.25rem 1.25rem 2.75rem;
+    font-size: 17px;
+  }
+
+  .devotional-content blockquote::before {
+    left: 0.75rem;
+    font-size: 2.5rem;
+  }
+}
+
+/* =========================================
+   DEVOTIONAL SPECIAL SECTIONS
+========================================= */
+
+.devotional-section {
+  margin-top: 4rem;
+  padding: 2rem;
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.devotional-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.devotional-section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: #991313;
+  font-size: 1.2rem;
+}
+
+.devotional-section-heading h2 {
+  margin: 0;
+  color: #991313;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+}
+
+.devotional-section-heading h2 span {
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* DIG DEEPER */
+
+.devotional-deep-dive {
+  background: #fcfaf9;
+}
+
+.devotional-reference-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.devotional-reference {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: #101a2b;
+  font-size: 0.95rem;
+}
+
+.devotional-reference-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #991313;
+}
+
+/* WE PRAY */
+
+.devotional-prayer {
+  background: linear-gradient(
+    135deg,
+    #fffafa 0%,
+    #ffffff 100%
+  );
+}
+
+.devotional-prayer p {
+  margin: 0;
+  color: #101a2b;
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+/* BIBLE READING */
+
+.devotional-reading-plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.devotional-reading-plan {
+  padding: 1.25rem;
+  border-radius: 14px;
+  background: #f8f8f7;
+}
+
+.devotional-reading-plan span {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #991313;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.devotional-reading-plan p {
+  margin: 0;
+  color: #101a2b;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* DECLARATIONS */
+
+.devotional-declarations {
+  background: #101a2b;
+  border-color: #101a2b;
+}
+
+.devotional-declarations .devotional-section-heading h2,
+.devotional-declarations .devotional-section-icon {
+  color: #ffffff;
+}
+
+.devotional-declaration-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.devotional-declaration {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.devotional-declaration > span {
+  color: #c9a1a1;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.devotional-declaration p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .devotional-section {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .devotional-reading-plans {
+    grid-template-columns: 1fr;
+  }
+}

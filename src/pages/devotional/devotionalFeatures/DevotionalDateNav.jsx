@@ -1,7 +1,11 @@
 import { useMemo } from "react";
 
+function formatDateKey(date) {
+  return date.toISOString().split("T")[0];
+}
+
 function getDateParts(dateString) {
-  const date = new Date(dateString);
+  const date = new Date(`${dateString}T00:00:00Z`);
 
   return {
     day: date.getUTCDate(),
@@ -13,16 +17,20 @@ function getDateParts(dateString) {
   };
 }
 
-function formatDateKey(date) {
-  return date.toISOString().split("T")[0];
-}
-
 function DevotionalDateNav({
   devotional,
   selectedDate,
   onDateSelect,
   loading,
+  topOffsetClassName = "pt-24",
 }) {
+  /*
+   * Always generate five calendar dates around
+   * the currently selected date.
+   *
+   * These dates are NOT dependent on whether
+   * a devotional exists.
+   */
   const dates = useMemo(() => {
     if (!selectedDate) return [];
 
@@ -40,17 +48,23 @@ function DevotionalDateNav({
     });
   }, [selectedDate]);
 
-  const selectedParts = devotional
-    ? getDateParts(devotional.created_at)
+  /*
+   * The date card uses the SELECTED CALENDAR DATE,
+   * not devotional.created_at.
+   *
+   * This is important when there is no Machaira today.
+   */
+  const selectedParts = selectedDate
+    ? getDateParts(selectedDate)
     : null;
 
   return (
-    <div className="relative flex w-[120px] shrink-0 flex-col items-center pt-24">
+    <div className={`relative flex w-[120px] shrink-0 flex-col items-center ${topOffsetClassName}`}>
 
       {/* Selected date card */}
       <div className="relative z-10 flex h-[134px] w-[78px] flex-col items-center justify-center rounded-2xl border border-black/10 bg-white/85 shadow-sm backdrop-blur-sm">
 
-        {selectedParts ? (
+        {selectedParts && (
           <>
             <span className="text-sm font-semibold uppercase tracking-wide text-[#991313]">
               {selectedParts.month}
@@ -64,10 +78,6 @@ function DevotionalDateNav({
               {selectedParts.year}
             </span>
           </>
-        ) : (
-          <span className="text-xs font-semibold uppercase tracking-wide text-[#991313]">
-            No Date
-          </span>
         )}
       </div>
 
@@ -88,7 +98,7 @@ function DevotionalDateNav({
               onClick={() => onDateSelect(item.date)}
               className="group relative z-10 flex h-[58px] w-[80px] items-center justify-center gap-4 disabled:cursor-wait"
             >
-              {/* Dot */}
+              {/* Date dot */}
               <span
                 className={`flex shrink-0 rounded-full transition-all duration-300 ${
                   isSelected
