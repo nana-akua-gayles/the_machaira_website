@@ -60,6 +60,7 @@ export async function getTodaysDevotional() {
         created_at,
         updated_at,
         episode_number,
+        content,
         pure_content,
         audio_url,
         excerpt
@@ -108,6 +109,7 @@ export async function getDevotionalByDate(dateString) {
         created_at,
         updated_at,
         episode_number,
+        content,
         pure_content,
         audio_url,
         excerpt
@@ -146,6 +148,7 @@ export async function getRecentDevotionals(limit = 12) {
         created_at,
         updated_at,
         episode_number,
+        content,
         pure_content,
         audio_url,
         excerpt
@@ -182,6 +185,7 @@ export async function getDevotionalsByCategory(category, limit = 12) {
         created_at,
         updated_at,
         episode_number,
+        content,
         pure_content,
         audio_url,
         excerpt
@@ -216,6 +220,7 @@ export async function getDevotionalById(id) {
         created_at,
         updated_at,
         episode_number,
+        content,
         pure_content,
         audio_url,
         excerpt

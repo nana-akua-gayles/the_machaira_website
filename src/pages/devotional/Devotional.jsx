@@ -32,6 +32,8 @@ function getTodayDate() {
 
 function Devotional() {
   const [devotional, setDevotional] = useState(null);
+
+  // Always start with today's calendar date.
   const [selectedDate, setSelectedDate] = useState(getTodayDate());
 
   const [loading, setLoading] = useState(true);
@@ -47,16 +49,13 @@ function Devotional() {
 
         console.log("TODAY'S DEVOTIONAL:", data);
 
+        /*
+         * Keep today's date selected regardless of
+         * whether today's devotional exists.
+         */
+        setSelectedDate(getTodayDate());
+
         setDevotional(data);
-
-        // If today's devotional exists, use its actual date.
-        if (data?.created_at) {
-          const date = new Date(data.created_at)
-            .toISOString()
-            .split("T")[0];
-
-          setSelectedDate(date);
-        }
       } catch (err) {
         console.error("DEVOTIONAL LOAD FAILED:", err);
         setError("Unable to load today's devotional.");
@@ -75,11 +74,25 @@ function Devotional() {
 
       console.log("SELECTED DATE:", date);
 
+      /*
+       * Change the calendar immediately.
+       * This means the date card updates even if
+       * there is no devotional for this date.
+       */
+      setSelectedDate(date);
+
       const data = await getDevotionalByDate(date);
 
       console.log("DEVOTIONAL FOR SELECTED DATE:", data);
 
-      setSelectedDate(date);
+      /*
+       * data can legitimately be null.
+       *
+       * null means:
+       * "There is no Machaira/devotional on this date."
+       *
+       * The UI will then show the recap experience.
+       */
       setDevotional(data);
     } catch (err) {
       console.error("DATE DEVOTIONAL LOAD FAILED:", err);
