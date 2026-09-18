@@ -1,28 +1,34 @@
+import hopeImage from "../../../assets/devotionalImages/hope.jpg";
+import faithImage from "../../../assets/devotionalImages/faith.jpg";
+import healingImage from "../../../assets/devotionalImages/healing.jpg";
+import prayerImage from "../../../assets/devotionalImages/prayer.jpg";
+import deliveranceImage from "../../../assets/devotionalImages/deliverance.jpg";
+
 const topics = [
   {
     name: "Faith",
     description: "Grow deeper in your trust and walk with God.",
-    image: "/images/devotional-topics/faith.jpg",
+    image: faithImage,
   },
   {
     name: "Healing",
     description: "Find encouragement, hope, and restoration.",
-    image: "/images/devotional-topics/healing.jpg",
+    image: healingImage,
   },
   {
     name: "Prayer",
     description: "Strengthen your relationship with God through prayer.",
-    image: "/images/devotional-topics/prayer.jpg",
+    image: prayerImage,
   },
   {
     name: "Deliverance",
     description: "Discover freedom through the power of God's word.",
-    image: "/images/devotional-topics/deliverance.jpg",
+    image: deliveranceImage,
   },
   {
-    name: "Purpose",
+    name: "Hope",
     description: "Discover God's direction for your life.",
-    image: "/images/devotional-topics/purpose.jpg",
+    image: hopeImage,
   },
 ];
 
