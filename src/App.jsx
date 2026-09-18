@@ -9,6 +9,9 @@ import Home from "./pages/home/Home";
 //ABOUT
 import About from "./pages/about/About";
 
+//NEWSFEED
+import Newsfeed from "./pages/newsfeed/NewsfeedPage";
+
 //CHURCH BLOG
 import ChurchBlog from "./pages/churchBlog/ChurchBlog";
 
@@ -43,8 +46,8 @@ function App() {
 
           {/* Church Blog */}
           <Route
-            path="/blog"
-            element={<ChurchBlog />}
+            path="/newsfeed"
+            element={<Newsfeed />}
           />
 
           {/* Discussion Forum */}
