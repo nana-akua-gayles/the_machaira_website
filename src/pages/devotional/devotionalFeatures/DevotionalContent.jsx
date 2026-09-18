@@ -42,10 +42,26 @@ function extractSections(html) {
     /2\s+YEARS?\s+PLAN\s*(.*)$/is
   );
 
-  const declarations = declarationsText
-    .split(/[–—]\s*/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+const declarations = declarationsText
+  ? (() => {
+      const rawParts = declarationsText
+        .split(/[\u2013\u2014]\s*/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const merged = [];
+      for (const part of rawParts) {
+        const looksLikeNewDeclaration = /^[A-Z]/.test(part);
+        if (!looksLikeNewDeclaration && merged.length > 0) {
+          merged[merged.length - 1] =
+            `${merged[merged.length - 1]} \u2014 ${part}`;
+        } else {
+          merged.push(part);
+        }
+      }
+      return merged;
+    })()
+  : [];
 
   return {
     mainContent,
@@ -148,8 +164,8 @@ function extractBannerTitleAndVerse(html) {
   };
 }
 
-function DevotionalContent({ content, fallbackContent }) {
-  if (!content) {
+function DevotionalContent({ parsed, fallbackContent }) {
+  if (!parsed) {
     if (fallbackContent) {
       return (
         <div className="devotional-content whitespace-pre-line">
@@ -165,153 +181,50 @@ function DevotionalContent({ content, fallbackContent }) {
     );
   }
 
-const cleanContent = DOMPurify.sanitize(content, {
-  FORBID_ATTR: ["style"],
-});
+  const { hasBanner, authorMessage, titleText, memoryVerse, mainContent } =
+    parsed;
 
-const normalizedContent = cleanContent.replace(/&nbsp;/g, " ");
-const {
-  authorMessage,
-  hasBanner,
-  titleText,
-  memoryVerse,
-  content: preparedContent,
-} = extractBannerTitleAndVerse(normalizedContent);
+  return (
+    <>
+      {hasBanner && (
+        <div className="devotional-author-banner">
+          <p className="devotional-author-org">
+            CHRIST COMMONWEALTH-COMMUNITY
+          </p>
+          <p className="devotional-author-tagline">The Love-Life Agency</p>
 
-const {
-  mainContent,
-  deepDiver,
-  prayer,
-  bibleReading,
-  declarations,
-} = extractSections(preparedContent);
+          {authorMessage && (
+            <p className="devotional-author-quote">{authorMessage}</p>
+          )}
 
-return (
-  <>
-    {hasBanner && (
-      <div className="devotional-author-banner">
-        <p className="devotional-author-org">CHRIST COMMONWEALTH-COMMUNITY</p>
-        <p className="devotional-author-tagline">The Love-Life Agency</p>
+          <div className="devotional-author-meta">
+            <span className="devotional-author-name">Apostle Bennie</span>
+            <span className="devotional-author-role">Author</span>
+          </div>
+        </div>
+      )}
 
-        {authorMessage && (
-          <p className="devotional-author-quote">{authorMessage}</p>
+      <div className="devotional-content">
+        {titleText && <h2>{titleText}</h2>}
+
+        {memoryVerse && (
+          <blockquote className="devotional-memory-verse">
+            {memoryVerse.text}
+            {memoryVerse.citation && (
+              <cite className="devotional-memory-verse-citation">
+                {memoryVerse.citation}
+              </cite>
+            )}
+          </blockquote>
         )}
 
-        <div className="devotional-author-meta">
-          <span className="devotional-author-name">Apostle Bennie</span>
-          <span className="devotional-author-role">Author</span>
-        </div>
+        <div
+          className="devotional-article-body"
+          dangerouslySetInnerHTML={{
+            __html: mainContent,
+          }}
+        />
       </div>
-    )}
-
-    <div className="devotional-content">
-
-      {titleText && <h2>{titleText}</h2>}
-
-      {memoryVerse && (
-        <blockquote className="devotional-memory-verse">
-          {memoryVerse.text}
-          {memoryVerse.citation && (
-            <cite className="devotional-memory-verse-citation">
-              {memoryVerse.citation}
-            </cite>
-          )}
-        </blockquote>
-      )}
-
-      {/* Main devotional article */}
-      <div className="devotional-article-body"
-        dangerouslySetInnerHTML={{
-          __html: mainContent,
-        }}
-      />
-
-      {/* DIG DEEPER */}
-      {deepDiver && deepDiver.length > 0 && (
-        <section className="devotional-section devotional-deep-dive">
-          <div className="devotional-section-heading">
-            <span className="devotional-section-icon">▣</span>
-
-            <h2>DIG DEEPER</h2>
-          </div>
-
-          <div className="devotional-reference-list">
-            {deepDiver.map((reference) => (
-              <div
-                key={reference}
-                className="devotional-reference"
-              >
-                <span className="devotional-reference-dot" />
-                <span>{reference}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* WE PRAY */}
-      {prayer && (
-        <section className="devotional-section devotional-prayer">
-          <div className="devotional-section-heading">
-            <span className="devotional-section-icon">♧</span>
-
-            <h2>WE PRAY</h2>
-          </div>
-
-          <p>{prayer}</p>
-        </section>
-      )}
-
-      {/* BIBLE READING */}
-      {bibleReading && (
-        <section className="devotional-section devotional-bible-reading">
-          <div className="devotional-section-heading">
-            <span className="devotional-section-icon">▤</span>
-
-            <h2>
-              BIBLE READING
-              <span>IN THE YEAR {bibleReading.year}</span>
-            </h2>
-          </div>
-
-          <div className="devotional-reading-plans">
-
-            <div className="devotional-reading-plan">
-              <span>1 YEAR PLAN</span>
-              <p>{bibleReading.oneYear}</p>
-            </div>
-
-            <div className="devotional-reading-plan">
-              <span>2 YEARS PLAN</span>
-              <p>{bibleReading.twoYear}</p>
-            </div>
-
-          </div>
-        </section>
-      )}
-
-      {/* DECLARE THESE WORDS */}
-      {declarations && declarations.length > 0 && (
-        <section className="devotional-section devotional-declarations">
-          <div className="devotional-section-heading">
-            <h2>DECLARE THESE WORDS</h2>
-          </div>
-
-          <div className="devotional-declaration-list">
-            {declarations.map((declaration) => (
-              <div
-                key={declaration}
-                className="devotional-declaration"
-              >
-                <span>–</span>
-                <p>{declaration}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-    </div>
     </>
   );
 }
