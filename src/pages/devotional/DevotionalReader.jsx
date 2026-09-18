@@ -61,6 +61,7 @@ function DevotionalReader() {
         const data = await getDevotionalById(id);
 
         console.log("DEVOTIONAL READER:", data);
+        console.log("RAW CONTENT:", JSON.stringify(data.content));
 
         if (!data) {
           setError("This devotional could not be found.");

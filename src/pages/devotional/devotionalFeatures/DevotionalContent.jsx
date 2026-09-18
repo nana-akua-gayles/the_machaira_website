@@ -69,27 +69,28 @@ const datePattern = new RegExp(
   "i"
 );
 
-// The CMS content starts with site branding + a "Download PDF" button
-// + a short daily quote from Apostle Bennie + his name/role, then the
-// date, then a duplicate of the devotional title, all glued together.
-// This pulls the quote out as `authorMessage` (for the banner) and
-// turns the duplicate title into a proper heading, dropping the
-// branding/date text since both are shown elsewhere on the page.
-function extractBannerAndTitle(html) {
+function extractBannerTitleAndVerse(html) {
   const dateMatch = html.match(datePattern);
 
   if (!dateMatch) {
-    return { authorMessage: null, content: html };
+    return {
+      authorMessage: null,
+      hasBanner: false,
+      titleText: null,
+      memoryVerse: null,
+      content: html,
+    };
   }
 
   const preamble = html.slice(0, dateMatch.index);
   const afterDateIndex = dateMatch.index + dateMatch[0].length;
   const afterDate = html.slice(afterDateIndex);
 
-  let authorMessage = null;
   const downloadIdx = preamble.search(/Download PDF/i);
+  const hasBanner = downloadIdx !== -1;
+  let authorMessage = null;
 
-  if (downloadIdx !== -1) {
+  if (hasBanner) {
     let afterDownload = preamble.slice(downloadIdx + "Download PDF".length);
     afterDownload = afterDownload.replace(/^\s*<\/a>/i, "");
 
@@ -100,19 +101,51 @@ function extractBannerAndTitle(html) {
     authorMessage = quoteRaw.replace(/\s+/g, " ").trim() || null;
   }
 
-  const quoteMarkIndex = afterDate.indexOf("\u201C");
-  let content;
+  const openQuoteIndex = afterDate.indexOf("\u201C");
 
-  if (quoteMarkIndex === -1) {
-    content = afterDate;
-  } else {
-    const titleText = afterDate.slice(0, quoteMarkIndex).trim();
-    const rest = afterDate.slice(quoteMarkIndex);
-    const titleHtml = titleText ? `<h2>${titleText}</h2>` : "";
-    content = `${titleHtml}${rest}`;
+  if (openQuoteIndex === -1) {
+    return {
+      authorMessage,
+      hasBanner,
+      titleText: null,
+      memoryVerse: null,
+      content: afterDate,
+    };
   }
 
-  return { authorMessage, content };
+  const titleText = afterDate.slice(0, openQuoteIndex).trim() || null;
+  const afterOpenQuote = afterDate.slice(openQuoteIndex + 1);
+  const closeQuoteIndex = afterOpenQuote.indexOf("\u201D");
+
+  if (closeQuoteIndex === -1) {
+    return {
+      authorMessage,
+      hasBanner,
+      titleText,
+      memoryVerse: null,
+      content: afterDate.slice(openQuoteIndex),
+    };
+  }
+
+  const verseText = afterOpenQuote.slice(0, closeQuoteIndex).trim();
+  const afterCloseQuote = afterOpenQuote.slice(closeQuoteIndex + 1);
+
+  const citationMatch = afterCloseQuote.match(/^\s*([^\n]+?)\s*\n\s*\n/);
+  let citation = null;
+  let bodyStart = afterCloseQuote;
+
+  if (citationMatch) {
+    citation = citationMatch[1].trim();
+    bodyStart = afterCloseQuote.slice(citationMatch[0].length);
+  }
+
+  return {
+    authorMessage,
+    hasBanner,
+    titleText,
+    memoryVerse: { text: verseText, citation },
+    content: bodyStart.trim(),
+  };
 }
 
 function DevotionalContent({ content, fallbackContent }) {
@@ -137,8 +170,13 @@ const cleanContent = DOMPurify.sanitize(content, {
 });
 
 const normalizedContent = cleanContent.replace(/&nbsp;/g, " ");
-const { authorMessage, content: preparedContent } =
-  extractBannerAndTitle(normalizedContent);
+const {
+  authorMessage,
+  hasBanner,
+  titleText,
+  memoryVerse,
+  content: preparedContent,
+} = extractBannerTitleAndVerse(normalizedContent);
 
 const {
   mainContent,
@@ -148,22 +186,41 @@ const {
   declarations,
 } = extractSections(preparedContent);
 
-  return (
-    <>
-    {authorMessage && (
+return (
+  <>
+    {hasBanner && (
       <div className="devotional-author-banner">
-        <p className="devotional-author-quote">{authorMessage}</p>
+        <p className="devotional-author-org">CHRIST COMMONWEALTH-COMMUNITY</p>
+        <p className="devotional-author-tagline">The Love-Life Agency</p>
+
+        {authorMessage && (
+          <p className="devotional-author-quote">{authorMessage}</p>
+        )}
+
         <div className="devotional-author-meta">
           <span className="devotional-author-name">Apostle Bennie</span>
           <span className="devotional-author-role">Author</span>
         </div>
       </div>
     )}
-    
+
     <div className="devotional-content">
 
+      {titleText && <h2>{titleText}</h2>}
+
+      {memoryVerse && (
+        <blockquote className="devotional-memory-verse">
+          {memoryVerse.text}
+          {memoryVerse.citation && (
+            <cite className="devotional-memory-verse-citation">
+              {memoryVerse.citation}
+            </cite>
+          )}
+        </blockquote>
+      )}
+
       {/* Main devotional article */}
-      <div
+      <div className="devotional-article-body"
         dangerouslySetInnerHTML={{
           __html: mainContent,
         }}
