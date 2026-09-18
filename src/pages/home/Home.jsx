@@ -7,7 +7,6 @@ import NewsfeedSection from "./NewsfeedSection";
 
 export default function Home() {
   const [heroSlides, setHeroSlides] = useState([]);
-  const [heroQuotes, setHeroQuotes] = useState([]);
   const [recentDevotional, setRecentDevotional] = useState(null);
   
   const [loading, setLoading] = useState(true);
@@ -28,19 +27,17 @@ export default function Home() {
         setLoading(true);
         setFetchError(false);
 
-        const [slidesRes, quotesRes, devotionalRes] = await Promise.all([
-          supabase.from('hero_slides').select('*').order('display_order', { ascending: true }),
-          supabase.from('hero_quotes').select('*').order('display_order', { ascending: true }),
+        // Fetch everything from the unified hero_slides table and devotionals table
+        const [slidesRes, devotionalRes] = await Promise.all([
+          supabase.from('hero_slides').select('*'),
           supabase.from('devotionals').select('id, title, excerpt, created_at').order('created_at', { ascending: false }).limit(1).maybeSingle()
         ]);
 
         if (!isMounted) return;
 
         if (slidesRes.error) throw slidesRes.error;
-        if (quotesRes.error) throw quotesRes.error;
 
         setHeroSlides(slidesRes.data || []);
-        setHeroQuotes(quotesRes.data || []);
         setRecentDevotional(devotionalRes.data || null);
       } catch (err) {
         console.error("Failed to load content from Supabase:", err.message);
@@ -60,7 +57,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (heroSlides.length <= 1 || heroQuotes.length === 0) return;
+    if (heroSlides.length <= 1) return;
 
     // Simultaneous text and background image crossfade transition
     const rotationInterval = setInterval(() => {
@@ -82,7 +79,7 @@ export default function Home() {
     const quoteTimer = setInterval(() => {
       setAnimatingQuote(true);
       setTimeout(() => {
-        setCurrentQuote((prev) => (prev + 1) % heroQuotes.length);
+        setCurrentQuote((prev) => (prev + 1) % heroSlides.length);
         setAnimatingQuote(false);
       }, 400);
     }, 9500);
@@ -91,7 +88,7 @@ export default function Home() {
       clearInterval(rotationInterval);
       clearInterval(quoteTimer);
     };
-  }, [heroSlides.length, heroQuotes.length]);
+  }, [heroSlides.length]);
 
   if (loading) {
     return (
@@ -101,19 +98,22 @@ export default function Home() {
     );
   }
 
-  if (fetchError || heroSlides.length === 0 || heroQuotes.length === 0) {
+  if (fetchError || heroSlides.length === 0) {
     return (
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-32 text-center space-y-4 bg-[#FBF9F5]">
         <h2 className="text-xl font-medium tracking-tight text-[#2B2625]">Unable to load content</h2>
         <p className="text-sm text-[#6E6563] max-w-md mx-auto">
-          Please check your internet connection.
+          Please check your internet connection or database configuration.
         </p>
       </div>
     );
   }
 
   const slide = heroSlides[currentSlide] || heroSlides[0];
-  const quoteItem = heroQuotes[currentQuote] || heroQuotes[0];
+  // Quote item now pulls directly from the testimony column of hero_slides
+  const quoteItem = {
+    quote: heroSlides[currentQuote]?.testimony || heroSlides[0]?.testimony
+  };
 
   const formattedDate = recentDevotional?.created_at 
     ? new Date(recentDevotional.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })

@@ -55,16 +55,6 @@ function Navbar() {
            Today's Devotional
           </NavLink>
 
-
-        <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            About Author
-          </NavLink>
-
           <NavLink
             to="/newsfeed"
             className={({ isActive }) =>
@@ -92,6 +82,14 @@ function Navbar() {
             Be a Partner
           </NavLink>
 
+        <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            About Author
+          </NavLink>
 
         </nav>
 

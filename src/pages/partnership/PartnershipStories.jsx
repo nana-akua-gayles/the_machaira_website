@@ -13,6 +13,7 @@ export default function PartnershipStories() {
         const { data, error } = await supabase
           .from('partnership_stories') 
           .select('*')
+          .order('display_order', { ascending: true }) // Arranges items based on display_order
           .limit(4);
 
         if (error) {

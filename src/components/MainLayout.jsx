@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import WelcomeModal from "./WelcomeModal"; 
 import "./componentStylesheet/MainLayout.css";
 
 function MainLayout() {
@@ -11,6 +12,9 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
+      
+      {/* Global Welcome Modal (Opens on load) */}
+      <WelcomeModal />
     </div>
   );
 }
