@@ -356,7 +356,10 @@ export async function getDevotionals({
     // Category
     // -----------------------------
     if (category && category !== "all") {
-      query = query.eq("category", category);
+      query = query.ilike(
+        "category",
+        `%${category.trim()}%`
+      );
     }
 
     // -----------------------------

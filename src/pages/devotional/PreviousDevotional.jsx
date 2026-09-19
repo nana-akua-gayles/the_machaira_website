@@ -4,6 +4,7 @@ import PreviousDevotionalHero from "./PreviousDevotional/PreviousDevotionalHero"
 import PreviousDevotionalToolbar from "./PreviousDevotional/PreviousDevotionalToolbar";
 import PreviousDevotionalFilters from "./PreviousDevotional/PreviousDevotionalFilters";
 import PreviousDevotionalList from "./PreviousDevotional/PreviousDevotionalList";
+import PreviousDevotionalPagination from "./PreviousDevotional/PreviousDevotionalPagination";
 
 function PreviousDevotional() {
   const [devotionals, setDevotionals] = useState([]);
@@ -14,6 +15,16 @@ function PreviousDevotional() {
   const [searchInput, setSearchInput] = useState("");
   const [sortBy, setSortBy] = useState("newest");
   const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const [category, setCategory] = useState("all");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [episodeFrom, setEpisodeFrom] = useState("");
+  const [episodeTo, setEpisodeTo] = useState("");
+
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   useEffect(() => {
     async function loadDevotionals() {
@@ -22,13 +33,19 @@ function PreviousDevotional() {
         setError(null);
 
         const result = await getDevotionals({
-          page: 1,
+          page,
           pageSize,
           search,
           sortBy,
+          category,
+          dateFrom,
+          dateTo,
+          episodeFrom,
+          episodeTo,
         });
 
         setDevotionals(result.data);
+        setTotalCount(result.count);
       } catch (error) {
         console.error("Failed to load devotionals:", error);
         setError("Unable to load previous devotionals.");
@@ -37,7 +54,17 @@ function PreviousDevotional() {
       }
     }
     loadDevotionals();
-  }, [pageSize, search, sortBy]);
+  }, [
+      pageSize,
+      search,
+      sortBy,
+      category,
+      dateFrom,
+      dateTo,
+      episodeFrom,
+      episodeTo,
+      page,
+    ]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -47,6 +74,46 @@ function PreviousDevotional() {
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  const handleSearchChange = (value) => {
+    setSearchInput(value);
+    setPage(1);
+  };
+
+  const handleSortChange = (value) => {
+    setSortBy(value);
+    setPage(1);
+  };
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setPage(1);
+  };
+
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    setPage(1);
+  };
+
+  const handleDateFromChange = (value) => {
+    setDateFrom(value);
+    setPage(1);
+  };
+
+  const handleDateToChange = (value) => {
+    setDateTo(value);
+    setPage(1);
+  };
+
+  const handleEpisodeFromChange = (value) => {
+    setEpisodeFrom(value);
+    setPage(1);
+  };
+
+  const handleEpisodeToChange = (value) => {
+    setEpisodeTo(value);
+    setPage(1);
+  };
+
   return (
     <main className="previous-devotional-page min-h-screen bg-white">
 
@@ -54,18 +121,37 @@ function PreviousDevotional() {
 
       <PreviousDevotionalToolbar
         search={search}
-        onSearchChange={setSearchInput}
+        onSearchChange={handleSearchChange}
         sortBy={sortBy}
-        onSortChange={setSortBy}
+        onSortChange={handleSortChange}
         pageSize={pageSize}
-        onPageSizeChange={setPageSize}
+        onPageSizeChange={handlePageSizeChange}
       />
 
       <section className="mx-auto max-w-[1350px] px-6 pb-20 pt-20 lg:px-10">
 
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start">
 
-          <PreviousDevotionalFilters />
+          <PreviousDevotionalFilters
+            category={category}
+            onCategoryChange={handleCategoryChange}
+            dateFrom={dateFrom}
+            onDateFromChange={handleDateFromChange}
+            dateTo={dateTo}
+            onDateToChange={handleDateToChange}
+            episodeFrom={episodeFrom}
+            onEpisodeFromChange={handleEpisodeFromChange}
+            episodeTo={episodeTo}
+            onEpisodeToChange={handleEpisodeToChange}
+            onClear={() => {
+              setCategory("all");
+              setDateFrom("");
+              setDateTo("");
+              setEpisodeFrom("");
+              setEpisodeTo("");
+              setPage(1);
+            }}
+          />
 
           {/* Devotional results will go here */}
           <div className="min-w-0 flex-1">
@@ -98,6 +184,15 @@ function PreviousDevotional() {
       </section>
 
       {/* Pagination will be built later */}
+      {totalPages > 1 && (
+        <section className="mx-auto max-w-[1350px] px-6 pb-6 lg:px-10">
+          <PreviousDevotionalPagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        </section>
+      )}
 
       {/* CTA will be built later */}
 

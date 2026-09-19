@@ -1,29 +1,23 @@
-import { useState } from "react";
-
-function PreviousDevotionalFilters() {
-  const [category, setCategory] = useState("all");
-  const [selectedSeries, setSelectedSeries] = useState("all");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-  const [episodeRange, setEpisodeRange] = useState([1, 1327]);
+function PreviousDevotionalFilters({
+    category,
+    onCategoryChange,
+    dateFrom,
+    onDateFromChange,
+    dateTo,
+    onDateToChange,
+    episodeFrom,
+    onEpisodeFromChange,
+    episodeTo,
+    onEpisodeToChange,
+    onClear,
+}) {
 
   const categories = [
-    "All Categories",
-    "Faith",
-    "Healing",
-    "Prayer",
-    "Deliverance",
-    "Purpose",
-    "Provision",
-    "Breakthrough",
-  ];
-
-  const seriesOptions = [
-    "All Series",
-    "Daily Machaira",
-    "Living by Faith",
-    "The Power of Prayer",
-    "Walking in Purpose",
+    { label: "All Categories", value: "all" },
+    { label: "Faith", value: "Faith" },
+    { label: "Healing", value: "Healing" },
+    { label: "Liberty", value: "Liberty" },
+    { label: "Hope", value: "Hope" },
   ];
 
   function handleClearFilters() {
@@ -52,10 +46,10 @@ function PreviousDevotionalFilters() {
 
         <button
           type="button"
-          onClick={handleClearFilters}
-          className="text-xs font-semibold text-[#991313] transition-colors hover:text-[#7f0e0e]"
+          onClick={onClear}
+          className="text-sm font-medium text-[#991313] transition-colors hover:text-[#7f0e0e]"
         >
-          Clear
+          Clear filters
         </button>
 
       </div>
@@ -69,47 +63,84 @@ function PreviousDevotionalFilters() {
 
         <div className="space-y-3">
 
-          {categories.map((item) => {
-            const value =
-              item === "All Categories"
-                ? "all"
-                : item.toLowerCase().replace(/\s+/g, "-");
+        {categories.map((item) => {
+          const isActive = category === item.value;
 
-            const isSelected = category === value;
-
-            return (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setCategory(value)}
-                className="group flex w-full items-center gap-3 text-left"
+          return (
+            <button
+              key={item.value}
+              type="button"
+              onClick={() => onCategoryChange(item.value)}
+              className="flex w-full items-center gap-3 py-2 text-left"
+            >
+              <span
+                className={`flex h-4 w-4 items-center justify-center rounded-full border ${
+                  isActive
+                    ? "border-[#991313]"
+                    : "border-[#B9BEC8]"
+                }`}
               >
-                <span
-                  className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border transition-all duration-200 ${
-                    isSelected
-                      ? "border-[#991313]"
-                      : "border-[#B9BEC8] group-hover:border-[#991313]"
-                  }`}
-                >
-                  {isSelected && (
-                    <span className="h-2 w-2 rounded-full bg-[#991313]" />
-                  )}
-                </span>
+                {isActive && (
+                  <span className="h-2 w-2 rounded-full bg-[#991313]" />
+                )}
+              </span>
 
-                <span
-                  className={`text-sm transition-colors ${
-                    isSelected
-                      ? "font-semibold text-[#101A2B]"
-                      : "text-[#4D5057] group-hover:text-[#991313]"
-                  }`}
-                >
-                  {item}
-                </span>
-              </button>
-            );
-          })}
+              <span
+                className={`text-sm ${
+                  isActive
+                    ? "font-medium text-[#101A2B]"
+                    : "text-[#6B7280]"
+                }`}
+              >
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
 
         </div>
+      
+      <div className="mt-5 border-t border-[#E5E7EB] pt-5">
+        <label
+          htmlFor="category-search"
+          className="mb-2 block text-xs font-medium text-[#6B7280]"
+        >
+          Search another category
+        </label>
+
+        <div className="relative">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]"
+          >
+            <path
+              d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11C19 15.4183 15.4183 19 11 19Z"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          <input
+            id="category-search"
+            type="text"
+            value={
+              categories.some((item) => item.value === category)
+                ? ""
+                : category
+            }
+            onChange={(event) =>
+              onCategoryChange(event.target.value)
+            }
+            placeholder="Search category..."
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white py-2.5 pl-10 pr-3 text-sm text-[#111827] outline-none transition placeholder:text-[#9CA3AF] focus:border-[#991313]"
+          />
+        </div>
+      </div>
       </div>
 
       {/* Date Range */}
@@ -119,154 +150,73 @@ function PreviousDevotionalFilters() {
           Date Range
         </h3>
 
-        <div className="space-y-3">
-
-          <label className="block">
-            <span className="mb-1.5 block text-xs font-medium text-[#6B7280]">
-              From
-            </span>
-
-            <input
-              type="date"
-              value={dateFrom}
-              onChange={(event) => setDateFrom(event.target.value)}
-              className="w-full rounded-xl border border-black/[0.1] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313] focus:ring-2 focus:ring-[#991313]/10"
-            />
+        <div className="grid grid-cols-1 gap-3">
+        <div>
+          <label className="mb-2 block text-xs font-medium text-[#6B7280]">
+            From
           </label>
 
-          <label className="block">
-            <span className="mb-1.5 block text-xs font-medium text-[#6B7280]">
-              To
-            </span>
-
-            <input
-              type="date"
-              value={dateTo}
-              onChange={(event) => setDateTo(event.target.value)}
-              className="w-full rounded-xl border border-black/[0.1] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313] focus:ring-2 focus:ring-[#991313]/10"
-            />
-          </label>
-
+          <input
+            type="date"
+            value={dateFrom}
+            onChange={(event) =>
+              onDateFromChange(event.target.value)
+            }
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
+          />
         </div>
+
+        <div>
+          <label className="mb-2 block text-xs font-medium text-[#6B7280]">
+            To
+          </label>
+
+          <input
+            type="date"
+            value={dateTo}
+            onChange={(event) =>
+              onDateToChange(event.target.value)
+            }
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
+          />
+        </div>
+      </div>
       </div>
 
       {/* Episode Number */}
-      <div className="border-t border-black/[0.08] py-6">
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="mb-2 block text-xs font-medium text-[#6B7280]">
+            From
+          </label>
 
-        <div className="mb-5 flex items-center justify-between">
-
-          <h3 className="text-sm font-semibold text-[#101A2B]">
-            Episode Number
-          </h3>
-
-          <span className="text-xs font-semibold text-[#991313]">
-            {episodeRange[0]} – {episodeRange[1]}
-          </span>
-
-        </div>
-
-        <div className="relative px-1">
-
-          {/* Track */}
-          <div className="h-1 rounded-full bg-[#E5E7EB]" />
-
-          {/* Active track */}
-          <div className="absolute left-1 right-1 top-0 h-1 rounded-full bg-[#991313]" />
-
-          {/* Lower range */}
           <input
-            type="range"
+            type="number"
             min="1"
-            max="1327"
-            value={episodeRange[0]}
-            onChange={(event) => {
-              const value = Math.min(
-                Number(event.target.value),
-                episodeRange[1] - 1
-              );
-
-              setEpisodeRange([value, episodeRange[1]]);
-            }}
-            className="absolute inset-0 w-full appearance-none bg-transparent"
-            aria-label="Minimum episode"
+            value={episodeFrom}
+            onChange={(event) =>
+              onEpisodeFromChange(event.target.value)
+            }
+            placeholder="1"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
           />
+        </div>
 
-          {/* Upper range */}
+        <div>
+          <label className="mb-2 block text-xs font-medium text-[#6B7280]">
+            To
+          </label>
+
           <input
-            type="range"
+            type="number"
             min="1"
-            max="1327"
-            value={episodeRange[1]}
-            onChange={(event) => {
-              const value = Math.max(
-                Number(event.target.value),
-                episodeRange[0] + 1
-              );
-
-              setEpisodeRange([episodeRange[0], value]);
-            }}
-            className="absolute inset-0 w-full appearance-none bg-transparent"
-            aria-label="Maximum episode"
+            value={episodeTo}
+            onChange={(event) =>
+              onEpisodeToChange(event.target.value)
+            }
+            placeholder="1334"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
           />
-
-        </div>
-
-        <div className="mt-4 flex justify-between text-xs text-[#9CA3AF]">
-          <span>1</span>
-          <span>1327</span>
-        </div>
-
-      </div>
-
-      {/* Series */}
-      <div className="border-t border-black/[0.08] py-6">
-
-        <h3 className="mb-4 text-sm font-semibold text-[#101A2B]">
-          Series
-        </h3>
-
-        <div className="space-y-3">
-
-        {seriesOptions.map((item) => {
-        const value =
-            item === "All Series"
-            ? "all"
-            : item.toLowerCase().replace(/\s+/g, "-");
-
-        const isSelected = selectedSeries === value;
-
-        return (
-            <button
-            key={item}
-            type="button"
-            onClick={() => setSelectedSeries(value)}
-            className="group flex w-full items-center gap-3 text-left"
-            >
-            <span
-                className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border transition-all duration-200 ${
-                isSelected
-                    ? "border-[#991313]"
-                    : "border-[#B9BEC8] group-hover:border-[#991313]"
-                }`}
-            >
-                {isSelected && (
-                <span className="h-2 w-2 rounded-full bg-[#991313]" />
-                )}
-            </span>
-
-            <span
-                className={`text-sm transition-colors ${
-                isSelected
-                    ? "font-semibold text-[#101A2B]"
-                    : "text-[#4D5057] group-hover:text-[#991313]"
-                }`}
-            >
-                {item}
-            </span>
-            </button>
-        );
-        })}
-
         </div>
       </div>
 

@@ -7,6 +7,8 @@ import DevotionalSidebar from "./devotionalFeatures/DevotionalSidebar";
 import DevotionalPrevNext from "./devotionalFeatures/DevotionalPrevNext";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
 import { getDevotionalById, getDevotionalByDate,  getPreviousDevotional, getNextDevotional, } from "../../lib/devotionalService";
+import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
+import biblecoffee from "../../assets/devotionalImages/biblecoffee.jpg";
 import "./devotional.css";
 
 function formatDevotionalTitle(title) {
@@ -183,70 +185,91 @@ function DevotionalReader() {
   return (
     <main className="bg-white">
 
-      {/* Header */}
-      <section className="border-b border-black/10 bg-[#F8F8F7]">
-        <div className="mx-auto flex max-w-[1100px] items-start gap-6 px-8 py-14 lg:px-12">
+{/* Header */}
+<section className="relative overflow-hidden border-b border-[#B9BEC8]/20 bg-[#FFFFFF]">
+  {/* Modern Decorative Background Elements */}
+  <div className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden">
+    {/* Subtle Crimson/Burgundy Glow Accent */}
+    <div className="absolute -top-24 right-0 h-[400px] w-[500px] rounded-full bg-gradient-to-bl from-[#991313]/10 via-[#991313]/5 to-transparent blur-3xl" />
+    
+    {/* Deep Navy Radial Glow for Depth */}
+    <div className="absolute -bottom-20 left-1/3 h-[300px] w-[400px] rounded-full bg-gradient-to-tr from-[#101A2B]/5 to-transparent blur-2xl" />
 
-          <DevotionalDateNav
-            devotional={devotional}
-            selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
-            loading={dateLoading}
-            topOffsetClassName="pt-0"
-          />
+    {/* Elegant Background Image / Subtle Watercolor Texture Overlay */}
+<div
+  className="absolute inset-0 bg-right-top bg-no-repeat bg-contain"
+  style={{
+    backgroundImage: `url(${biblecoffee})`,
+    maskImage:
+      "radial-gradient(ellipse at center, black 55%, transparent 100%)",
+    WebkitMaskImage:
+      "radial-gradient(ellipse at center, black 55%, transparent 100%)",
+  }}
+/>
+    </div>
 
-          <div className="flex-1">
+  <div className="relative z-10 mx-auto flex max-w-[1100px] items-start gap-6 px-8 py-14 lg:px-12">
 
-            {dateNotice && (
-              <p className="mb-4 text-sm font-medium text-[#991313]">
-                {dateNotice}
-              </p>
-            )}
+    <DevotionalDateNav
+      devotional={devotional}
+      selectedDate={selectedDate}
+      onDateSelect={handleDateSelect}
+      loading={dateLoading}
+      topOffsetClassName="pt-0"
+    />
 
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-3 text-sm">
-              <Link
-                to="/devotional"
-                className="text-[#991313] transition-colors hover:text-[#7f0e0e]"
-              >
-                Devotional
-              </Link>
+    <div className="flex-1">
 
-              <span className="text-[#B9BEC8]">/</span>
+      {dateNotice && (
+        <p className="mb-4 text-sm font-medium text-[#991313]">
+          {dateNotice}
+        </p>
+      )}
 
-              <span className="text-[#4D5057]">
-                {formatted.episodeLabel || "Reading"}
-              </span>
-            </div>
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-3 text-sm">
+        <Link
+          to="/devotional"
+          className="text-[#991313] transition-colors hover:text-[#7f0e0e]"
+        >
+          Devotional
+        </Link>
 
-            {/* Category */}
-            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
-              {devotional.category || "Daily Devotional"}
-            </p>
+        <span className="text-[#B9BEC8]">/</span>
 
-            {/* Title */}
-            <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#101A2B] md:text-5xl lg:text-6xl">
-              {formatted.mainTitle}
-            </h1>
+        <span className="text-[#4D5057]">
+          {formatted.episodeLabel || "Reading"}
+        </span>
+      </div>
 
-            {/* Accent underline */}
-            <div className="mt-6 h-[3px] w-16 bg-[#991313]" />
+      {/* Category */}
+      <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+        {devotional.category || "Daily Devotional"}
+      </p>
 
-            {/* Meta */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#4D5057]">
-              {formatted.episodeLabel && (
-                <span>{formatted.episodeLabel}</span>
-              )}
+      {/* Title */}
+      <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#101A2B] md:text-5xl lg:text-6xl">
+        {formatted.mainTitle}
+      </h1>
 
-              <span className="text-[#B9BEC8]">•</span>
+      {/* Accent underline */}
+      <div className="mt-6 h-[3px] w-16 bg-[#991313]" />
 
-              <span>{formatDate(devotional.created_at)}</span>
-            </div>
+      {/* Meta */}
+      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#4D5057]">
+        {formatted.episodeLabel && (
+          <span>{formatted.episodeLabel}</span>
+        )}
 
-          </div>
+        <span className="text-[#B9BEC8]">•</span>
 
-        </div>
-      </section>
+        <span>{formatDate(devotional.created_at)}</span>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
       {/* Reader */}
       <section className="bg-white">
