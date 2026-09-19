@@ -140,62 +140,96 @@
 }
 
 .devotional-author-banner {
+  position: relative;
   max-width: 760px;
   margin: 0 auto 2.5rem;
-  padding: 1.75rem 2rem;
-  border-radius: 16px;
-  background: #101a2b;
+  padding: 2rem 2.25rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #101a2b 0%, #3a0d0d 100%);
+  overflow: hidden;
+}
+
+.devotional-author-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #991313;
+}
+
+.devotional-author-banner::after {
+  content: "“";
+  position: absolute;
+  top: 0.6rem;
+  right: 1.5rem;
+  color: rgba(153, 19, 19, 0.4);
+  font-family: Georgia, serif;
+  font-size: 4rem;
+  line-height: 1;
+  pointer-events: none;
 }
 
 .devotional-author-org {
   margin: 0;
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .devotional-author-tagline {
-  margin: 0.2rem 0 1.1rem;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  margin: 0.25rem 0 1.25rem;
+  color: #e3a8a8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .devotional-author-quote {
-  margin: 0 0 0.75rem;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  position: relative;
+  margin: 0 0 1.1rem;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 1.08rem;
+  line-height: 1.75;
   font-style: italic;
 }
 
 .devotional-author-meta {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.65rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(153, 19, 19, 0.3);
 }
 
 .devotional-author-name {
   color: #ffffff;
   font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .devotional-author-role {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.75rem;
+  color: #e3a8a8;
+  font-size: 0.72rem;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
   .devotional-author-banner {
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
     border-radius: 14px;
+  }
+
+  .devotional-author-banner::after {
+    right: 1rem;
+    font-size: 3rem;
   }
 }
 
@@ -359,6 +393,10 @@
   line-height: 1.6;
 }
 
+.devotional-reading-plans.single-plan {
+  grid-template-columns: 1fr;
+}
+
 /* DECLARATIONS */
 
 .devotional-declarations {
@@ -407,5 +445,327 @@
 
   .devotional-reading-plans {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   DEVOTIONAL SIDEBAR
+========================================= */
+
+.devotional-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.devotional-sidebar-card {
+  padding: 1.75rem;
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.devotional-sidebar-section {
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.devotional-sidebar-section:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.devotional-sidebar-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.devotional-sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: #991313;
+  font-size: 1rem;
+}
+
+.devotional-sidebar-heading h3 {
+  margin: 0;
+  color: #991313;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+
+.devotional-sidebar-heading h3 span {
+  display: block;
+  margin-top: 0.15rem;
+  color: #4d5057;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.devotional-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.devotional-sidebar-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: #101a2b;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.devotional-sidebar-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #991313;
+}
+
+.devotional-sidebar-text {
+  margin: 0;
+  color: #101a2b;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.devotional-sidebar-plan {
+  margin-bottom: 1rem;
+}
+
+.devotional-sidebar-plan:last-child {
+  margin-bottom: 0;
+}
+
+.devotional-sidebar-plan span {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #991313;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.devotional-sidebar-plan p {
+  margin: 0;
+  color: #101a2b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.devotional-sidebar-declaration-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.devotional-sidebar-declaration-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: #101a2b;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.devotional-sidebar-declaration-list li::before {
+  content: "\2013";
+  position: absolute;
+  left: 0;
+  color: #991313;
+  font-weight: 700;
+}
+
+/* Promo cards */
+
+.devotional-sidebar-promo {
+  padding: 1.75rem;
+  border-radius: 18px;
+}
+
+.devotional-sidebar-promo h4 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.devotional-sidebar-promo p {
+  margin: 0 0 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.devotional-sidebar-promo-button {
+  display: inline-flex;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  background: #991313;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.devotional-sidebar-promo-button:hover {
+  background: #7f0e0e;
+}
+
+.devotional-sidebar-promo-community {
+  background: #fcefef;
+  color: #101a2b;
+}
+
+.devotional-sidebar-promo-listen {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: linear-gradient(135deg, #101a2b, #3a0d0d);
+  color: #ffffff;
+}
+
+.devotional-sidebar-promo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 1.2rem;
+}
+
+.devotional-sidebar-promo-button-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #101a2b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 1024px) {
+  .devotional-sidebar {
+    margin-top: 3rem;
+  }
+}
+
+/* =========================================
+   DEVOTIONAL PREV / NEXT NAVIGATION
+   White Background • Burgundy Text
+========================================= */
+
+.devotional-prev-next {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.devotional-prev-next-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid rgba(153, 19, 19, 0.2);
+  border-radius: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.devotional-prev-next-item:hover {
+  border-color: #991313;
+  box-shadow: 0 6px 20px rgba(153, 19, 19, 0.12);
+  transform: translateY(-2px);
+}
+
+.devotional-prev-next-prev {
+  /* no border-right needed — cards are separate now */
+}
+
+.devotional-prev-next-next {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.devotional-prev-next-icon {
+  flex-shrink: 0;
+  color: #991313;
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.devotional-prev-next-item:hover .devotional-prev-next-icon {
+  color: #6e0e0e;
+}
+
+.devotional-prev-next-prev:hover .devotional-prev-next-icon {
+  transform: translateX(-3px);
+}
+
+.devotional-prev-next-next:hover .devotional-prev-next-icon {
+  transform: translateX(3px);
+}
+
+.devotional-prev-next-label {
+  margin: 0 0 0.2rem;
+  color: #991313;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.devotional-prev-next-title {
+  margin: 0 0 0.15rem;
+  color: #991313;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.devotional-prev-next-date {
+  margin: 0;
+  color: #6e0e0e;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .devotional-prev-next {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .devotional-prev-next-next {
+    justify-content: flex-start;
+    text-align: left;
   }
 }

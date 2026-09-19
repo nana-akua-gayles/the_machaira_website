@@ -19,6 +19,7 @@ import ChurchBlog from "./pages/churchBlog/ChurchBlog";
 import Devotional from "./pages/devotional/Devotional";
 import DiscussionForum from "./pages/discussionForum/DiscussionForum";
 import DevotionalReader from "./pages/devotional/DevotionalReader";
+import PreviousDevotional from "./pages/devotional/PreviousDevotional";
 
 //PARTNERSHIP
 import Partnership from "./pages/partnership/Partnership";
@@ -33,26 +34,15 @@ function App() {
         <Route element={<MainLayout />}>
 
           {/* Home */}
-          <Route
-            path="/"
-            element={<Home />}
-          />
+          <Route path="/" element={<Home />} />
 
           {/* About */}
-          <Route
-            path="/about"
-            element={<About />}
-          />
+          <Route path="/about" element={<About />} />
 
           {/* Devotional */}
-          <Route
-            path="/devotional"
-            element={<Devotional />}
-          />
-          <Route
-            path="/devotional/:id"
-            element={<DevotionalReader />}
-          />
+          <Route path="/devotional" element={<Devotional />} />
+          <Route path="/devotional/:id" element={<DevotionalReader />} />
+          <Route path="/previous-devotionals" element={<PreviousDevotional />} />
 
           {/* Church Blog */}
           <Route

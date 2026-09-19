@@ -208,7 +208,7 @@ function DevotionalHero({
 
                 <div className="mt-9">
                   <button
-                    type="button"
+                    type="button" onClick={() => navigate("/previous-devotionals")}
                     className="rounded-full bg-[#991313] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
                   >
                     Explore Previous Devotionals
