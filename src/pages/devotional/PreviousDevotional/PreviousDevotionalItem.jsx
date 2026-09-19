@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import fallbackImage from "../../../assets/devotionalImages/biblecoffee.jpg";
 
 function PreviousDevotionalItem({ devotional }) {
   const {
@@ -32,14 +33,27 @@ function PreviousDevotionalItem({ devotional }) {
         className="flex flex-col gap-6 py-7 transition-all duration-300 md:flex-row md:items-center md:gap-8"
       >
         {/* Episode number */}
-        <div className="hidden w-[90px] shrink-0 md:block">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#991313]">
-            Episode
-          </span>
+        <div className="relative hidden h-[125px] w-[105px] shrink-0 overflow-hidden rounded-xl md:block">
+          {/* Background image */}
+          <img
+            src={flyer_url || fallbackImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
 
-          <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[#101A2B]">
-            {episode_number ?? "—"}
-          </p>
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-[#101A2B]/55 transition-colors duration-300 group-hover:bg-[#991313]/65" />
+
+          {/* Episode information */}
+          <div className="relative z-10 flex h-full flex-col justify-between p-4 text-white">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">
+              Episode
+            </span>
+
+            <p className="text-2xl font-semibold tracking-[-0.04em]">
+              {episode_number ?? "—"}
+            </p>
+          </div>
         </div>
 
         {/* Mobile metadata */}
@@ -92,19 +106,6 @@ function PreviousDevotionalItem({ devotional }) {
             </p>
           )}
         </div>
-
-        {/* Flyer */}
-        {flyer_url ? (
-          <div className="relative hidden h-[105px] w-[85px] shrink-0 overflow-hidden rounded-lg bg-[#F3F4F6] sm:block md:h-[115px] md:w-[92px]">
-            <img
-              src={flyer_url}
-              alt=""
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-
-            <div className="absolute inset-0 bg-black/5" />
-          </div>
-        ) : null}
 
         {/* Read action */}
         <div className="flex shrink-0 items-center gap-3 text-sm font-semibold text-[#991313]">

@@ -1,8 +1,11 @@
-import { useState } from "react";
-
-function PreviousDevotionalToolbar() {
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [sortBy, setSortBy] = useState("newest");
+function PreviousDevotionalToolbar({
+  search,
+  onSearchChange,
+  sortBy,
+  onSortChange,
+  pageSize,
+  onPageSizeChange,
+}) {
 
   return (
     <div className="relative z-30 mx-auto -mb-8 max-w-[1350px] px-6 lg:px-10">
@@ -29,10 +32,11 @@ function PreviousDevotionalToolbar() {
 
           <input
             type="text"
+            value={search}
+            onChange={(event) => onSearchChange(event.target.value)}
             placeholder="Search by title, topic, scripture or keyword..."
             className="w-full bg-transparent py-3 text-sm text-[#111827] outline-none placeholder:text-[#9CA3AF]"
           />
-
         </div>
 
         {/* Divider */}
@@ -47,7 +51,7 @@ function PreviousDevotionalToolbar() {
 
           <select
             value={sortBy}
-            onChange={(event) => setSortBy(event.target.value)}
+            onChange={(event) => onSortChange(event.target.value)}
             className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-medium text-[#111827] outline-none"
           >
             <option value="newest">Newest First</option>
@@ -71,12 +75,10 @@ function PreviousDevotionalToolbar() {
           <span className="whitespace-nowrap text-sm text-[#6B7280]">
             Items:
           </span>
-
+          
           <select
-            value={itemsPerPage}
-            onChange={(event) =>
-              setItemsPerPage(Number(event.target.value))
-            }
+            value={pageSize}
+            onChange={(event) => onPageSizeChange(Number(event.target.value))}
             className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-semibold text-[#111827] outline-none"
           >
             <option value={10}>10</option>
