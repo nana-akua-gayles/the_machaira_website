@@ -1,7 +1,21 @@
-import React from "react";
-import { MessageSquare, Heart, Bookmark, MoreHorizontal, Play } from "lucide-react";
+import React, { useState } from "react";
+import { 
+  Globe, Megaphone, BookOpen, Heart, Calendar, Bookmark, 
+  MessageSquare, MoreHorizontal, Play, Send
+} from "lucide-react";
 
-export default function MainFeedSection() {
+export default function MainFeedSection({ onSelectStory }) {
+  const [activeCategory, setActiveCategory] = useState("All Updates");
+
+  // Categories list with icons (Community and Ministry News removed)
+  const categories = [
+    { label: "All Updates", icon: Globe },
+    { label: "Announcements", icon: Megaphone },
+    { label: "Teachings", icon: BookOpen },
+    { label: "Testimonies", icon: Heart },
+    { label: "Events", icon: Calendar },
+  ];
+
   const posts = [
     {
       category: "TEACHINGS",
@@ -49,6 +63,60 @@ export default function MainFeedSection() {
 
   return (
     <div className="space-y-4">
+      
+      {/* =====================================================
+          HORIZONTAL CATEGORIES BAR
+      ====================================================== */}
+      <div className="bg-white p-4 rounded-xl border border-black/5 shadow-xs">
+        
+        {/* Categories Horizontal Scroll Row */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {categories.map((item, idx) => {
+            const Icon = item.icon;
+            const isActive = activeCategory === item.label;
+            return (
+              <button
+                key={idx}
+                onClick={() => setActiveCategory(item.label)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-[11px] font-medium whitespace-nowrap transition shrink-0 ${
+                  isActive
+                    ? "bg-[#fffaf5] text-burgundy-primary border border-burgundy-primary/20 shadow-xs"
+                    : "text-charcoal-text hover:bg-black/5 border border-transparent"
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-burgundy-primary" : "opacity-70"}`} />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+      </div>
+
+      {/* =====================================================
+          SHARE YOUR STORY CARD (Compact & Streamlined)
+      ====================================================== */}
+      <div className="bg-gradient-to-br from-burgundy-primary via-[#5a1827] to-[#3a0f18] text-white px-4 py-3.5 sm:px-5 sm:py-4 rounded-xl border border-white/10 shadow-sm relative overflow-hidden">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="space-y-0.5">
+            <h3 className="text-sm sm:text-base font-serif font-medium tracking-tight">Share Your Story With Us</h3>
+            <p className="text-[10px] sm:text-[11px] text-white/80 leading-relaxed font-light">
+              Your testimony has the power to inspire and uplift someone today.
+            </p>
+          </div>
+
+          <div className="shrink-0">
+            <button className="w-full sm:w-auto bg-white hover:bg-[#fffaf5] text-burgundy-primary px-3.5 py-2 rounded-lg text-[10px] sm:text-[11px] font-medium transition shadow-sm flex items-center justify-center gap-1.5 group">
+              <Send className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+              <span>Share Your Story</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* =====================================================
+          POSTS FEED LIST
+      ====================================================== */}
       {posts.map((post, index) => (
         <article key={index} className="bg-white p-4 sm:p-5 rounded-xl border border-black/5 shadow-xs transition hover:shadow-sm">
           
@@ -83,7 +151,10 @@ export default function MainFeedSection() {
                   </button>
                 </div>
 
-                <h2 className="text-sm sm:text-base font-normal text-charcoal-text leading-snug mb-1.5 hover:text-burgundy-primary transition cursor-pointer">
+                <h2 
+                  onClick={() => onSelectStory && onSelectStory(post)}
+                  className="text-sm sm:text-base font-normal text-charcoal-text leading-snug mb-1.5 hover:text-burgundy-primary transition cursor-pointer"
+                >
                   {post.title}
                 </h2>
 
@@ -92,7 +163,7 @@ export default function MainFeedSection() {
                 </p>
               </div>
 
-              {/* Post Footer Metadata (Read-mins removed) */}
+              {/* Post Footer Metadata */}
               <div className="flex items-center justify-between pt-2.5 border-t border-black/5 text-[10px] text-cool-gray">
                 <div className="flex items-center gap-1.5">
                   <div className="w-4.5 h-4.5 rounded-full bg-burgundy-primary/20 text-burgundy-primary flex items-center justify-center font-bold text-[8px]">
