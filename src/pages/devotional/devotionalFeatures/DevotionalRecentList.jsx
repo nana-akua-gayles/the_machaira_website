@@ -28,7 +28,7 @@ function DevotionalRecentList({ devotionals }) {
           </div>
 
           <Link
-            to="/devotional/library"
+            to="/previous-devotionals"
             className="hidden shrink-0 rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-[#101A2B] transition duration-300 hover:border-[#991313] hover:bg-[#991313] hover:text-white md:block"
           >
             View All
@@ -98,7 +98,7 @@ function DevotionalRecentList({ devotionals }) {
 
         {/* Mobile View All */}
         <Link
-          to="/devotional/library"
+          to="/previous-devotionals"
           className="mt-3 inline-block rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-[#101A2B] transition duration-300 hover:border-[#991313] hover:bg-[#991313] hover:text-white md:hidden"
         >
           View All
