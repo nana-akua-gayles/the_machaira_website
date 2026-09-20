@@ -408,20 +408,6 @@ export async function getDevotionals({
         });
         break;
 
-      case "episode-high":
-        query = query.order("episode_number", {
-          ascending: false,
-          nullsFirst: false,
-        });
-        break;
-
-      case "episode-low":
-        query = query.order("episode_number", {
-          ascending: true,
-          nullsFirst: false,
-        });
-        break;
-
       case "newest":
       default:
         query = query.order("created_at", {

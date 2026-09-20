@@ -139,37 +139,6 @@
   line-height: 0.8;
 }
 
-.devotional-author-banner {
-  position: relative;
-  max-width: 760px;
-  margin: 0 auto 2.5rem;
-  padding: 2rem 2.25rem;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #101a2b 0%, #3a0d0d 100%);
-  overflow: hidden;
-}
-
-.devotional-author-banner::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: #991313;
-}
-
-.devotional-author-banner::after {
-  content: "“";
-  position: absolute;
-  top: 0.6rem;
-  right: 1.5rem;
-  color: rgba(153, 19, 19, 0.4);
-  font-family: Georgia, serif;
-  font-size: 4rem;
-  line-height: 1;
-  pointer-events: none;
-}
 
 .devotional-author-org {
   margin: 0;
@@ -219,18 +188,6 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-@media (max-width: 768px) {
-  .devotional-author-banner {
-    padding: 1.5rem 1.5rem 1.5rem 1.75rem;
-    border-radius: 14px;
-  }
-
-  .devotional-author-banner::after {
-    right: 1rem;
-    font-size: 3rem;
-  }
 }
 
 .devotional-content > h2:first-child {

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 
 import DevotionalHero from "./devotionalFeatures/DevotionalHero";
 import DevotionalExperience from "./devotionalFeatures/DevotionalExperience";
+import DevotionalRecentList from "./devotionalFeatures/DevotionalRecentList";
 import DevotionalTopics from "./devotionalFeatures/DevotionalTopics";
 
 import {
   getTodaysDevotional,
   getDevotionalByDate,
+  getRecentDevotionals,
 } from "../../lib/devotionalService";
 
 function getTodayDate() {
@@ -39,6 +41,8 @@ function Devotional() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [recentDevotionals, setRecentDevotionals] = useState([]);
+
   useEffect(() => {
     async function loadTodaysDevotional() {
       try {
@@ -47,14 +51,7 @@ function Devotional() {
 
         const data = await getTodaysDevotional();
 
-        console.log("TODAY'S DEVOTIONAL:", data);
-
-        /*
-         * Keep today's date selected regardless of
-         * whether today's devotional exists.
-         */
         setSelectedDate(getTodayDate());
-
         setDevotional(data);
       } catch (err) {
         console.error("DEVOTIONAL LOAD FAILED:", err);
@@ -67,32 +64,29 @@ function Devotional() {
     loadTodaysDevotional();
   }, []);
 
+  useEffect(() => {
+    async function loadRecentDevotionals() {
+      try {
+        // Fetch a couple extra so we can drop today's episode from
+        // the list (it's already shown above) and still land on 6.
+        const data = await getRecentDevotionals(4);
+        setRecentDevotionals(data);
+      } catch (err) {
+        console.error("RECENT DEVOTIONALS LOAD FAILED:", err);
+      }
+    }
+
+    loadRecentDevotionals();
+  }, []);
+
   async function handleDateSelect(date) {
     try {
       setLoading(true);
       setError(null);
 
-      console.log("SELECTED DATE:", date);
-
-      /*
-       * Change the calendar immediately.
-       * This means the date card updates even if
-       * there is no devotional for this date.
-       */
       setSelectedDate(date);
 
       const data = await getDevotionalByDate(date);
-
-      console.log("DEVOTIONAL FOR SELECTED DATE:", data);
-
-      /*
-       * data can legitimately be null.
-       *
-       * null means:
-       * "There is no Machaira/devotional on this date."
-       *
-       * The UI will then show the recap experience.
-       */
       setDevotional(data);
     } catch (err) {
       console.error("DATE DEVOTIONAL LOAD FAILED:", err);
@@ -101,6 +95,10 @@ function Devotional() {
       setLoading(false);
     }
   }
+
+  const recentToShow = recentDevotionals
+    .filter((item) => item.id !== devotional?.id)
+    .slice(0, 4);
 
   return (
     <main className="devotional-page bg-white">
@@ -119,6 +117,8 @@ function Devotional() {
           </div>
         </div>
       </section>
+
+      <DevotionalRecentList devotionals={recentToShow} />
 
       <DevotionalTopics />
     </main>

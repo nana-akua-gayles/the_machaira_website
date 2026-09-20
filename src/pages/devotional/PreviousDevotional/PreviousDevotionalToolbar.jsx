@@ -56,8 +56,6 @@ function PreviousDevotionalToolbar({
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
-            <option value="episode-high">Episode: Highest</option>
-            <option value="episode-low">Episode: Lowest</option>
           </select>
 
           <span className="-ml-5 pointer-events-none text-xs text-[#991313]">
