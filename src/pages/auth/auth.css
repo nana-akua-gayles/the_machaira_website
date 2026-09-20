@@ -1,0 +1,26 @@
+.auth-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 10px 60px rgba(16, 26, 43, 0.08);
+}
+
+.auth-track {
+  display: flex;
+  width: 200%;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.auth-slide {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 50%;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .auth-slide {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -8,6 +8,7 @@ import DevotionalPrevNext from "./devotionalFeatures/DevotionalPrevNext";
 import { formatDevotionalTitle, formatDate } from "./devotionalFeatures/formatDevotional";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
 import { getDevotionalById, getDevotionalByDate,  getPreviousDevotional, getNextDevotional, } from "../../lib/devotionalService";
+import apostleBennieAvatar from "../../assets/images/Apostle2.jpg"; // ← replace with your real image path
 import "./devotional.css";
 
 function DevotionalReader() {
@@ -169,6 +170,54 @@ function DevotionalReader() {
 
   return (
     <>
+      {parsed?.hasBanner && (
+        <div className="mx-auto max-w-[1200px] px-8 pt-8 lg:px-12">
+          <div className="flex flex-col gap-6 rounded-2xl border border-black/10 bg-[#FBF8F6] p-6 md:flex-row md:items-center md:gap-8 md:p-8">
+
+            <div className="flex flex-1 items-start gap-4">
+              <span className="shrink-0 font-serif text-5xl leading-none text-[#991313]">
+                “
+              </span>
+
+              {parsed.authorMessage && (
+                <p className="max-w-[560px] text-base italic leading-relaxed text-[#101A2B] md:text-lg">
+                  {parsed.authorMessage}
+                </p>
+              )}
+              {!parsed.authorMessage && (
+                <p className="text-base font-semibold text-[#101A2B] md:text-lg">
+                  Welcome to Today's Machaira
+                </p>
+              )}
+            </div>
+
+            <div className="hidden h-14 w-px shrink-0 bg-black/10 md:block" />
+            <div className="flex items-center gap-3">
+              <img
+                src={apostleBennieAvatar}
+                alt="Apostle Bennie"
+                className="h-12 w-12 shrink-0 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-sm font-semibold text-[#101A2B]">
+                  Apostle Bennie
+                </p>
+                <p className="text-xs text-[#4D5057]">Author</p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[#991313] px-5 py-2.5 text-sm font-semibold text-[#991313] transition-colors hover:bg-[#991313] hover:text-white"
+            >
+              <span aria-hidden="true">⭳</span>
+              Download PDF
+            </button>
+
+          </div>
+        </div>
+      )}
       <div className=" bg-white">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between px-8 py-6 lg:px-12">
 

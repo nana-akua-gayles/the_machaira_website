@@ -24,6 +24,9 @@ import PreviousDevotional from "./pages/devotional/PreviousDevotional";
 //PARTNERSHIP
 import Partnership from "./pages/partnership/Partnership";
 
+//AUTH
+import AuthPage from "./pages/auth/AuthPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -60,6 +63,19 @@ function App() {
           <Route
             path="/partnership"
             element={<Partnership />}
+          />
+
+          {/* Auth */}
+          {/* Login */}
+          <Route
+            path="/login"
+            element={<AuthPage initialMode="login" />}
+          />
+
+          {/* Register */}
+          <Route
+            path="/register"
+            element={<AuthPage initialMode="register" />}
           />
 
         </Route>

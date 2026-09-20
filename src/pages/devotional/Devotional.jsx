@@ -69,7 +69,7 @@ function Devotional() {
       try {
         // Fetch a couple extra so we can drop today's episode from
         // the list (it's already shown above) and still land on 6.
-        const data = await getRecentDevotionals(4);
+        const data = await getRecentDevotionals(6);
         setRecentDevotionals(data);
       } catch (err) {
         console.error("RECENT DEVOTIONALS LOAD FAILED:", err);
@@ -98,7 +98,7 @@ function Devotional() {
 
   const recentToShow = recentDevotionals
     .filter((item) => item.id !== devotional?.id)
-    .slice(0, 4);
+    .slice(0, 6);
 
   return (
     <main className="devotional-page bg-white">
