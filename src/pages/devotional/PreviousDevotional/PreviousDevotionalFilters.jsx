@@ -20,13 +20,6 @@ function PreviousDevotionalFilters({
     { label: "Hope", value: "Hope" },
   ];
 
-  function handleClearFilters() {
-    setCategory("all");
-    setSelectedSeries("all");
-    setDateFrom("");
-    setDateTo("");
-    setEpisodeRange([1, 1327]);
-  }
 
   return (
     <aside className="w-full lg:w-[255px] lg:shrink-0">

@@ -1,49 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import DevotionalContent from "./devotionalFeatures/DevotionalContent";
 import DevotionalDateNav from "./devotionalFeatures/DevotionalDateNav";
 import DevotionalSidebar from "./devotionalFeatures/DevotionalSidebar";
 import DevotionalPrevNext from "./devotionalFeatures/DevotionalPrevNext";
+import { formatDevotionalTitle, formatDate } from "./devotionalFeatures/formatDevotional";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
 import { getDevotionalById, getDevotionalByDate,  getPreviousDevotional, getNextDevotional, } from "../../lib/devotionalService";
-import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
-import biblecoffee from "../../assets/devotionalImages/biblecoffee.jpg";
 import "./devotional.css";
-
-function formatDevotionalTitle(title) {
-  if (!title) {
-    return {
-      mainTitle: "Devotional",
-      episodeLabel: "",
-    };
-  }
-
-  const match = title.match(/^EPISODE\s+(\d+)\s*-\s*(.+)$/i);
-
-  if (match) {
-    return {
-      mainTitle: match[2].trim(),
-      episodeLabel: `Episode ${match[1]}`,
-    };
-  }
-
-  return {
-    mainTitle: title,
-    episodeLabel: "",
-  };
-}
-
-function formatDate(dateString) {
-  if (!dateString) return "";
-
-  return new Date(dateString).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "Africa/Accra",
-  });
-}
 
 function DevotionalReader() {
   const { id } = useParams();
@@ -104,6 +69,26 @@ function DevotionalReader() {
     () => (devotional ? parseDevotionalContent(devotional.content) : null),
     [devotional]
   );
+
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  function toggleAudio() {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+
+    setIsPlaying((prev) => !prev);
+  }
+
+  function handlePrint() {
+    window.print();
+  }
 
   async function handleDateSelect(date) {
     setSelectedDate(date);
@@ -183,126 +168,120 @@ function DevotionalReader() {
     : null;
 
   return (
+    <>
+      <div className=" bg-white">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between px-8 py-6 lg:px-12">
+
+          <Link
+            to="/devotional"
+            className="inline-flex items-center text-sm font-semibold text-[#991313] transition-colors hover:text-[#7f0e0e]"
+          >
+            ← Back to Devotionals
+          </Link>
+
+          <div id="devotional-audio" className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handlePrint}
+              aria-label="Download devotional"
+              title="Download"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-full border border-black/10 px-3 text-sm font-semibold text-[#991313] transition-colors hover:bg-[#991313] hover:text-white"
+            >
+              <span aria-hidden="true">⭳</span>
+              <span>Download</span>
+            </button>
+
+            {devotional.audio_url && (
+              <button
+                type="button"
+                onClick={toggleAudio}
+                aria-label={isPlaying ? "Pause audio" : "Play audio"}
+                title={isPlaying ? "Pause" : "Listen"}
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#991313] px-3 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e]"
+              >
+                <span aria-hidden="true">{isPlaying ? "❚❚" : "▶"}</span>
+                <span>{isPlaying ? "Pause" : "Listen"}</span>
+              </button>
+            )}
+          </div>
+
+        </div>
+      </div>
+
     <main className="bg-white">
-
-{/* Header */}
-<section className="relative overflow-hidden border-b border-[#B9BEC8]/20 bg-[#FFFFFF]">
-  {/* Modern Decorative Background Elements */}
-  <div className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden">
-    {/* Subtle Crimson/Burgundy Glow Accent */}
-    <div className="absolute -top-24 right-0 h-[400px] w-[500px] rounded-full bg-gradient-to-bl from-[#991313]/10 via-[#991313]/5 to-transparent blur-3xl" />
-    
-    {/* Deep Navy Radial Glow for Depth */}
-    <div className="absolute -bottom-20 left-1/3 h-[300px] w-[400px] rounded-full bg-gradient-to-tr from-[#101A2B]/5 to-transparent blur-2xl" />
-
-    {/* Elegant Background Image / Subtle Watercolor Texture Overlay */}
-<div
-  className="absolute inset-0 bg-right-top bg-no-repeat bg-contain"
-  style={{
-    backgroundImage: `url(${biblecoffee})`,
-    maskImage:
-      "radial-gradient(ellipse at center, black 55%, transparent 100%)",
-    WebkitMaskImage:
-      "radial-gradient(ellipse at center, black 55%, transparent 100%)",
-  }}
-/>
-    </div>
-
-  <div className="relative z-10 mx-auto flex max-w-[1100px] items-start gap-6 px-8 py-14 lg:px-12">
-
-    <DevotionalDateNav
-      devotional={devotional}
-      selectedDate={selectedDate}
-      onDateSelect={handleDateSelect}
-      loading={dateLoading}
-      topOffsetClassName="pt-0"
-    />
-
-    <div className="flex-1">
-
-      {dateNotice && (
-        <p className="mb-4 text-sm font-medium text-[#991313]">
-          {dateNotice}
-        </p>
-      )}
-
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-3 text-sm">
-        <Link
-          to="/devotional"
-          className="text-[#991313] transition-colors hover:text-[#7f0e0e]"
-        >
-          Devotional
-        </Link>
-
-        <span className="text-[#B9BEC8]">/</span>
-
-        <span className="text-[#4D5057]">
-          {formatted.episodeLabel || "Reading"}
-        </span>
-      </div>
-
-      {/* Category */}
-      <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
-        {devotional.category || "Daily Devotional"}
-      </p>
-
-      {/* Title */}
-      <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#101A2B] md:text-5xl lg:text-6xl">
-        {formatted.mainTitle}
-      </h1>
-
-      {/* Accent underline */}
-      <div className="mt-6 h-[3px] w-16 bg-[#991313]" />
-
-      {/* Meta */}
-      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#4D5057]">
-        {formatted.episodeLabel && (
-          <span>{formatted.episodeLabel}</span>
-        )}
-
-        <span className="text-[#B9BEC8]">•</span>
-
-        <span>{formatDate(devotional.created_at)}</span>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-      {/* Reader */}
+      
       <section className="bg-white">
-        <div className="mx-auto grid max-w-[1100px] grid-cols-1 gap-12 px-8 py-14 lg:grid-cols-[1fr_320px] lg:px-12 lg:py-20">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-8 py-14 lg:grid-cols-[120px_1fr_320px] lg:gap-14 lg:px-12 lg:py-16">
+
+          <DevotionalDateNav
+            devotional={devotional}
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            loading={dateLoading}
+            topOffsetClassName="pt-0"
+          />
 
           <div>
 
-            {/* Audio */}
-            {devotional.audio_url && (
-              <div
-                id="devotional-audio"
-                className="mb-14 rounded-2xl border border-black/10 bg-[#F8F8F7] p-5"
-              >
-                <div className="mb-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#991313]">
-                    Listen
-                  </p>
+            {dateNotice && (
+              <p className="mb-4 text-sm font-medium text-[#991313]">
+                {dateNotice}
+              </p>
+            )}
 
-                  <p className="mt-1 text-sm text-[#4D5057]">
-                    Listen to this devotional while you read.
-                  </p>
-                </div>
+            {/* Breadcrumb + actions */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-sm">
+                <Link
+                  to="/devotional"
+                  className="text-[#991313] transition-colors hover:text-[#7f0e0e]"
+                >
+                  Devotional
+                </Link>
 
-                <audio
-                  controls
-                  src={devotional.audio_url}
-                  className="w-full"
-                />
+                <span className="text-[#B9BEC8]">/</span>
+
+                <span className="text-[#4D5057]">
+                  {formatted.episodeLabel || "Reading"}
+                </span>
               </div>
+            </div>
+
+            {/* Category */}
+            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+              {devotional.category || "Daily Devotional"}
+            </p>
+
+            {/* Title */}
+            <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#101A2B] md:text-5xl lg:text-6xl">
+              {formatted.mainTitle}
+            </h1>
+
+            {/* Accent underline */}
+            <div className="mt-6 h-[3px] w-16 bg-[#991313]" />
+
+            {/* Meta */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#4D5057]">
+              {formatted.episodeLabel && (
+                <span>{formatted.episodeLabel}</span>
+              )}
+
+              <span className="text-[#B9BEC8]">•</span>
+
+              <span>{formatDate(devotional.created_at)}</span>
+            </div>
+
+            {devotional.audio_url && (
+              <audio
+                ref={audioRef}
+                src={devotional.audio_url}
+                onEnded={() => setIsPlaying(false)}
+                className="hidden"
+              />
             )}
 
             {/* Devotional Content */}
-            <article className="text-[17px] leading-[2] text-[#374151]">
+            <article className="mt-14 text-[17px] leading-[2] text-[#374151]">
               <DevotionalContent
                 parsed={parsed}
                 fallbackContent={devotional.pure_content}
@@ -310,16 +289,7 @@ function DevotionalReader() {
             </article>
 
             {/* Bottom navigation */}
-            <div className="mt-16 border-t border-black/10 pt-8">
-              <Link
-                to="/devotional"
-                className="inline-flex items-center text-sm font-semibold text-[#991313] transition-colors hover:text-[#7f0e0e]"
-              >
-                ← Back to Devotionals
-              </Link>
-            </div>
 
-            {/* Previous/Next navigation */}
             <DevotionalPrevNext previous={prevFormatted} next={nextFormatted} />
 
           </div>
@@ -335,6 +305,7 @@ function DevotionalReader() {
       </section>
 
     </main>
+    </>
   );
 }
 
