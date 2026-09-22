@@ -11,7 +11,7 @@ import {
 } from "./authIcons";
 import churchLogo from "../../../assets/images/MLogo.png";
 import { useNavigate } from "react-router-dom";
-import { signUpWithPassword } from "../../../lib/authService";
+import { signUpWithPassword, signInWithOAuth  } from "../../../lib/authService";
 
 function RegisterForm({ onSwitchToLogin }) {
   const [fullName, setFullName] = useState("");
@@ -55,10 +55,14 @@ function RegisterForm({ onSwitchToLogin }) {
     }
   }
 
-  function handleSocialSignup(provider) {
-    // TODO: wire up supabase.auth.signInWithOAuth({ provider }) for
-    // whichever providers are confirmed configured in Supabase.
-    console.log(`${provider} sign-up clicked (not yet wired)`);
+  async function handleSocialSignup(provider) {
+    try {
+      await signInWithOAuth(provider);
+    } catch (err) {
+      setAuthError(
+        err?.message || `We couldn't start ${provider} sign-in. Please try again.`
+      );
+    }
   }
 
     if (confirmationSent) {
@@ -83,7 +87,7 @@ function RegisterForm({ onSwitchToLogin }) {
       </div>
     );
   }
-  
+
   return (
     <div className="w-full max-w-[420px]">
 

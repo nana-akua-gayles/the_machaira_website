@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./components/MainLayout";
+import { AuthProvider } from "./context/AuthContext";
 
 // Pages
 //HOME
@@ -27,8 +28,12 @@ import Partnership from "./pages/partnership/Partnership";
 //AUTH
 import AuthPage from "./pages/auth/AuthPage";
 
+//testimonials
+import Testimonials from "./pages/testimonials/Testimonials";
+
 function App() {
   return (
+    <AuthProvider>
     <BrowserRouter>
 
       <Routes>
@@ -78,11 +83,18 @@ function App() {
             element={<AuthPage initialMode="register" />}
           />
 
+          {/* Testimonials */}
+          <Route
+            path="/testimonials"
+            element={<Testimonials />}
+          />
+
         </Route>
 
       </Routes>
 
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
