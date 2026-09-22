@@ -8,7 +8,7 @@ import DevotionalPrevNext from "./devotionalFeatures/DevotionalPrevNext";
 import { formatDevotionalTitle, formatDate } from "./devotionalFeatures/formatDevotional";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
 import { getDevotionalById, getDevotionalByDate,  getPreviousDevotional, getNextDevotional, } from "../../lib/devotionalService";
-import apostleBennieAvatar from "../../assets/images/Apostle2.jpg"; // ← replace with your real image path
+import apostleBennieAvatar from "../../assets/images/Apostle1.jpg"; 
 import "./devotional.css";
 
 function DevotionalReader() {

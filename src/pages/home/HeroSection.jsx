@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import localFallbackImage from '../../assets/images/book1.png';
 
@@ -8,6 +9,7 @@ export default function HeroSection() {
   const [textAnimState, setTextAnimState] = useState('idle');
   const [animatingQuote, setAnimatingQuote] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchSlides() {
@@ -58,6 +60,21 @@ export default function HeroSection() {
 
   const currentSlide = slides[currentIndex] || {};
   const bannerImage = currentSlide.image || localFallbackImage;
+  
+  const currentTestimonies = Array.isArray(currentSlide.testimonies) 
+    ? currentSlide.testimonies.slice(0, 2) 
+    : [
+        { quote: currentSlide.testimony || "A transformative word that anchors our faith daily." },
+        { quote: currentSlide.testimony_second || "An indispensable guide for spiritual growth and clarity." }
+      ];
+
+  const handleReadMore = () => {
+    if (currentSlide.devotional_id) {
+      navigate(`/devotional/${currentSlide.devotional_id}`);
+    } else {
+      navigate('/devotionals');
+    }
+  };
 
   return (
     <div className="relative w-full">
@@ -67,30 +84,33 @@ export default function HeroSection() {
       >
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-20">
           
-          <div className="lg:col-span-7 space-y-6">
-            <div className={`space-y-6 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+          <div className="lg:col-span-7 space-y-5">
+            <div className={`space-y-5 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] ${
               textAnimState === 'fade-out' ? 'opacity-0 -translate-y-4 scale-[0.99]' :
               textAnimState === 'fade-in' ? 'opacity-0 translate-y-4 scale-[0.99]' :
               'opacity-100 translate-y-0 scale-100'
             }`}>
 
-              <p className="text-[#5A181C] text-xs font-bold tracking-[0.25em] uppercase">
+              <p className="text-[#5A181C] text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">
                 Highly Sought Episodes
               </p>
 
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#2B2625] leading-[1.08]">
+              <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#2B2625] leading-[1.12]">
                 {currentSlide.title_first} <br />
                 <span className="italic font-normal text-[#5A181C]">{currentSlide.title_highlight}</span> {currentSlide.title_rest}
               </h1>
 
-              <p className="text-sm sm:text-base text-[#6E6563] max-w-lg leading-relaxed font-light whitespace-pre-line">
+              <p className="text-xs sm:text-sm text-[#6E6563] max-w-lg leading-relaxed font-light whitespace-pre-line">
                 {currentSlide.description}
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4">
-                <button className="bg-[#5A181C] hover:bg-[#3D0F12] text-[#FBF9F5] font-medium text-sm px-7 py-3.5 rounded-xl transition-all duration-300 flex items-center gap-3 shadow-md group">
+              <div className="pt-1 flex flex-wrap items-center gap-4">
+                <button 
+                  onClick={handleReadMore}
+                  className="bg-[#5A181C] hover:bg-[#3D0F12] text-[#FBF9F5] font-medium text-xs px-5 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2.5 shadow-md group cursor-pointer"
+                >
                   <span>Read more</span>
-                  <svg className="w-4 h-4 text-[#FBF9F5]/80 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 text-[#FBF9F5]/80 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </button>
@@ -98,19 +118,21 @@ export default function HeroSection() {
             </div>
 
             <div className="pt-2 max-w-md">
-              <div className="p-6 bg-white/80 backdrop-blur-md border border-[#5A181C]/10 rounded-2xl shadow-sm relative">
-                <div className={`transition-all duration-500 ease-out ${animatingQuote ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'}`}>
-                  <div className="flex gap-4 items-start">
-                    <div className="text-[#5A181C] text-2xl leading-none font-semibold select-none">
-                      “
-                    </div>
-                    <div className="space-y-1.5">
-                      <p className="text-[11px] sm:text-xs text-[#2B2625] font-normal leading-relaxed italic whitespace-pre-line">
-                        {currentSlide.testimony}
-                      </p>
+              <div className={`space-y-2 transition-all duration-500 ease-out ${animatingQuote ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'}`}>
+                {currentTestimonies.map((item, index) => (
+                  <div key={index} className="p-3 bg-white/85 backdrop-blur-md border border-[#5A181C]/10 rounded-xl shadow-sm relative flex flex-col justify-between">
+                    <div className="flex gap-2 items-start">
+                      <div className="text-[#5A181C] text-base leading-none font-semibold select-none">
+                        “
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[9px] sm:text-[10px] text-[#2B2625] font-normal leading-relaxed italic whitespace-pre-line">
+                          {item.quote}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

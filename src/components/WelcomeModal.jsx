@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BookOpen, ArrowRight, X } from "lucide-react";
+import { BookOpen, ArrowRight, X, Sparkles } from "lucide-react";
 import machairaImg from "../assets/images/wave2.png";
 
 const POPULAR_MOODS = [
@@ -63,7 +63,7 @@ export default function WelcomeModal({
       />
 
       {/* LARGE TWO-COLUMN WELCOME CARD */}
-      <div className="relative z-10 w-full max-w-[980px] overflow-hidden rounded-[32px] bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[welcomeCard_.45s_cubic-bezier(0.16,1,0.3,1)]">
+      <div className="relative z-10 w-full max-w-245 overflow-hidden rounded-4xl bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[welcomeCard_.45s_cubic-bezier(0.16,1,0.3,1)]">
 
         {/* WARM AMBIENT GLOW */}
         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-burgundy-primary/10 blur-[80px] pointer-events-none" />
@@ -82,14 +82,12 @@ export default function WelcomeModal({
         <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr]">
 
           {/* ===== LEFT: IMAGE PANEL ===== */}
-          <div className="relative flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#f7efe9] via-[#fbf5f0] to-[#f0e4db] p-8 lg:p-10">
+          <div className="relative flex flex-col items-center justify-center overflow-hidden bg-linear-to-br from-[#f7efe9] via-[#fbf5f0] to-[#f0e4db] p-8 lg:p-10">
 
-            {/* Decorative radial glow behind the character */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="h-64 w-64 rounded-full bg-white/60 blur-3xl" />
             </div>
 
-            {/* Character image */}
             <div className="relative z-10 flex h-56 w-56 items-center justify-center lg:h-64 lg:w-64">
               <img
                 src={machairaImg}
@@ -99,77 +97,77 @@ export default function WelcomeModal({
               />
             </div>
 
-            {/* Bottom label */}
             <div className="relative z-10 mt-6 text-center">
               <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-burgundy-primary">
-                Shalom Dearest Beloved
+                Shalom Beloved,
               </span>
               <p className="mt-2 text-[11px] italic text-cool-gray">
-                You are welcome here.
+                I'm so excited to see you today!
               </p>
             </div>
 
-            {/* Soft ring accent */}
-            <div className="pointer-events-none absolute inset-0 rounded-l-[32px] ring-1 ring-inset ring-white/40 lg:rounded-r-none" />
+            <div className="pointer-events-none absolute inset-0 rounded-l-4xl ring-1 ring-inset ring-white/40 lg:rounded-r-none" />
           </div>
 
           {/* ===== RIGHT: CONTENT PANEL ===== */}
           <div className="flex flex-col p-7 sm:p-9 lg:p-10">
 
             {/* HEADER */}
-            <div className="pb-5 border-b border-[#f0e4db]/80">
-              <h1 className="text-[1.75rem] sm:text-[2rem] lg:text-[2.15rem] font-normal leading-[1.15] tracking-[-0.03em] text-charcoal-text">
-                What's on your <br className="hidden sm:block" />
-                <span className="italic font-serif text-burgundy-primary">heart today?</span>
+            <div className="pb-3 border-b border-[#f0e4db]/80">
+              <h1 className="text-[1.4rem] sm:text-[1.55rem] font-normal leading-[1.15] tracking-[-0.03em] text-charcoal-text">
+                What if God wrote <span className="italic font-serif text-burgundy-primary">you a letter today?</span>
               </h1>
-              <p className="mt-3 text-[13px] leading-6 text-cool-gray max-w-md">
-                Pick how you're feeling and we'll bring you a word that speaks to your season.
-              </p>
             </div>
 
-            {/* ACTION AREA */}
-            <div className="mt-5 space-y-4">
+            {/* ACTION AREA - TODAY'S WORD HERO CARD (ABSOLUTE PRIORITY) */}
+            <div className="mt-4 space-y-4">
 
-              {/* HERO BUTTON: TODAY'S WORD */}
+              {/* PRIMARY HERO BANNER */}
               <button
                 onClick={() => { onTodayEpisode?.(); close(); }}
-                className="group relative flex w-full items-center justify-between overflow-hidden rounded-[18px] bg-gradient-to-r from-burgundy-primary to-[#722f22] p-4 text-left text-white shadow-[0_8px_20px_rgba(114,47,34,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(114,47,34,0.35)]"
+                className="group relative flex w-full items-center justify-between overflow-hidden rounded-[22px] bg-linear-to-br from-burgundy-primary via-[#8a3829] to-[#5e2016] p-5 text-left text-white shadow-[0_12px_30px_rgba(114,47,34,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_38px_rgba(114,47,34,0.45)] ring-1 ring-white/20"
               >
+                {/* Subtle light overlay shimmer on hover */}
                 <div className="absolute inset-0 bg-white/10 opacity-0 transition-opacity group-hover:opacity-100" />
-                <div className="flex items-center gap-3.5 relative z-10">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-white/20 text-white backdrop-blur-sm">
-                    <BookOpen className="w-5 h-5" />
+                
+                {/* Background decorative watermark icon */}
+                <BookOpen className="absolute -right-4 -bottom-6 w-32 h-32 text-white/5 pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
+
+                <div className="flex items-center gap-4 relative z-10">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white backdrop-blur-md shadow-inner ring-1 ring-white/30">
+                    <BookOpen className="w-7 h-7" />
                   </span>
                   <div>
-                    <span className="block text-[14px] font-semibold tracking-wide">
-                      Take me to today's word
+                    <span className="block text-[15px] sm:text-[16px] font-bold tracking-tight text-white leading-tight">
+                      Today's Devotional was written with you in mind
                     </span>
-                    <span className="block text-[11px] text-white/80 mt-0.5">
-                      Read today's fresh daily devotional
+                    <span className="block text-[11px] text-white/80 font-normal mt-0.5">
+                      Click to receive your word for the now
                     </span>
                   </div>
                 </div>
-                <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 transition-transform duration-300 group-hover:translate-x-1">
+
+                <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 transition-transform duration-300 group-hover:translate-x-1.5 backdrop-blur-md shrink-0 ml-3">
                   <ArrowRight className="w-4 h-4 text-white" />
                 </div>
               </button>
 
-              {/* MOOD GRID */}
+              {/* MOOD GRID (SECONDARY SECTION) */}
               <div>
-                <div className="mb-3">
+                <div className="mb-2 flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-cool-gray/80">
-                    choose based on your mood
+                    Or should we first answer the question lingering on your mind ?
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[280px] overflow-y-auto pr-1 custom-scrollbar">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48.75 overflow-y-auto pr-1 custom-scrollbar">
                   {POPULAR_MOODS.map((mood, index) => (
                     <button
                       key={index}
                       onClick={() => handleMoodClick(mood.categoryKey)}
-                      className="group relative flex items-center justify-between rounded-[14px] border border-[#eadcd6] bg-white px-3.5 py-3 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-burgundy-primary/40 hover:bg-[#fffcf9] hover:shadow-[0_6px_16px_rgba(80,30,20,0.08)]"
+                      className="group relative flex items-center justify-between rounded-xl border border-[#eadcd6] bg-white px-3.5 py-2.5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-burgundy-primary/40 hover:bg-[#fffcf9] hover:shadow-[0_4px_12px_rgba(80,30,20,0.06)]"
                     >
-                      <span className="text-[12px] font-medium text-charcoal-text truncate pr-2">
+                      <span className="text-[11px] font-medium text-charcoal-text truncate pr-2">
                         {mood.label}
                       </span>
                       <ArrowRight className="w-3.5 h-3.5 text-soft-gray transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-burgundy-primary shrink-0" />
@@ -177,12 +175,13 @@ export default function WelcomeModal({
                   ))}
                 </div>
               </div>
+
             </div>
 
             {/* FOOTER ENCOURAGEMENT */}
-            <div className="mt-auto pt-5 border-t border-[#f0e4db]/80">
+            <div className="mt-auto pt-3.5 border-t border-[#f0e4db]/80">
               <p className="text-[11px] font-serif italic text-cool-gray text-center lg:text-left">
-                "Thy word is a lamp unto my feet, and a light unto my path."
+                "Every word is written like a love letter from God to you. Machaira with Apostle Bennie is a person you behold."
               </p>
             </div>
 
