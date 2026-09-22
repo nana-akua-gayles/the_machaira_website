@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { signInWithPassword } from "../../../lib/authService";
+import { signInWithPassword, signInWithOAuth  } from "../../../lib/authService";
 import churchLogo from "../../../assets/images/MLogo.png"; // ← replace with your real image path
 import {
   MailIcon,
@@ -39,12 +39,16 @@ function LoginForm({ onSwitchToRegister }) {
     }
   }
 
-  function handleSocialLogin(provider) {
-    // TODO: wire up supabase.auth.signInWithOAuth({ provider }) for
-    // whichever providers are confirmed configured in Supabase.
-    console.log(`${provider} login clicked (not yet wired)`);
+  async function handleSocialLogin(provider) {
+    try {
+      await signInWithOAuth(provider);
+    } catch (err) {
+      setAuthError(
+        err?.message || `We couldn't start ${provider} sign-in. Please try again.`
+      );
+    }
   }
-
+  
   return (
     <div className="w-full max-w-[420px]">
 

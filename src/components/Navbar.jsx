@@ -3,8 +3,12 @@ import { NavLink } from "react-router-dom";
 import "./componentStylesheet/Navbar.css";
 import logoImage from "../assets/images/Mlogo.png";
 
+import { useAuth } from "../context/AuthContext";
+import UserAvatar from "./UserAvatar";
+
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { user, loading, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,6 +78,15 @@ function Navbar() {
           </NavLink>
 
         <NavLink
+            to="/testimonials"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            Testimonials
+          </NavLink>
+
+        <NavLink
             to="/partnership"
             className={({ isActive }) =>
               isActive ? "nav-link active" : "nav-link"
@@ -82,7 +95,7 @@ function Navbar() {
             Be a Partner
           </NavLink>
 
-        <NavLink
+          <NavLink
             to="/about"
             className={({ isActive }) =>
               isActive ? "nav-link active" : "nav-link"
@@ -97,12 +110,28 @@ function Navbar() {
         {/* Right side */}
         <div className="navbar-actions">
 
-          <NavLink
-            to="/login"
-            className="login-button"
-          >
-            Login
-          </NavLink>
+          {!loading &&
+            (user ? (
+              <button
+                type="button"
+                onClick={signOut}
+                title="Sign out"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                }}
+              >
+                <UserAvatar user={user} size={36} />
+              </button>
+            ) : (
+              <NavLink to="/login" className="login-button">
+                Login
+              </NavLink>
+            ))}
 
 
           {/* Search */}

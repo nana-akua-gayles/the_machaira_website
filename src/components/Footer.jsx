@@ -38,8 +38,8 @@ function Footer() {
             Discussion Forum
           </NavLink>
 
-          <NavLink to="/testimonies">
-            Testimonies
+          <NavLink to="/testimonials">
+            Testimonials
           </NavLink>
 
         </div>

@@ -47,3 +47,25 @@ export async function signUpWithPassword(email, password, fullName) {
     throw error;
   }
 }
+
+/**
+ * Start an OAuth sign-in/sign-up flow for the given provider (e.g.
+ * "google", "facebook", "apple"). Supabase redirects the browser to
+ * the provider, then back to `redirectTo` once approved, at which
+ * point Supabase completes the session automatically. Works
+ * identically from the login or register screen — Supabase creates
+ * the account on first use if one doesn't already exist.
+ */
+export async function signInWithOAuth(provider) {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: "http://localhost:5173"
+    },
+  });
+
+  if (error) {
+    console.error(`Error starting ${provider} sign-in:`, error);
+    throw error;
+  }
+}
