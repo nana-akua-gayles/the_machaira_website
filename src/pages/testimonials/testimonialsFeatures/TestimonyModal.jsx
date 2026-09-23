@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
+import TestimonyCommentsSection from "./TestimonyCommentsSection";
 
 export default function TestimonyModal({ testimony, onClose }) {
   // Lock body scroll while the modal is open
@@ -106,13 +107,9 @@ export default function TestimonyModal({ testimony, onClose }) {
               </svg>
               {testimony.likes}
             </span>
-            <span className="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-4.5A7.5 7.5 0 1 1 20 11.5Z" />
-              </svg>
-              {testimony.comments}
-            </span>
           </div>
+
+          <TestimonyCommentsSection testimonyId={testimony.id} />
         </div>
       </div>
 

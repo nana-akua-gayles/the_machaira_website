@@ -1,10 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
 import TestimonyModal from "./testimonialsFeatures/TestimonyModal";
 import ShareTestimonyModal from "./testimonialsFeatures/ShareTestimonyModal";
+import { useAuth } from "../../context/AuthContext";
+import TestimonyLikesButton from "./testimonialsFeatures/TestimonyLikesButton";
 import {
   getTestimonies,
   getTestimonyStats,
+  getUserLikes 
 } from "../../lib/testimoniesService";
 
 const categories = [
@@ -61,12 +65,15 @@ function shapeTestimony(row) {
 }
 
 function Testimonials() {
+  const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState("All Stories");
   const [sortBy, setSortBy] = useState("Latest");
   const [dateFilter, setDateFilter] = useState("All Time");
   const [categorySearch, setCategorySearch] = useState("");
   const [activeTestimonial, setActiveTestimonial] = useState(null);
   const [shareOpen, setShareOpen] = useState(false);
+  const [userLikes, setUserLikes] = useState(new Set());
+  const [requireAuthPrompt, setRequireAuthPrompt] = useState(false);
 
   const [testimonials, setTestimonials] = useState([]);
   const [impactStats, setImpactStats] = useState([
@@ -114,6 +121,16 @@ function Testimonials() {
   useEffect(() => {
     setPage(0);
   }, [activeCategory, sortBy, dateFilter, categorySearch]);
+
+  // ---- Fetch user likes whenever the user or testimonials change ----
+  useEffect(() => {
+    if (!user || testimonials.length === 0) {
+      setUserLikes(new Set());
+      return;
+    }
+    const ids = testimonials.map((t) => t.id);
+    getUserLikes(user.id, ids).then(({ data }) => setUserLikes(data));
+  }, [user, testimonials]);
 
   // ---- Fetch sidebar impact stats once ----
   useEffect(() => {
@@ -392,19 +409,27 @@ function Testimonials() {
                             </span>
 
                             <div className="flex items-center gap-4 text-xs text-[#6B7280]">
-                              <span className="flex items-center gap-1.5">
-                                <svg
-                                  width="15"
-                                  height="15"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="1.6"
-                                >
-                                  <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7C3.2 5.6 5.3 4 7.8 4c1.6 0 3.1.8 4.2 2.1C13.1 4.8 14.6 4 16.2 4c2.5 0 4.6 1.6 4.6 4.7Z" />
-                                </svg>
-                                {testimonial.likes}
-                              </span>
+                              <TestimonyLikesButton
+                                testimonyId={testimonial.id}
+                                liked={userLikes.has(testimonial.id)}
+                                count={testimonial.likes}
+                                onRequireAuth={() => setRequireAuthPrompt(true)}
+                                onChange={(liked) => {
+                                  setTestimonials((prev) =>
+                                    prev.map((t) =>
+                                      t.id === testimonial.id
+                                        ? { ...t, likes: t.likes + (liked ? 1 : -1) }
+                                        : t
+                                    )
+                                  );
+                                  setUserLikes((prev) => {
+                                    const next = new Set(prev);
+                                    if (liked) next.add(testimonial.id);
+                                    else next.delete(testimonial.id);
+                                    return next;
+                                  });
+                                }}
+                              />
 
                               <span className="flex items-center gap-1.5">
                                 <svg
@@ -670,6 +695,21 @@ function Testimonials() {
           fetchTestimonies();
         }}
       />
+
+      {requireAuthPrompt && (
+        <div className="fixed bottom-6 left-1/2 z-[9999] -translate-x-1/2 rounded-full bg-[#101A2B] px-5 py-3 text-sm text-white shadow-lg animate-[fadeIn_.25s_ease-out]">
+          <Link to="/login" className="font-semibold text-[#F3E7E7] hover:underline">
+            Sign in
+          </Link>{" "}
+          to like testimonies.
+          <button
+            onClick={() => setRequireAuthPrompt(false)}
+            className="ml-3 text-white/60 hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </main>
   );
 }

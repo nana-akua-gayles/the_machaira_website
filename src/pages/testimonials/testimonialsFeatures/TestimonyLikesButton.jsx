@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Heart } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import { toggleTestimonyLike } from "../../lib/testimoniesService";
+import { useAuth } from "../../../context/AuthContext";
+import { toggleTestimonyLike } from "../../../lib/testimoniesService";
 
 export default function TestimonyLikesButton({
   testimonyId,
