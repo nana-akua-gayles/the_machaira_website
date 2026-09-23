@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import UserAvatar from "./UserAvatar";
 import "./componentStylesheet/Navbar.css";
 import logoImage from "../assets/images/Mlogo.png";
 
@@ -7,6 +9,7 @@ const navItems = [
   { to: "/", label: "Home" },
   { to: "/devotional", label: "Today's Devotional" },
   { to: "/newsfeed", label: "Newsfeed" },
+  { to: "/testimonials", label: "Testimonials" },
   { to: "/forum", label: "Discussion Forum" },
   { to: "/partnership", label: "Be a Partner" },
   { to: "/about", label: "About Author" },
@@ -15,6 +18,9 @@ const navItems = [
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef(null);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,8 +42,38 @@ function Navbar() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!profileMenuOpen) return;
+
+    function handlePointerDown(event) {
+      if (!profileMenuRef.current?.contains(event.target)) {
+        setProfileMenuOpen(false);
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setProfileMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [profileMenuOpen]);
+
   function closeMenu() {
     setMenuOpen(false);
+  }
+
+  async function handleLogout() {
+    await signOut();
+    setProfileMenuOpen(false);
+    closeMenu();
   }
 
   return (
@@ -75,9 +111,40 @@ function Navbar() {
 
           {/* Login — visible on desktop; hidden on mobile, where it
               lives inside the hamburger menu instead */}
-          <NavLink to="/login" className="login-button">
-            Login
-          </NavLink>
+          {user ? (
+            <div className="navbar-profile" ref={profileMenuRef}>
+              <button
+                type="button"
+                className="navbar-avatar"
+                onClick={() => setProfileMenuOpen((prev) => !prev)}
+                aria-label="Open profile menu"
+                aria-expanded={profileMenuOpen}
+                aria-haspopup="menu"
+              >
+                <UserAvatar user={user} size={40} />
+              </button>
+
+              {profileMenuOpen && (
+                <div className="profile-dropdown" role="menu">
+                  <span className="profile-dropdown-email">
+                    {user.email}
+                  </span>
+                  <button
+                    type="button"
+                    className="profile-logout-button"
+                    onClick={handleLogout}
+                    role="menuitem"
+                  >
+                    Log out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <NavLink to="/login" className="login-button">
+              Login
+            </NavLink>
+          )}
 
           {/* Hamburger — mobile only */}
           <button
@@ -113,13 +180,15 @@ function Navbar() {
           ))}
         </nav>
 
-        <NavLink
-          to="/login"
-          onClick={closeMenu}
-          className="mobile-login-link"
-        >
-          Login
-        </NavLink>
+        {!user && (
+          <NavLink
+            to="/login"
+            onClick={closeMenu}
+            className="mobile-login-link"
+          >
+            Login
+          </NavLink>
+        )}
       </div>
     </header>
   );

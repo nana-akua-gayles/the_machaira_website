@@ -1,116 +1,137 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
-
-const mockTestimonials = [
-  {
-    id: 1,
-    name: "Grace A.",
-    category: "Faith",
-    content:
-      "Machaira devotionals came into my life at my lowest point. The message on faith reminded me that God still had a plan for me. Today, I walk in a new season of purpose and peace.",
-    date: "May 12, 2026",
-    likes: 128,
-    comments: 24,
-    initials: "GA",
-  },
-  {
-    id: 2,
-    name: "Michael T.",
-    category: "Breakthrough",
-    content:
-      "After years of waiting and prayers, God answered! I got the job I had been believing for, and I know it was the teachings on patience and trust that kept me going.",
-    date: "May 10, 2026",
-    likes: 96,
-    comments: 18,
-    initials: "MT",
-  },
-  {
-    id: 3,
-    name: "Abena K.",
-    category: "Healing",
-    content:
-      "God healed me completely from a chronic illness. I stand today as a testimony that His word is still working mightily.",
-    date: "May 9, 2026",
-    likes: 142,
-    comments: 32,
-    initials: "AK",
-  },
-  {
-    id: 4,
-    name: "Linda O.",
-    category: "Deliverance",
-    content:
-      "The prayers and devotionals gave me strength to leave an abusive situation. God delivered me and restored my dignity. I am forever grateful.",
-    date: "May 8, 2026",
-    likes: 87,
-    comments: 16,
-    initials: "LO",
-  },
-  {
-    id: 5,
-    name: "Joseph D.",
-    category: "Provision",
-    content:
-      "I was drowning in debt and had lost all hope. Through the messages on God's provision, I learned to trust again. Today, my finances are stable and I'm debt-free!",
-    date: "May 7, 2026",
-    likes: 112,
-    comments: 22,
-    initials: "JD",
-  },
-  {
-    id: 6,
-    name: "Sarah M.",
-    category: "Purpose",
-    content:
-      "The series on purpose changed everything. I discovered my God-given calling and stepped out in faith. My life has never been the same.",
-    date: "May 6, 2026",
-    likes: 78,
-    comments: 14,
-    initials: "SM",
-  },
-];
+import TestimonyModal from "../../components/TestimonyModal";
+import ShareTestimonyModal from "../../components/ShareTestimonyModal";
+import {
+  getTestimonies,
+  getTestimonyStats,
+} from "../../lib/testimoniesService";
 
 const categories = [
   "All Stories",
   "Faith",
   "Healing",
   "Breakthrough",
-  "Provision",
-  "Deliverance",
-  "Purpose",
-  "Other",
 ];
 
-const impactStats = [
-  {
-    value: "1,254",
-    label: "Stories Shared",
-    icon: "users",
-  },
-  {
-    value: "32,876",
-    label: "Lives Inspired",
-    icon: "heart",
-  },
-  {
-    value: "98",
-    label: "Countries Reached",
-    icon: "flame",
-  },
-];
+// ---- Helpers to shape raw Supabase rows into the shape your UI expects ----
+
+function getInitials(name) {
+  if (!name) return "??";
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+}
+
+function formatDate(isoString) {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+/**
+ * Shape a Supabase row into the exact object shape the JSX already renders.
+ * `is_anonymous` blanked-out name/initials is handled here.
+ */
+function shapeTestimony(row) {
+  const profile = row.profiles ?? {};
+  const anonymous = row.is_anonymous === true;
+
+  const displayName = anonymous ? "Anonymous" : profile.name || "Believer";
+
+  return {
+    id: row.id,
+    name: displayName,
+    category: row.category ?? "Testimony",
+    content: row.content ?? "",
+    date: formatDate(row.created_at),
+    likes: row.likes_count ?? 0,
+    comments: row.comments_count ?? 0,
+    initials: anonymous ? "AN" : getInitials(profile.name),
+    avatarUrl: anonymous ? null : profile.avatar_url || null,
+    attachedImageUrl: row.attached_image_url || null,
+  };
+}
 
 function Testimonials() {
   const [activeCategory, setActiveCategory] = useState("All Stories");
   const [sortBy, setSortBy] = useState("Latest");
   const [dateFilter, setDateFilter] = useState("All Time");
+  const [categorySearch, setCategorySearch] = useState("");
+  const [activeTestimonial, setActiveTestimonial] = useState(null);
+  const [shareOpen, setShareOpen] = useState(false);
 
-  const filteredTestimonials =
-    activeCategory === "All Stories"
-      ? mockTestimonials
-      : mockTestimonials.filter(
-          (testimonial) => testimonial.category === activeCategory
-        );
+  const [testimonials, setTestimonials] = useState([]);
+  const [impactStats, setImpactStats] = useState([
+    { value: "—", label: "Stories Shared", icon: "users" },
+    { value: "—", label: "Lives Inspired", icon: "heart" },
+    { value: "—", label: "Countries Reached", icon: "flame" },
+  ]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
+  const PAGE_SIZE = 12;
+
+  // ---- Fetch testimonies whenever filters / page change ----
+  const fetchTestimonies = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    const { data, error: fetchError, count } = await getTestimonies({
+      category: activeCategory,
+      categorySearch,
+      sortBy,
+      dateFilter,
+      limit: PAGE_SIZE,
+      offset: page * PAGE_SIZE,
+    });
+
+    if (fetchError) {
+      setError("We couldn't load testimonies right now.");
+      setTestimonials([]);
+    } else {
+      setTestimonials(data.map(shapeTestimony));
+      setTotalCount(count ?? data.length);
+    }
+
+    setLoading(false);
+  }, [activeCategory, sortBy, dateFilter, page, categorySearch]);
+
+  useEffect(() => {
+    fetchTestimonies();
+  }, [fetchTestimonies]);
+
+  // Reset to page 0 when filters change
+  useEffect(() => {
+    setPage(0);
+  }, [activeCategory, sortBy, dateFilter, categorySearch]);
+
+  // ---- Fetch sidebar impact stats once ----
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await getTestimonyStats();
+      if (!cancelled && data) setImpactStats(data);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // filteredTestimonials is now just `testimonials` — server already filtered.
+  const filteredTestimonials = testimonials;
+
+  const hasMore = testimonials.length < totalCount;
+  
   return (
     <main className="min-h-screen bg-white text-[#101A2B]">
       {/* =========================================================
@@ -196,189 +217,286 @@ function Testimonials() {
               LEFT CONTENT
           ====================================================== */}
           <div className="min-w-0">
-            {/* Toolbar */}
-            <div className="mb-5 flex flex-col gap-4 border-b border-[#E5E7EB] pb-5 xl:flex-row xl:items-center xl:justify-between">
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => {
-                  const active = activeCategory === category;
+          {/* Toolbar */}
+          <div className="mb-5 flex flex-col gap-4 border-b border-[#E5E7EB] pb-5 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Category pills — unchanged */}
+              {categories.map((category) => {
+                const active = activeCategory === category;
 
-                  return (
-                    <button
-                      key={category}
-                      type="button"
-                      onClick={() => setActiveCategory(category)}
-                      className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
-                        active
-                          ? "border-[#991313] bg-[#991313] text-white"
-                          : "border-[#E5E7EB] bg-white text-[#4D5057] hover:border-[#991313] hover:text-[#991313]"
-                      }`}
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => setActiveCategory(category)}
+                    className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
+                      active
+                        ? "border-[#991313] bg-[#991313] text-white"
+                        : "border-[#E5E7EB] bg-white text-[#4D5057] hover:border-[#991313] hover:text-[#991313]"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
+
+              {/* NEW: Search by category */}
+              <div className="relative">
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="M20 20l-3.5-3.5" />
+                  </svg>
+                </span>
+
+                <input
+                  type="text"
+                  value={categorySearch}
+                  onChange={(e) => setCategorySearch(e.target.value)}
+                  placeholder="Search category..."
+                  className="w-full rounded-full border border-[#E5E7EB] bg-white py-2 pl-9 pr-9 text-xs text-[#101A2B] placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] sm:w-[190px]"
+                />
+
+                {categorySearch && (
+                  <button
+                    type="button"
+                    onClick={() => setCategorySearch("")}
+                    aria-label="Clear search"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#991313]"
+                  >
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
                     >
-                      {category}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="flex shrink-0 items-center gap-3 text-sm">
-                <span className="text-[#6B7280]">Sort by:</span>
-
-                <select
-                  value={sortBy}
-                  onChange={(event) => setSortBy(event.target.value)}
-                  className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-[#101A2B] outline-none focus:border-[#991313]"
-                >
-                  <option>Latest</option>
-                  <option>Most Liked</option>
-                  <option>Most Discussed</option>
-                </select>
+                      <path d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
+
+            <div className="flex shrink-0 items-center gap-3 text-sm">
+              <span className="text-[#6B7280]">Sort by:</span>
+
+              <select
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value)}
+                className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-[#101A2B] outline-none focus:border-[#991313]"
+              >
+                <option>Latest</option>
+                <option>Most Liked</option>
+                <option>Most Discussed</option>
+              </select>
+            </div>
+          </div>
 
             {/* Results */}
-            {filteredTestimonials.length > 0 ? (
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {filteredTestimonials.map((testimonial, index) => (
-                  <article
-                    key={testimonial.id}
-                    className="group relative flex min-h-[340px] flex-col justify-between overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#D7B4B4] hover:shadow-[0_15px_40px_rgba(16,26,43,0.07)]"
-                  >
-                    {/* Quote */}
+            {(() => {
+              if (loading) {
+                return (
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="min-h-[340px] animate-pulse rounded-2xl border border-[#E5E7EB] bg-[#F8F7F5]"
+                      />
+                    ))}
+                  </div>
+                );
+              }
+
+              if (error) {
+                return (
+                  <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-[#D1D5DB] text-center">
                     <div>
-                      <div className="font-serif text-5xl leading-none text-[#991313]">
-                        “
-                      </div>
-
-                      <p className="mt-2 font-serif text-[16px] leading-7 text-[#202735]">
-                        {testimonial.content}
-                      </p>
+                      <p className="font-serif text-xl text-[#101A2B]">{error}</p>
+                      <button
+                        type="button"
+                        onClick={fetchTestimonies}
+                        className="mt-3 text-sm font-medium text-[#991313] underline"
+                      >
+                        Try again
+                      </button>
                     </div>
+                  </div>
+                );
+              }
 
-                    {/* Bottom */}
-                    <div className="mt-8">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E7E7] text-xs font-semibold text-[#991313]">
-                          {testimonial.initials}
-                        </div>
-
+              if (filteredTestimonials.length > 0) {
+                return (
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {filteredTestimonials.map((testimonial, index) => (
+                      <article
+                        key={testimonial.id}
+                        onClick={() => setActiveTestimonial(testimonial)}
+                        className="group relative flex min-h-[340px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#D7B4B4] hover:shadow-[0_15px_40px_rgba(16,26,43,0.07)]"                    
+                      >
+                        {/* Quote */}
                         <div>
-                          <p className="text-sm font-semibold text-[#101A2B]">
-                            {testimonial.name}
-                          </p>
+                          <div className="font-serif text-5xl leading-none text-[#991313]">
+                            “
+                          </div>
 
-                          <p className="mt-0.5 text-xs text-[#991313]">
-                            {testimonial.category}
+                          <p className="mt-2 font-serif text-[16px] leading-7 text-[#202735] line-clamp-6">
+                            {testimonial.content}
                           </p>
                         </div>
-                      </div>
 
-                      <div className="mt-6 flex items-center justify-between border-t border-[#E5E7EB] pt-4">
-                        <span className="text-xs text-[#6B7280]">
-                          {testimonial.date}
-                        </span>
+                        {/* Bottom */}
+                        <div className="mt-8">
+                          <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-xs font-semibold text-[#991313]">
+                            {testimonial.avatarUrl ? (
+                              <img
+                                src={testimonial.avatarUrl}
+                                alt={testimonial.name}
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  // If the image 404s, hide it so the initials behind show through
+                                  e.currentTarget.style.display = "none";
+                                }}
+                              />
+                            ) : (
+                              testimonial.initials
+                            )}
+                          </div>
 
-                        <div className="flex items-center gap-4 text-xs text-[#6B7280]">
-                          <span className="flex items-center gap-1.5">
-                            <svg
-                              width="15"
-                              height="15"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                            >
-                              <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7C3.2 5.6 5.3 4 7.8 4c1.6 0 3.1.8 4.2 2.1C13.1 4.8 14.6 4 16.2 4c2.5 0 4.6 1.6 4.6 4.7Z" />
-                            </svg>
-                            {testimonial.likes}
-                          </span>
+                            <div>
+                              <p className="text-sm font-semibold text-[#101A2B]">
+                                {testimonial.name}
+                              </p>
 
-                          <span className="flex items-center gap-1.5">
-                            <svg
-                              width="15"
-                              height="15"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                            >
-                              <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-4.5A7.5 7.5 0 1 1 20 11.5Z" />
-                            </svg>
-                            {testimonial.comments}
-                          </span>
+                              <p className="mt-0.5 text-xs text-[#991313]">
+                                {testimonial.category}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="mt-6 flex items-center justify-between border-t border-[#E5E7EB] pt-4">
+                            <span className="text-xs text-[#6B7280]">
+                              {testimonial.date}
+                            </span>
+
+                            <div className="flex items-center gap-4 text-xs text-[#6B7280]">
+                              <span className="flex items-center gap-1.5">
+                                <svg
+                                  width="15"
+                                  height="15"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                >
+                                  <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7C3.2 5.6 5.3 4 7.8 4c1.6 0 3.1.8 4.2 2.1C13.1 4.8 14.6 4 16.2 4c2.5 0 4.6 1.6 4.6 4.7Z" />
+                                </svg>
+                                {testimonial.likes}
+                              </span>
+
+                              <span className="flex items-center gap-1.5">
+                                <svg
+                                  width="15"
+                                  height="15"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                >
+                                  <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-4.5A7.5 7.5 0 1 1 20 11.5Z" />
+                                </svg>
+                                {testimonial.comments}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    {/* Botanical decoration */}
-                    {index % 3 === 0 && (
-                      <div className="pointer-events-none absolute -bottom-5 -right-2 opacity-[0.08]">
-                        <svg
-                          width="90"
-                          height="100"
-                          viewBox="0 0 90 100"
-                          fill="none"
-                        >
-                          <path
-                            d="M15 96C28 69 48 42 79 14"
-                            stroke="#991313"
-                            strokeWidth="1.5"
-                          />
-                          <path
-                            d="M28 73C18 62 11 60 5 61C9 70 17 75 28 73Z"
-                            fill="#991313"
-                          />
-                          <path
-                            d="M40 58C31 48 29 40 31 34C40 39 44 48 40 58Z"
-                            fill="#991313"
-                          />
-                          <path
-                            d="M54 43C48 31 50 24 54 20C61 28 61 36 54 43Z"
-                            fill="#991313"
-                          />
-                          <path
-                            d="M66 31C65 20 69 14 74 11C77 20 74 27 66 31Z"
-                            fill="#991313"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-[#D1D5DB] text-center">
-                <div>
-                  <p className="font-serif text-xl text-[#101A2B]">
-                    No stories found
-                  </p>
-                  <p className="mt-2 text-sm text-[#6B7280]">
-                    Try another testimonial category.
-                  </p>
+                        {/* Botanical decoration */}
+                        {index % 3 === 0 && (
+                          <div className="pointer-events-none absolute -bottom-5 -right-2 opacity-[0.08]">
+                            <svg
+                              width="90"
+                              height="100"
+                              viewBox="0 0 90 100"
+                              fill="none"
+                            >
+                              <path
+                                d="M15 96C28 69 48 42 79 14"
+                                stroke="#991313"
+                                strokeWidth="1.5"
+                              />
+                              <path
+                                d="M28 73C18 62 11 60 5 61C9 70 17 75 28 73Z"
+                                fill="#991313"
+                              />
+                              <path
+                                d="M40 58C31 48 29 40 31 34C40 39 44 48 40 58Z"
+                                fill="#991313"
+                              />
+                              <path
+                                d="M54 43C48 31 50 24 54 20C61 28 61 36 54 43Z"
+                                fill="#991313"
+                              />
+                              <path
+                                d="M66 31C65 20 69 14 74 11C77 20 74 27 66 31Z"
+                                fill="#991313"
+                              />
+                            </svg>
+                          </div>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                );
+              }
+
+              return (
+                <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-[#D1D5DB] text-center">
+                  <div>
+                    <p className="font-serif text-xl text-[#101A2B]">No stories found</p>
+                    <p className="mt-2 text-sm text-[#6B7280]">
+                      Try another testimonial category.
+                    </p>
+                  </div>
                 </div>
+              );
+            })()}
+            {/* Load More */}
+            {!loading && !error && hasMore && (
+              <div className="mt-8 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => p + 1)}
+                  className="inline-flex items-center gap-3 rounded-xl border border-[#991313] px-6 py-3 text-sm font-medium text-[#991313] transition-all hover:bg-[#991313] hover:text-white"
+                >
+                  Load More Stories
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
               </div>
             )}
-
-            {/* Load More */}
-            <div className="mt-8 flex justify-center">
-              <button
-                type="button"
-                className="inline-flex items-center gap-3 rounded-xl border border-[#991313] px-6 py-3 text-sm font-medium text-[#991313] transition-all hover:bg-[#991313] hover:text-white"
-              >
-                Load More Stories
-
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </button>
-            </div>
           </div>
 
           {/* =====================================================
@@ -400,6 +518,7 @@ function Testimonials() {
 
               <button
                 type="button"
+                onClick={() => setShareOpen(true)}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#991313] px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[#7F0E0E]"
               >
                 Share Your Story
@@ -536,6 +655,21 @@ function Testimonials() {
           </aside>
         </div>
       </section>
+      {/* Testimony Modal */}
+      <TestimonyModal
+        testimony={activeTestimonial}
+        onClose={() => setActiveTestimonial(null)}
+      />
+
+      {/* Share Testimony Modal */}
+      <ShareTestimonyModal
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        onSuccess={() => {
+          // Refresh the list so the new testimony appears immediately
+          fetchTestimonies();
+        }}
+      />
     </main>
   );
 }
