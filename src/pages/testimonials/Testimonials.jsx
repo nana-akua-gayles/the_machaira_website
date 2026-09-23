@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
-import TestimonyModal from "../../components/TestimonyModal";
-import ShareTestimonyModal from "../../components/ShareTestimonyModal";
+import TestimonyModal from "./testimonialsFeatures/TestimonyModal";
+import ShareTestimonyModal from "./testimonialsFeatures/ShareTestimonyModal";
 import {
   getTestimonies,
   getTestimonyStats,

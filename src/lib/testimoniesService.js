@@ -250,3 +250,173 @@ export async function createTestimony({
 
   return { data, error: null };
 }
+
+/* =========================================================
+   LIKES
+========================================================= */
+
+/**
+ * Check which of the given testimony IDs the current user has liked.
+ * Returns a Set of testimony_ids the user has liked.
+ *
+ * @param {string} userId
+ * @param {string[]} testimonyIds
+ */
+export async function getUserLikes(userId, testimonyIds) {
+  if (!userId || !testimonyIds?.length) {
+    return { data: new Set(), error: null };
+  }
+
+  const { data, error } = await supabase
+    .from("written_testimony_likes")
+    .select("testimony_id")
+    .eq("user_id", userId)
+    .in("testimony_id", testimonyIds);
+
+  if (error) {
+    console.error("[testimoniesService] getUserLikes error:", error);
+    return { data: new Set(), error };
+  }
+
+  return {
+    data: new Set((data ?? []).map((row) => row.testimony_id)),
+    error: null,
+  };
+}
+
+/**
+ * Toggle a like on a testimony.
+ * If the user already liked it → deletes. Otherwise → inserts.
+ * Returns { liked: boolean } indicating the final state.
+ *
+ * @param {string} testimonyId
+ * @param {string} userId
+ * @returns {Promise<{ liked: boolean, error: Error | null }>}
+ * NOTE: assumes a DB trigger updates writtentestimonies.likes_count.
+ * If no trigger exists, add `likes_count` increment/decrement here.
+ */
+export async function toggleTestimonyLike(testimonyId, userId) {
+  if (!userId) return { liked: false, error: new Error("Not authenticated") };
+
+  // Check current state
+  const { data: existing, error: checkError } = await supabase
+    .from("written_testimony_likes")
+    .select("id")
+    .eq("testimony_id", testimonyId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (checkError) {
+    console.error("[testimoniesService] toggleTestimonyLike check error:", checkError);
+    return { liked: false, error: checkError };
+  }
+
+  if (existing) {
+    const { error: delError } = await supabase
+      .from("written_testimony_likes")
+      .delete()
+      .eq("id", existing.id);
+
+    if (delError) {
+      console.error("[testimoniesService] toggleTestimonyLike delete error:", delError);
+      return { liked: true, error: delError };
+    }
+    return { liked: false, error: null };
+  }
+
+  const { error: insError } = await supabase
+    .from("written_testimony_likes")
+    .insert([{ testimony_id: testimonyId, user_id: userId }]);
+
+  if (insError) {
+    console.error("[testimoniesService] toggleTestimonyLike insert error:", insError);
+    return { liked: false, error: insError };
+  }
+  return { liked: true, error: null };
+}
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+/**
+ * Fetch comments for a testimony, joined with profile info.
+ * Ordered oldest → newest so the thread reads top-to-bottom.
+ */
+export async function getTestimonyComments(testimonyId) {
+  const { data, error } = await supabase
+    .from("written_testimony_comments")
+    .select(
+      `
+      id,
+      testimony_id,
+      user_id,
+      content,
+      parent_id,
+      created_at,
+      profiles:user_id (
+        id,
+        name,
+        email,
+        avatar_url
+      )
+    `
+    )
+    .eq("testimony_id", testimonyId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("[testimoniesService] getTestimonyComments error:", error);
+    return { data: [], error };
+  }
+
+  return { data: data ?? [], error: null };
+}
+
+/**
+ * Add a comment to a testimony.
+ * Always sends parent_id: null for now (flat thread).
+ */
+export async function createTestimonyComment({
+  testimonyId,
+  userId,
+  content,
+}) {
+  const trimmed = content?.trim();
+  if (!trimmed) return { data: null, error: new Error("Empty comment") };
+
+  const { data, error } = await supabase
+    .from("written_testimony_comments")
+    .insert([
+      {
+        testimony_id: testimonyId,
+        user_id: userId,
+        content: trimmed,
+        parent_id: null,
+      },
+    ])
+    .select(
+      `
+      id,
+      testimony_id,
+      user_id,
+      content,
+      parent_id,
+      created_at,
+      profiles:user_id (
+        id,
+        name,
+        email,
+        avatar_url
+      )
+    `
+    )
+    .single();
+
+  if (error) {
+    console.error("[testimoniesService] createTestimonyComment error:", error);
+    return { data: null, error };
+  }
+
+  return { data, error: null };
+}

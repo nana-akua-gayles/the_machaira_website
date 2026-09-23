@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { X, Upload, Loader2 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import {
   uploadTestimonyImage,
   createTestimony,
-} from "../lib/testimoniesService";
+} from "../../../lib/testimoniesService";
 
 const CATEGORY_OPTIONS = [
   "Faith",
