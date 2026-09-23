@@ -74,13 +74,7 @@ function App() {
           {/* Login */}
           <Route
             path="/login"
-            element={<AuthPage initialMode="login" />}
-          />
-
-          {/* Register */}
-          <Route
-            path="/register"
-            element={<AuthPage initialMode="register" />}
+            element={<AuthPage />}
           />
 
           {/* Testimonials */}

@@ -1,49 +1,3 @@
-export function MailIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#4D5057]">
-      <path d="M4 6h16v12H4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export function LockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#4D5057]">
-      <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-export function EyeIcon({ open }) {
-  if (!open) {
-    return (
-      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#4D5057]">
-        <path d="M3 3l18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path
-          d="M9.9 5.1A10.4 10.4 0 0112 5c6 0 9.5 5.5 9.5 5.5a13.6 13.6 0 01-3.1 3.6M6.6 6.6C4 8.3 2.5 10.5 2.5 10.5S6 16 12 16c1 0 2-.15 2.85-.4"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path d="M9.9 9.9a3 3 0 004.2 4.2" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#4D5057]">
-      <path
-        d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
 export function ShieldIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-[#991313]">
@@ -96,15 +50,6 @@ export function HeartIcon() {
         strokeWidth="1.5"
         strokeLinejoin="round"
       />
-    </svg>
-  );
-}
-
-export function UserIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#4D5057]">
-      <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M5 20c1-4 4-6 7-6s6 2 7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
