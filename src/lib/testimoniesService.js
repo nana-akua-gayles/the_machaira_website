@@ -167,7 +167,7 @@ export async function getTestimonyStats() {
  * Upload a testimony image to Supabase Storage.
  * Returns the public URL, or null on error.
  *
- * NOTE: requires a storage bucket named "testimony-media" to exist
+ * NOTE: requires a storage bucket named "testimonies-media" to exist
  * and be configured as public-read, private-write.
  */
 export async function uploadTestimonyImage(file, userId) {
@@ -177,7 +177,7 @@ export async function uploadTestimonyImage(file, userId) {
   const path = `${userId}/${Date.now()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
-    .from("testimony-media")
+    .from("testimonies-media")
     .upload(path, file, { cacheControl: "3600", upsert: false });
 
   if (uploadError) {
@@ -186,7 +186,7 @@ export async function uploadTestimonyImage(file, userId) {
   }
 
   const { data } = supabase.storage
-    .from("testimony-media")
+    .from("testimonies-media")
     .getPublicUrl(path);
 
   return { url: data.publicUrl, error: null };
