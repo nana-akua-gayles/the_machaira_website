@@ -208,6 +208,10 @@
   position: relative;
 }
 
+.desktop-profile {
+  display: block;
+}
+
 .profile-dropdown {
   position: absolute;
   top: calc(100% + 10px);
@@ -426,6 +430,36 @@
   flex-direction: column;
 }
 
+.mobile-profile-summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mobile-profile-trigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-profile-email {
+  min-width: 0;
+  overflow: hidden;
+  color: #101a2b;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .mobile-nav-link {
   padding: 16px 24px;
   text-decoration: none;
@@ -490,6 +524,10 @@
   }
 
   .login-button {
+    display: none;
+  }
+
+  .desktop-profile {
     display: none;
   }
 

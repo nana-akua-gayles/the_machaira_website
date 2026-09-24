@@ -3,6 +3,7 @@ import faithImage from "../../../assets/devotionalImages/faith.jpg";
 import healingImage from "../../../assets/devotionalImages/healing.jpg";
 import prayerImage from "../../../assets/devotionalImages/prayer.jpg";
 import deliveranceImage from "../../../assets/devotionalImages/deliverance.jpg";
+import "./DevotionalTopics.css";
 
 const topics = [
   {
@@ -56,14 +57,14 @@ function DevotionalTopics() {
         </div>
 
         {/* Topic carousel */}
-        <div className="mt-10 -mx-2 overflow-x-auto px-2 pb-5 scrollbar-none">
-          <div className="flex w-max gap-5">
+        <div className="topic-scroll mt-10 -mx-2 px-2 pb-5">
+          <div className="topic-scroll-track">
 
             {topics.map((topic) => (
               <button
                 key={topic.name}
                 type="button"
-                className="group relative h-[260px] w-[230px] shrink-0 overflow-hidden rounded-[24px] text-left shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl"
+                className="topic-card group relative h-[260px] w-[230px] shrink-0 overflow-hidden rounded-[24px] text-left shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl"
               >
                 {/* Image */}
                 <img

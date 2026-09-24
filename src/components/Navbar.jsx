@@ -19,7 +19,8 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const profileMenuRef = useRef(null);
+  const desktopProfileMenuRef = useRef(null);
+  const mobileProfileMenuRef = useRef(null);
   const { user, signOut } = useAuth();
 
   useEffect(() => {
@@ -46,7 +47,10 @@ function Navbar() {
     if (!profileMenuOpen) return;
 
     function handlePointerDown(event) {
-      if (!profileMenuRef.current?.contains(event.target)) {
+      const insideDesktopProfile = desktopProfileMenuRef.current?.contains(event.target);
+      const insideMobileProfile = mobileProfileMenuRef.current?.contains(event.target);
+
+      if (!insideDesktopProfile && !insideMobileProfile) {
         setProfileMenuOpen(false);
       }
     }
@@ -109,10 +113,10 @@ function Navbar() {
         {/* Right side */}
         <div className="navbar-actions">
 
-          {/* Login — visible on desktop; hidden on mobile, where it
-              lives inside the hamburger menu instead */}
+          {/* Desktop profile/login controls. The profile moves into the
+              mobile menu at the mobile breakpoint. */}
           {user ? (
-            <div className="navbar-profile" ref={profileMenuRef}>
+            <div className="navbar-profile desktop-profile" ref={desktopProfileMenuRef}>
               <button
                 type="button"
                 className="navbar-avatar"
@@ -165,6 +169,38 @@ function Navbar() {
 
       {/* Mobile menu panel */}
       <div className={`mobile-menu ${menuOpen ? "mobile-menu-open" : ""}`}>
+        {user && (
+          <div className="mobile-profile-summary navbar-profile" ref={mobileProfileMenuRef}>
+            <button
+              type="button"
+              className="mobile-profile-trigger"
+              onClick={() => setProfileMenuOpen((prev) => !prev)}
+              aria-label="Open profile menu"
+              aria-expanded={profileMenuOpen}
+              aria-haspopup="menu"
+            >
+              <UserAvatar user={user} size={44} />
+              <span className="mobile-profile-email">{user.email}</span>
+            </button>
+
+            {profileMenuOpen && (
+              <div className="profile-dropdown" role="menu">
+                <span className="profile-dropdown-email">
+                  {user.email}
+                </span>
+                <button
+                  type="button"
+                  className="profile-logout-button"
+                  onClick={handleLogout}
+                  role="menuitem"
+                >
+                  Log out
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         <nav className="mobile-menu-links">
           {navItems.map((item) => (
             <NavLink

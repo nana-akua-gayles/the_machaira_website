@@ -1,0 +1,18 @@
+.topic-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.topic-scroll-track {
+  display: flex;
+  width: max-content;
+  gap: 1.25rem;
+}
+
+.topic-card {
+  scroll-snap-align: start;
+}
