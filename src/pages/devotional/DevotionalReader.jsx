@@ -8,7 +8,8 @@ import DevotionalPrevNext from "./devotionalFeatures/DevotionalPrevNext";
 import { formatDevotionalTitle, formatDate } from "./devotionalFeatures/formatDevotional";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
 import { getDevotionalById, getDevotionalByDate,  getPreviousDevotional, getNextDevotional, } from "../../lib/devotionalService";
-import apostleBennieAvatar from "../../assets/images/Apostle1.jpg"; 
+import apostleBennieAvatar from "../../assets/images/Apostle1.jpg";
+import DevotionalComments from "./devotionalFeatures/DevotionalComments";
 import "./devotional.css";
 
 function DevotionalReader() {
@@ -331,6 +332,8 @@ function DevotionalReader() {
             {/* Bottom navigation */}
 
             <DevotionalPrevNext previous={prevFormatted} next={nextFormatted} />
+
+            <DevotionalComments episodeNumber={devotional.episode_number} />
 
           </div>
 

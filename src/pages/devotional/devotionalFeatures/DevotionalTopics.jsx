@@ -53,13 +53,6 @@ function DevotionalTopics() {
               your walk with God.
             </p>
           </div>
-
-          <button
-            type="button"
-            className="hidden shrink-0 rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-[#101A2B] transition duration-300 hover:border-[#991313] hover:bg-[#991313] hover:text-white md:block"
-          >
-            View All
-          </button>
         </div>
 
         {/* Topic carousel */}

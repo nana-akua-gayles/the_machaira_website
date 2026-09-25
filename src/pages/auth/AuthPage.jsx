@@ -1,59 +1,25 @@
-import { useState } from "react";
-
 import AuthHeroPanel from "./authFeatures/AuthHeroPanel";
 import LoginForm from "./authFeatures/LoginForm";
-import RegisterForm from "./authFeatures/RegisterForm";
 import { ShieldIcon } from "./authFeatures/authIcons";
-import "./auth.css";
 
-function AuthPage({ initialMode = "login" }) {
-  const [mode, setMode] = useState(initialMode);
-
+function AuthPage() {
   return (
     <main className="min-h-screen bg-white py-8 lg:py-10">
       <div className="mx-auto max-w-[1400px] px-4 lg:px-8">
 
-        <div className="auth-card">
-          <div
-            className="auth-track"
-            style={{
-              transform: mode === "login" ? "translateX(0%)" : "translateX(-50%)",
-            }}
-          >
+        <div className="grid grid-cols-1 overflow-hidden rounded-[32px] bg-white shadow-sm lg:grid-cols-2">
+          <AuthHeroPanel
+            heading={
+              <>
+                Welcome Back <br />
+                to the <span className="text-[#991313]">Family</span>
+              </>
+            }
+            subtitle="Sign in to continue your faith journey, access exclusive content, and stay connected with our community."
+          />
 
-            {/* Slide 1 — Login: image left, form right */}
-            <div className="auth-slide">
-              <AuthHeroPanel
-                heading={
-                  <>
-                    Welcome Back <br />
-                    to the <span className="text-[#991313]">Family</span>
-                  </>
-                }
-                subtitle="Sign in to continue your faith journey, access exclusive content, and stay connected with our community."
-              />
-
-              <div className="flex items-start justify-center bg-white px-8 pb-8 pt-8 lg:px-14 lg:pb-14">
-                <LoginForm onSwitchToRegister={() => setMode("register")} />
-              </div>
-            </div>
-
-            {/* Slide 2 — Register: form left, image right */}
-            <div className="auth-slide">
-              <div className="flex items-start justify-center bg-white px-8 pb-8 pt-0 lg:px-14 lg:pb-14">
-                <RegisterForm onSwitchToLogin={() => setMode("login")} />
-              </div>
-
-              <AuthHeroPanel
-                heading={
-                  <>
-                    Join the <span className="text-[#991313]">Family</span>
-                  </>
-                }
-                subtitle="Create your free account to read daily devotionals, join discussions, and grow together in faith."
-              />
-            </div>
-
+          <div className="flex items-center justify-center bg-white px-8 py-10 lg:px-14 lg:py-14">
+            <LoginForm />
           </div>
         </div>
 

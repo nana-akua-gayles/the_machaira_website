@@ -13,9 +13,9 @@ function DevotionalRecentList({ devotionals }) {
         {/* Section heading */}
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#991313]">
+            <Link to="/previous-devotionals" className="text-xs font-semibold uppercase tracking-[0.25em] text-[#991313]">
               Previous Devotionals
-            </p>
+            </Link>
 
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#101A2B] md:text-4xl">
               Catch Up On Recent Episodes
