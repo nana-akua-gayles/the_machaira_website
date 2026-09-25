@@ -1,28 +1,76 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import WelcomeModal from "./WelcomeModal"; 
+import { supabase } from "../lib/supabaseClient";
 import "./componentStylesheet/MainLayout.css";
 
-function MainLayout({ allDevotionals, onSelectEpisode, onTodayEpisode }) {
+function MainLayout() {
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [allDevotionals, setAllDevotionals] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
+  // 1. Fetch devotionals in the background when layout mounts
   useEffect(() => {
-    // 1. Check if the current route is the home page (adjust "/" if your home route is different)
-    const isHomePage = location.pathname === "/" || location.pathname === "";
+    async function fetchDevotionals() {
+      const { data, error } = await supabase
+        .from("devotionals")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    // 2. Check session storage to see if they already saw the welcome modal in this session
+      if (error) {
+        console.error("Error fetching devotionals:", error.message);
+      } else {
+        setAllDevotionals(data || []);
+      }
+    }
+    fetchDevotionals();
+  }, []);
+
+  // 2. Control modal visibility based on route and session storage
+  useEffect(() => {
+    const isHomePage = location.pathname === "/" || location.pathname === "";
     const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcomeModal");
 
-    // 3. Show only if it's the home page AND they haven't seen it yet
     if (isHomePage && !hasSeenWelcome) {
       setShowWelcomeModal(true);
-      // Mark as seen so a page reload or navigation won't trigger it again
       sessionStorage.setItem("hasSeenWelcomeModal", "true");
     }
   }, [location.pathname]);
+
+  // 3. Handle Mood / Category Selection
+  const handleSelectEpisode = (episode, categoryKey) => {
+    navigate(`/devotional/${episode.id}`);
+  };
+
+  // 4. Handle "Today's Word" Hero Card (Instant fallback if list isn't ready)
+  const handleTodayEpisode = async () => {
+    // If background list is already loaded, use it instantly
+    if (allDevotionals.length > 0) {
+      navigate(`/devotional/${allDevotionals[0].id}`);
+      return;
+    }
+
+    // Otherwise, fetch the latest one right away on click
+    try {
+      const { data, error } = await supabase
+        .from("devotionals")
+        .select("id")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (data && data.id) {
+        navigate(`/devotional/${data.id}`);
+      } else {
+        console.warn("No devotionals found in database.");
+      }
+    } catch (err) {
+      console.error("Error fetching latest devotional on click:", err);
+    }
+  };
 
   return (
     <div className="app-layout">
@@ -32,12 +80,11 @@ function MainLayout({ allDevotionals, onSelectEpisode, onTodayEpisode }) {
       </main>
       <Footer />
       
-      {/* Global Welcome Modal (Conditionally rendered only on initial home page visit) */}
       {showWelcomeModal && (
         <WelcomeModal 
           allDevotionals={allDevotionals}
-          onSelectEpisode={onSelectEpisode}
-          onTodayEpisode={onTodayEpisode}
+          onSelectEpisode={handleSelectEpisode}
+          onTodayEpisode={handleTodayEpisode}
         />
       )}
     </div>
