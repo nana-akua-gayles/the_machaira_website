@@ -54,7 +54,7 @@ export default function Partnership() {
   };
 
   return (
-    <div className="min-h-screen bg-parchment text-charcoal-text font-sans flex flex-col">
+    <div className="min-h-screen bg-parchment text-charcoal-text flex flex-col">
       
       {/* 1. HERO CAROUSEL SECTION */}
       <section 
@@ -124,11 +124,13 @@ export default function Partnership() {
         )}
       </section>
 
-      {/* 2. WAYS TO PARTNER COMPONENT */}
-      <WaysToPartner />
 
       {/* 3. OTHER SECTIONS */}
       <PartnershipStories />
+
+      {/* 2. WAYS TO PARTNER COMPONENT */}
+      <WaysToPartner />
+
       <BecomePartner />
 
     </div>

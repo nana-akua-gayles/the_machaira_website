@@ -60,11 +60,11 @@ export default function About() {
                 <div>
                   <Quote size={14} className="text-burgundy-primary mb-1 opacity-80" />
                   <p className="text-charcoal-text text-[9px] sm:text-[10px] italic leading-tight">
-                    "Let Posterity know: I raised leaders in every major seat of power in this nation and nations beyond."
+                    Let Posterity know : I raised leaders in every major seat of power in this nation and nations beyond.
                   </p>
                 </div>
                 <p className="text-burgundy-primary text-[9px] font-bold text-right">
-                  – Apostle Bennie
+                  ~ Apostle Bennie
                 </p>
               </div>
 

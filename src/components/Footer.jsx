@@ -4,21 +4,21 @@ import logoImage from "../assets/images/Mlogo.png";
 
 function Footer() {
   return (
-    <footer className="w-full mt-20 bg-charcoal-text text-white pt-17.5 pb-6.25 font-sans">
+    <footer className="w-full mt-20 bg-charcoal-text text-white pt-17.5 pb-6.25">
       {/* MAIN FOOTER CONTAINER */}
       <div className="max-w-350 mx-auto px-15 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.5fr] gap-12.5 lg:gap-17.5">
 
         {/* BRAND */}
         <div className="flex flex-col">
           {/* Controlled layout wrapper with absolute-overflow logo */}
-          <div className="relative h-7 w-full mb-3">
+          <div className="relative h-9 w-full mb-3">
             <img 
               src={logoImage} 
               alt="Machaira Logo" 
-              className="absolute top-1/2 left-0 -translate-y-1/2 h-56 w-auto object-contain pointer-events-none"
+              className="absolute top-0 left-0 -translate-y-1/2 h-56 w-auto object-contain pointer-events-none"
             />
           </div>
-          <span className="text-soft-gray text-[14px] leading-relaxed mt-2">
+          <span className="text-soft-gray text-[14px] leading-relaxed ">
             Every word is written like a love letter from God to you.
           </span>
         </div>

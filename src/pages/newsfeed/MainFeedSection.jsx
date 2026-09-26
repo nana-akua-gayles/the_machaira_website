@@ -1,65 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
-  Globe, Megaphone, BookOpen, Heart, Calendar, Bookmark, 
-  MessageSquare, MoreHorizontal, Play, Send
+  Globe, Megaphone, BookOpen, Heart, Calendar, 
+  MoreHorizontal, Send, Loader2
 } from "lucide-react";
+import { supabase } from "../../lib/supabaseClient";
 
 export default function MainFeedSection({ onSelectStory }) {
   const [activeCategory, setActiveCategory] = useState("All Updates");
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Categories list with icons (Community and Ministry News removed)
+  // Categories list with icons matching your database categories
   const categories = [
     { label: "All Updates", icon: Globe },
-    { label: "Announcements", icon: Megaphone },
-    { label: "Teachings", icon: BookOpen },
-    { label: "Testimonies", icon: Heart },
-    { label: "Events", icon: Calendar },
+    { label: "Announcements", icon: Megaphone, dbValue: "ANNOUNCEMENTS" },
+    { label: "Teachings", icon: BookOpen, dbValue: "TEACHINGS" },
+    { label: "Testimonies", icon: Heart, dbValue: "TESTIMONIES" },
+    { label: "Events", icon: Calendar, dbValue: "EVENTS" },
   ];
 
-  const posts = [
-    {
-      category: "TEACHINGS",
-      title: "Walking by Faith, Not by Sight",
-      snippet: "A powerful reminder that God's plan is always greater than what we can see. Learn to trust Him in every season.",
-      author: "Apostle Bennie",
-      date: "May 14, 2026",
-      image: "/images/mountain-faith.jpg",
-      featured: true,
-      likes: 128,
-      comments: 36
-    },
-    {
-      category: "MINISTRY NEWS",
-      title: "Youth Conference 2026 is Coming!",
-      snippet: "Join us for an unforgettable time of worship, teaching, and fellowship. Don't miss what God is about to do!",
-      author: "Machaira Ministry",
-      date: "May 12, 2026",
-      image: "/images/youth-conference.jpg",
-      video: true,
-      likes: 96,
-      comments: 24
-    },
-    {
-      category: "DEVOTIONAL HIGHLIGHTS",
-      title: "Today in Devotional: Faith That Prevails",
-      snippet: "A summary of today's devotional — key takeaways to meditate on throughout your day.",
-      author: "Apostle Bennie",
-      date: "May 10, 2026",
-      image: "/images/devotional-book.jpg",
-      likes: 76,
-      comments: 18
-    },
-    {
-      category: "TESTIMONIES",
-      title: "From Darkness to Light: God Changed My Story",
-      snippet: "Read how God delivered and restored hope in the life of one of our community members.",
-      author: "Community Member",
-      date: "May 8, 2026",
-      image: "/images/sunrise-testimony.jpg",
-      likes: 142,
-      comments: 45
+  // Fetch latest 5 articles from Supabase whenever the active category changes
+  useEffect(() => {
+    async function fetchArticles() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        let query = supabase
+          .from('articles')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(3); 
+
+        // If a specific category is selected (not "All Updates"), filter the query
+        if (activeCategory !== "All Updates") {
+          const selectedCat = categories.find(c => c.label === activeCategory);
+          if (selectedCat && selectedCat.dbValue) {
+            query = query.eq('category', selectedCat.dbValue);
+          }
+        }
+
+        const { data, error } = await query;
+
+        if (error) throw error;
+        setArticles(data || []);
+      } catch (err) {
+        console.error("Error fetching articles:", err.message);
+        setError("Failed to load feed updates. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+
+    fetchArticles();
+  }, [activeCategory]);
 
   return (
     <div className="space-y-4">
@@ -68,8 +63,6 @@ export default function MainFeedSection({ onSelectStory }) {
           HORIZONTAL CATEGORIES BAR
       ====================================================== */}
       <div className="bg-white p-4 rounded-xl border border-black/5 shadow-xs">
-        
-        {/* Categories Horizontal Scroll Row */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {categories.map((item, idx) => {
             const Icon = item.icon;
@@ -90,16 +83,15 @@ export default function MainFeedSection({ onSelectStory }) {
             );
           })}
         </div>
-
       </div>
 
       {/* =====================================================
-          SHARE YOUR STORY CARD (Compact & Streamlined)
+          SHARE YOUR STORY CARD 
       ====================================================== */}
-      <div className="bg-gradient-to-br from-burgundy-primary via-[#5a1827] to-[#3a0f18] text-white px-4 py-3.5 sm:px-5 sm:py-4 rounded-xl border border-white/10 shadow-sm relative overflow-hidden">
+      <div className="bg-linear-to-br from-burgundy-primary via-[#5a1827] to-[#3a0f18] text-white px-4 py-3.5 sm:px-5 sm:py-4 rounded-xl border border-white/10 shadow-sm relative overflow-hidden">
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="space-y-0.5">
-            <h3 className="text-sm sm:text-base font-serif font-medium tracking-tight">Share Your Story With Us</h3>
+            <h3 className="text-sm sm:text-base font-medium tracking-tight">Share Your Story With Us</h3>
             <p className="text-[10px] sm:text-[11px] text-white/80 leading-relaxed font-light">
               Your testimony has the power to inspire and uplift someone today.
             </p>
@@ -115,36 +107,53 @@ export default function MainFeedSection({ onSelectStory }) {
       </div>
 
       {/* =====================================================
-          POSTS FEED LIST
+          FEED STATUS: LOADING, ERROR, OR EMPTY
       ====================================================== */}
-      {posts.map((post, index) => (
-        <article key={index} className="bg-white p-4 sm:p-5 rounded-xl border border-black/5 shadow-xs transition hover:shadow-sm">
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {loading && (
+        <div className="flex flex-col items-center justify-center py-12 bg-white rounded-xl border border-black/5">
+          <Loader2 className="w-6 h-6 animate-spin text-burgundy-primary mb-2" />
+          <p className="text-xs text-cool-gray">Loading updates...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs text-center border border-red-100">
+          {error}
+        </div>
+      )}
+
+      {!loading && !error && articles.length === 0 && (
+        <div className="text-center py-12 bg-white rounded-xl border border-black/5">
+          <p className="text-xs text-cool-gray">No articles found in this category yet.</p>
+        </div>
+      )}
+
+      {/* =====================================================
+          ARTICLES FEED LIST (Narrower Picture Column)
+      ====================================================== */}
+      {!loading && articles.map((article) => (
+        <article key={article.id} className="bg-white p-3.5 sm:p-4 rounded-xl border border-black/5 shadow-xs transition hover:shadow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3.5 items-center">
             
-            {/* Post Thumbnail */}
-            <div className="relative h-36 sm:h-auto rounded-lg overflow-hidden bg-black/5">
-              <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
-              {post.featured && (
-                <span className="absolute top-2 left-2 bg-burgundy-primary text-white text-[8px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs">
-                  Featured
-                </span>
-              )}
-              {post.video && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                  <div className="w-8 h-8 rounded-full bg-white/90 text-burgundy-primary flex items-center justify-center shadow-md">
-                    <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
-                  </div>
-                </div>
+            {/* Article Thumbnail - Reduced width (1 out of 4 columns on desktop) */}
+            <div className="relative w-full h-32 sm:h-24 max-h-32 rounded-lg overflow-hidden bg-black/5 shrink-0">
+              {article.image_url ? (
+                <img 
+                  src={article.image_url} 
+                  alt={article.title} 
+                  className="w-full h-full object-cover object-top" 
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-stone-100 text-stone-400 text-xs">No Image</div>
               )}
             </div>
 
-            {/* Post Content */}
-            <div className="sm:col-span-2 flex flex-col justify-between">
+            {/* Article Content - Takes up 3 out of 4 columns on desktop */}
+            <div className="sm:col-span-3 flex flex-col justify-between h-full py-0.5">
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[8px] font-semibold uppercase tracking-[0.12em] text-burgundy-primary">
-                    {post.category}
+                    {article.category || "Article"}
                   </span>
                   <button className="text-cool-gray hover:text-charcoal-text">
                     <MoreHorizontal className="w-3.5 h-3.5" />
@@ -152,47 +161,31 @@ export default function MainFeedSection({ onSelectStory }) {
                 </div>
 
                 <h2 
-                  onClick={() => onSelectStory && onSelectStory(post)}
-                  className="text-sm sm:text-base font-normal text-charcoal-text leading-snug mb-1.5 hover:text-burgundy-primary transition cursor-pointer"
+                  onClick={() => onSelectStory && onSelectStory(article)}
+                  className="text-xs sm:text-sm font-normal text-charcoal-text leading-snug mb-1 hover:text-burgundy-primary transition cursor-pointer line-clamp-1"
                 >
-                  {post.title}
+                  {article.title}
                 </h2>
 
-                <p className="text-[11px] text-cool-gray leading-relaxed mb-3">
-                  {post.snippet}
+                <p className="text-[11px] text-cool-gray leading-relaxed mb-2 line-clamp-2">
+                  {article.body || "No content snippet available."}
                 </p>
               </div>
 
-              {/* Post Footer Metadata */}
-              <div className="flex items-center justify-between pt-2.5 border-t border-black/5 text-[10px] text-cool-gray">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-4.5 h-4.5 rounded-full bg-burgundy-primary/20 text-burgundy-primary flex items-center justify-center font-bold text-[8px]">
-                    {post.author[0]}
-                  </div>
-                  <span className="font-medium text-charcoal-text">{post.author}</span>
-                  <span>•</span>
-                  <span>{post.date}</span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button className="flex items-center gap-1 hover:text-burgundy-primary transition">
-                    <Heart className="w-3 h-3" />
-                    <span>{post.likes}</span>
-                  </button>
-                  <button className="flex items-center gap-1 hover:text-burgundy-primary transition">
-                    <MessageSquare className="w-3 h-3" />
-                    <span>{post.comments}</span>
-                  </button>
-                  <button className="hover:text-burgundy-primary transition">
-                    <Bookmark className="w-3 h-3" />
-                  </button>
-                </div>
+              {/* Article Footer Metadata */}
+              <div className="flex items-center justify-between pt-2 border-t border-black/5 text-[10px] text-cool-gray">
+                <span>{article.created_at ? new Date(article.created_at).toLocaleDateString() : "Recent"}</span>
+                <button 
+                  onClick={() => onSelectStory && onSelectStory(article)}
+                  className="text-burgundy-primary font-medium hover:underline text-[10px]"
+                >
+                  Read more →
+                </button>
               </div>
 
             </div>
 
           </div>
-
         </article>
       ))}
     </div>

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import HeroSection from "./HeroSection";
 import RecentDevotionalSection from "./RecentDevotionalSection";
+import SaturdayChurchSection from "./SaturdayChurchSection";
 import ExploreCardsSection from "./ExploreCardsSection";
 import NewsfeedSection from "./NewsfeedSection";
 
-export default function Home() {
+export default function Home({ onSaturdayChurchPress }) {
   const [heroSlides, setHeroSlides] = useState([]);
   const [recentDevotional, setRecentDevotional] = useState(null);
   
@@ -27,39 +28,31 @@ export default function Home() {
         setLoading(true);
         setFetchError(false);
 
-        // Fetch everything from the unified hero_slides table and devotionals table
         const [slidesRes, devotionalRes] = await Promise.all([
           supabase.from('hero_slides').select('*'),
           supabase.from('devotionals').select('id, title, excerpt, created_at').order('created_at', { ascending: false }).limit(1).maybeSingle()
         ]);
 
         if (!isMounted) return;
-
         if (slidesRes.error) throw slidesRes.error;
 
         setHeroSlides(slidesRes.data || []);
         setRecentDevotional(devotionalRes.data || null);
       } catch (err) {
         console.error("Failed to load content from Supabase:", err.message);
-        if (isMounted) {
-          setFetchError(true);
-        }
+        if (isMounted) setFetchError(true);
       } finally {
         if (isMounted) setLoading(false);
       }
     }
 
     fetchHomeData();
-
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, []);
 
   useEffect(() => {
     if (heroSlides.length <= 1) return;
 
-    // Simultaneous text and background image crossfade transition
     const rotationInterval = setInterval(() => {
       setTextAnimState('fade-out');
       setImageAnimState('fade-out');
@@ -73,7 +66,6 @@ export default function Home() {
           setImageAnimState('visible');
         }, 50);
       }, 500);
-
     }, 8000);
 
     const quoteTimer = setInterval(() => {
@@ -110,7 +102,6 @@ export default function Home() {
   }
 
   const slide = heroSlides[currentSlide] || heroSlides[0];
-  // Quote item now pulls directly from the testimony column of hero_slides
   const quoteItem = {
     quote: heroSlides[currentQuote]?.testimony || heroSlides[0]?.testimony
   };
@@ -120,9 +111,8 @@ export default function Home() {
     : "";
 
   return (
-    <div className="bg-[#FBF9F5] text-[#2B2625] min-h-screen overflow-x-hidden font-sans">
+    <div className="bg-[#FBF9F5] text-[#2B2625] min-h-screen overflow-x-hidden">
       
-      {/* Hero section is pulled completely outside the max-w container to guarantee true 100vw edge-to-edge full screen coverage */}
       <HeroSection 
         slide={slide} 
         quoteItem={quoteItem} 
@@ -132,9 +122,16 @@ export default function Home() {
       />
 
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-20 space-y-28">
+        
+        {/* Recent Devotional Section */}
         <RecentDevotionalSection 
           recentDevotional={recentDevotional} 
           formattedDate={formattedDate} 
+        />
+
+        {/* Saturday Church Section */}
+        <SaturdayChurchSection 
+          onSaturdayChurchPress={onSaturdayChurchPress} 
         />
 
         <ExploreCardsSection />

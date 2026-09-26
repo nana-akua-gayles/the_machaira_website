@@ -6,8 +6,8 @@ export default function WaysToPartner() {
     <div>
       {/* WAYS TO PARTNER SECTION */}
       <section className="px-15 py-12 flex flex-col items-center">
-        <span className="text-burgundy-primary text-2xl font-bold tracking-wider mb-1.5 text-center">
-          WE ARE MORE THAN A MINISTRY, WE ARE A MOVEMENT.
+        <span className="text-burgundy-primary text-xl font-bold tracking-wider mb-1.5 text-center">
+          WE ARE MORE THAN A DEVOTIONAL, WE ARE A TRANSFORMATIONAL MOVEMENT.
         </span>
         <p className="text-cool-gray text-sm text-center max-w-125 mb-8">
           We are on a mission to storm and flood cities with Christ. <br />

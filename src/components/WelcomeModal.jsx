@@ -147,7 +147,7 @@ export default function WelcomeModal({
             {/* HEADER */}
             <div className="pb-3 border-b border-[#f0e4db]/80">
               <h1 className="text-[1.4rem] sm:text-[1.55rem] font-normal leading-[1.15] tracking-[-0.03em] text-charcoal-text">
-                What if God wrote <span className="italic font-serif text-burgundy-primary">you a letter today?</span>
+                What if God wrote <span className="italic text-burgundy-primary">you a letter today?</span>
               </h1>
             </div>
 
@@ -211,7 +211,7 @@ export default function WelcomeModal({
 
             {/* FOOTER ENCOURAGEMENT */}
             <div className="mt-auto pt-3.5 border-t border-[#f0e4db]/80">
-              <p className="text-[11px] font-serif italic text-cool-gray text-center lg:text-left">
+              <p className="text-[11px] italic text-cool-gray text-center lg:text-left">
                 "Every word is written like a love letter from God to you. Machaira with Apostle Bennie is a person you behold."
               </p>
             </div>

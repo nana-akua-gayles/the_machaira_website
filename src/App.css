@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Montserrat', sans-serif;
+  --font-sans: 'Montserrat';
   
   /* Exact requested color palette */
   --color-parchment: #FFFFFF;

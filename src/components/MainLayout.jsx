@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import WelcomeModal from "./WelcomeModal"; 
+import DevotionalOverlay from "./DevotionalOverlay"; // Import the overlay
 import { supabase } from "../lib/supabaseClient";
 import "./componentStylesheet/MainLayout.css";
 
@@ -79,6 +80,11 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
+      
+      {/* Persistent Daily Devotional Prompt Overlay */}
+      <DevotionalOverlay 
+        onReadDevotional={handleTodayEpisode} 
+      />
       
       {showWelcomeModal && (
         <WelcomeModal 
