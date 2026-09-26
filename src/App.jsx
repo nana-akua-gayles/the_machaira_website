@@ -18,9 +18,13 @@ import ChurchBlog from "./pages/churchBlog/ChurchBlog";
 
 //DEVOTIONAL
 import Devotional from "./pages/devotional/Devotional";
-import DiscussionForum from "./pages/discussionForum/DiscussionForum";
 import DevotionalReader from "./pages/devotional/DevotionalReader";
 import PreviousDevotional from "./pages/devotional/PreviousDevotional";
+
+//Discussion Forum
+import DiscussionForum from "./pages/discussionForum/DiscussionForum";
+import DiscussionThread from "./pages/discussionForum/DiscussionThread";
+import DiscussionNewPost from "./pages/discussionForum/DiscussionNewPost";
 
 //PARTNERSHIP
 import Partnership from "./pages/partnership/Partnership";
@@ -63,6 +67,8 @@ function App() {
             path="/forum"
             element={<DiscussionForum />}
           />
+          <Route path="/forum/new" element={<DiscussionNewPost />} />
+          <Route path="/forum/:id" element={<DiscussionThread />} />
 
           {/* Partnership */}
           <Route
