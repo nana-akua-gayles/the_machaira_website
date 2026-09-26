@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BookOpen, ArrowRight, X, Sparkles } from "lucide-react";
+import { BookOpen, ArrowRight, X } from "lucide-react";
 import machairaImg from "../assets/images/wave2.png";
 
 const POPULAR_MOODS = [
@@ -32,12 +32,44 @@ export default function WelcomeModal({
   const close = () => setIsOpen(false);
 
   const handleMoodClick = (categoryKey) => {
+    // Flexible category mapping to ensure match with Supabase database fields
+    const categoryMapping = {
+      "Confidence in God": "Confidence in God",
+      "Dealing with Low Self-Esteem": "Dealing with Low Self-Esteem",
+      "Joy": "Joy",
+      "Fear": "Fear",
+      "Healing and Health": "Healing and Health",
+      "Faith": "Faith",
+      "Hope": "Hope",
+      "Depression": "Depression"
+    };
+
+    const targetCategory = categoryMapping[categoryKey] || categoryKey;
+
+    // Flexible filtering (ignoring casing and trailing spaces)
     const matchingEpisodes = allDevotionals.filter(
-      (item) => item.category?.toLowerCase() === categoryKey.toLowerCase()
+      (item) => item.category?.trim().toLowerCase() === targetCategory.trim().toLowerCase()
     );
 
     if (matchingEpisodes.length === 0) {
-      console.warn(`No episodes found for category: ${categoryKey}`);
+      console.warn(`No episodes found for category: ${targetCategory}. Total devotionals loaded:`, allDevotionals.length);
+      
+      // Fallback: try searching if any item includes the key text
+      const fallbackEpisodes = allDevotionals.filter(
+        (item) => item.category?.toLowerCase().includes(categoryKey.toLowerCase())
+      );
+      
+      if (fallbackEpisodes.length > 0) {
+        const todayString = new Date().toISOString().slice(0, 10);
+        let seed = 0;
+        for (let i = 0; i < todayString.length; i++) {
+          seed += todayString.charCodeAt(i);
+        }
+        const index = (seed + categoryKey.length) % fallbackEpisodes.length;
+        onSelectEpisode?.(fallbackEpisodes[index], categoryKey);
+        close();
+        return;
+      }
       return;
     }
 
@@ -63,7 +95,7 @@ export default function WelcomeModal({
       />
 
       {/* LARGE TWO-COLUMN WELCOME CARD */}
-      <div className="relative z-10 w-full max-w-245 overflow-hidden rounded-4xl bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[welcomeCard_.45s_cubic-bezier(0.16,1,0.3,1)]">
+      <div className="relative z-10000 w-full max-w-245 overflow-hidden rounded-4xl bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[welcomeCard_.45s_cubic-bezier(0.16,1,0.3,1)]">
 
         {/* WARM AMBIENT GLOW */}
         <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-burgundy-primary/10 blur-[80px] pointer-events-none" />
@@ -73,7 +105,7 @@ export default function WelcomeModal({
         <button
           onClick={close}
           aria-label="Close"
-          className="absolute right-5 top-5 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-black/5 text-charcoal-text/60 backdrop-blur-md transition-all duration-200 hover:rotate-90 hover:bg-black/10 hover:text-charcoal-text"
+          className="absolute right-5 top-5 z-30 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-black/5 text-charcoal-text/60 backdrop-blur-md transition-all duration-200 hover:rotate-90 hover:bg-black/10 hover:text-charcoal-text"
         >
           <X className="w-4 h-4" />
         </button>
@@ -125,12 +157,10 @@ export default function WelcomeModal({
               {/* PRIMARY HERO BANNER */}
               <button
                 onClick={() => { onTodayEpisode?.(); close(); }}
-                className="group relative flex w-full items-center justify-between overflow-hidden rounded-[22px] bg-linear-to-br from-burgundy-primary via-[#8a3829] to-[#5e2016] p-5 text-left text-white shadow-[0_12px_30px_rgba(114,47,34,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_38px_rgba(114,47,34,0.45)] ring-1 ring-white/20"
+                className="group relative flex w-full cursor-pointer items-center justify-between overflow-hidden rounded-[22px] bg-linear-to-br from-burgundy-primary via-[#8a3829] to-[#5e2016] p-5 text-left text-white shadow-[0_12px_30px_rgba(114,47,34,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_38px_rgba(114,47,34,0.45)] ring-1 ring-white/20"
               >
-                {/* Subtle light overlay shimmer on hover */}
                 <div className="absolute inset-0 bg-white/10 opacity-0 transition-opacity group-hover:opacity-100" />
                 
-                {/* Background decorative watermark icon */}
                 <BookOpen className="absolute -right-4 -bottom-6 w-32 h-32 text-white/5 pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
 
                 <div className="flex items-center gap-4 relative z-10">
@@ -164,13 +194,14 @@ export default function WelcomeModal({
                   {POPULAR_MOODS.map((mood, index) => (
                     <button
                       key={index}
+                      type="button"
                       onClick={() => handleMoodClick(mood.categoryKey)}
-                      className="group relative flex items-center justify-between rounded-xl border border-[#eadcd6] bg-white px-3.5 py-2.5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-burgundy-primary/40 hover:bg-[#fffcf9] hover:shadow-[0_4px_12px_rgba(80,30,20,0.06)]"
+                      className="group relative flex cursor-pointer items-center justify-between rounded-xl border border-[#eadcd6] bg-white px-3.5 py-2.5 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-burgundy-primary/40 hover:bg-[#fffcf9] hover:shadow-[0_4px_12px_rgba(80,30,20,0.06)]"
                     >
-                      <span className="text-[11px] font-medium text-charcoal-text truncate pr-2">
+                      <span className="text-[11px] font-medium text-charcoal-text truncate pr-2 pointer-events-none">
                         {mood.label}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-soft-gray transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-burgundy-primary shrink-0" />
+                      <ArrowRight className="w-3.5 h-3.5 text-soft-gray transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-burgundy-primary shrink-0 pointer-events-none" />
                     </button>
                   ))}
                 </div>
