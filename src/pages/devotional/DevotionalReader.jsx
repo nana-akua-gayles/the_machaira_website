@@ -71,6 +71,7 @@ function DevotionalReader() {
     () => (devotional ? parseDevotionalContent(devotional.content) : null),
     [devotional]
   );
+  
 
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);

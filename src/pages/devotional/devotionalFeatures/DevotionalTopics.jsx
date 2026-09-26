@@ -1,8 +1,10 @@
 import hopeImage from "../../../assets/devotionalImages/hope.jpg";
 import faithImage from "../../../assets/devotionalImages/faith.jpg";
 import healingImage from "../../../assets/devotionalImages/healing.jpg";
-import prayerImage from "../../../assets/devotionalImages/prayer.jpg";
+import libertyImage from "../../../assets/devotionalImages/prayer.jpg";
 import deliveranceImage from "../../../assets/devotionalImages/deliverance.jpg";
+import "./DevotionalTopics.css";
+import { useNavigate } from "react-router-dom";
 
 const topics = [
   {
@@ -16,13 +18,13 @@ const topics = [
     image: healingImage,
   },
   {
-    name: "Prayer",
-    description: "Strengthen your relationship with God through prayer.",
-    image: prayerImage,
+    name: "Liberty",
+    description: "Experience freedom in Christ.",
+    image: libertyImage,
   },
   {
-    name: "Deliverance",
-    description: "Discover freedom through the power of God's word.",
+    name: "Believe",
+    description: "Strengthen your faith and trust in God.",
     image: deliveranceImage,
   },
   {
@@ -33,6 +35,8 @@ const topics = [
 ];
 
 function DevotionalTopics() {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-white py-16">
       <div className="mx-auto max-w-[1440px] px-8 lg:px-12">
@@ -56,14 +60,19 @@ function DevotionalTopics() {
         </div>
 
         {/* Topic carousel */}
-        <div className="mt-10 -mx-2 overflow-x-auto px-2 pb-5 scrollbar-none">
-          <div className="flex w-max gap-5">
+        <div className="topic-scroll mt-10 -mx-2 px-2 pb-5">
+          <div className="topic-scroll-track">
 
             {topics.map((topic) => (
               <button
                 key={topic.name}
                 type="button"
-                className="group relative h-[260px] w-[230px] shrink-0 overflow-hidden rounded-[24px] text-left shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl"
+                onClick={() =>
+                  navigate(
+                    `/previous-devotionals?category=${encodeURIComponent(topic.name)}`
+                  )
+                }
+                className="topic-card group relative h-[260px] w-[230px] shrink-0 overflow-hidden rounded-[24px] text-left shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl"
               >
                 {/* Image */}
                 <img

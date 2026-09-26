@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getDevotionals } from "../../lib/devotionalService";
 import PreviousDevotionalHero from "./PreviousDevotional/PreviousDevotionalHero";
 import PreviousDevotionalToolbar from "./PreviousDevotional/PreviousDevotionalToolbar";
@@ -7,6 +8,7 @@ import PreviousDevotionalList from "./PreviousDevotional/PreviousDevotionalList"
 import PreviousDevotionalPagination from "./PreviousDevotional/PreviousDevotionalPagination";
 
 function PreviousDevotional() {
+  const [searchParams] = useSearchParams();
   const [devotionals, setDevotionals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +20,9 @@ function PreviousDevotional() {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState(
+    () => searchParams.get("category") || "all"
+  );
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [episodeFrom, setEpisodeFrom] = useState("");
