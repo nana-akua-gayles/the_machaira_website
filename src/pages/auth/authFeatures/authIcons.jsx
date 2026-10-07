@@ -1,6 +1,6 @@
 export function ShieldIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-[#991313]">
+    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-burgundy-primary">
       <path
         d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"
         stroke="currentColor"
@@ -13,7 +13,7 @@ export function ShieldIcon() {
 
 export function CommunityIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#991313]">
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-burgundy-primary">
       <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="17" cy="9" r="2.2" stroke="currentColor" strokeWidth="1.5" />
       <path
@@ -28,7 +28,7 @@ export function CommunityIcon() {
 
 export function BookIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#991313]">
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-burgundy-primary">
       <path
         d="M4 5.5A2.5 2.5 0 016.5 3H19v15H6.5A2.5 2.5 0 004 20.5V5.5z"
         stroke="currentColor"
@@ -43,7 +43,7 @@ export function BookIcon() {
 
 export function HeartIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[#991313]">
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-burgundy-primary">
       <path
         d="M12 20s-7-4.3-7-9.3A4.2 4.2 0 019.2 6.5c1.2 0 2.2.6 2.8 1.5.6-.9 1.6-1.5 2.8-1.5a4.2 4.2 0 014.2 4.2c0 5-7 9.3-7 9.3z"
         stroke="currentColor"

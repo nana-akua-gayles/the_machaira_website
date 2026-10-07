@@ -25,7 +25,7 @@ function UserAvatar({ user, size = 36 }) {
   return (
     <div
       style={{ width: size, height: size }}
-      className="flex items-center justify-center rounded-full bg-[#991313] text-xs font-semibold text-white"
+      className="flex items-center justify-center rounded-full bg-burgundy-primary text-xs font-semibold text-white"
     >
       {getInitials(user)}
     </div>

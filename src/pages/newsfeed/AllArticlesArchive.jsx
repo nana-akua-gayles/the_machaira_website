@@ -94,12 +94,9 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl text-gray-900 font-serif">
-            The Archives
+          <h2 className="text-2xl sm:text-3xl text-gray-900">
+            Our Archives
           </h2>
-        </div>
-        <div className="text-xs text-gray-500">
-          Explore our previous articles & prior teachings
         </div>
       </div>
 
@@ -136,7 +133,7 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
                   {/* Right Content */}
                   <div className="lg:col-span-9 space-y-2">
                     <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-base sm:text-lg text-gray-900 font-serif group-hover:text-red-800 transition-colors">
+                      <h3 className="text-base sm:text-lg text-gray-900 group-hover:text-red-800 transition-colors">
                         {article.title}
                       </h3>
                       <span className="shrink-0 w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-400 group-hover:bg-red-800 group-hover:border-red-800 group-hover:text-white transition-all">

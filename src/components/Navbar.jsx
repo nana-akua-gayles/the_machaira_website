@@ -199,14 +199,14 @@ function Navbar() {
       >
         {/* Panel header — explicit close button, always visible while open */}
         <div className="flex items-center justify-between px-6 h-20 shrink-0 border-b border-black/8">
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#4D5057]">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-cool-gray">
             Menu
           </span>
           <button
             type="button"
             onClick={closeMenu}
             aria-label="Close menu"
-            className="flex items-center justify-center w-10 h-10 rounded-full border border-black/10 text-[#101A2B] transition-colors hover:bg-black/5"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-black/10 text-navy-dark transition-colors hover:bg-black/5"
           >
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
               <path
@@ -224,7 +224,7 @@ function Navbar() {
           <div className="flex items-center gap-3 px-6 py-5 shrink-0 border-b border-black/8">
             <UserAvatar user={user} size={44} />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-[#101A2B] truncate">
+              <p className="text-sm font-semibold text-navy-dark truncate">
                 {user.email}
               </p>
               <button
@@ -247,7 +247,7 @@ function Navbar() {
               onClick={closeMenu}
               className={({ isActive }) =>
                 `group flex items-center justify-between gap-4 py-4 border-b border-black/6 no-underline transition-colors ${
-                  isActive ? "text-burgundy-primary" : "text-[#101A2B]"
+                  isActive ? "text-burgundy-primary" : "text-navy-dark"
                 }`
               }
             >

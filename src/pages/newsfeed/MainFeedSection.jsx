@@ -85,26 +85,6 @@ export default function MainFeedSection({ onSelectStory }) {
         </div>
       </div>
 
-      {/* =====================================================
-          SHARE YOUR STORY CARD 
-      ====================================================== */}
-      <div className="bg-linear-to-br from-burgundy-primary via-[#5a1827] to-[#3a0f18] text-white px-4 py-3.5 sm:px-5 sm:py-4 rounded-xl border border-white/10 shadow-sm relative overflow-hidden">
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="space-y-0.5">
-            <h3 className="text-sm sm:text-base font-medium tracking-tight">Share Your Story With Us</h3>
-            <p className="text-[10px] sm:text-[11px] text-white/80 leading-relaxed font-light">
-              Your testimony has the power to inspire and uplift someone today.
-            </p>
-          </div>
-
-          <div className="shrink-0">
-            <button className="w-full sm:w-auto bg-white hover:bg-[#fffaf5] text-burgundy-primary px-3.5 py-2 rounded-lg text-[10px] sm:text-[11px] font-medium transition shadow-sm flex items-center justify-center gap-1.5 group">
-              <Send className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-              <span>Share Your Story</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
       {/* =====================================================
           FEED STATUS: LOADING, ERROR, OR EMPTY

@@ -66,7 +66,7 @@ function DevotionalDateNav({
 
         {selectedParts && (
           <>
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#991313]">
+            <span className="text-sm font-semibold uppercase tracking-wide text-burgundy-primary">
               {selectedParts.month}
             </span>
 
@@ -74,7 +74,7 @@ function DevotionalDateNav({
               {selectedParts.day}
             </span>
 
-            <span className="mt-2 text-sm font-semibold text-[#991313]">
+            <span className="mt-2 text-sm font-semibold text-burgundy-primary">
               {selectedParts.year}
             </span>
           </>
@@ -102,8 +102,8 @@ function DevotionalDateNav({
               <span
                 className={`flex shrink-0 rounded-full transition-all duration-300 ${
                   isSelected
-                    ? "h-7 w-7 bg-[#991313] shadow-md"
-                    : "h-3 w-3 bg-[#B9BEC8] group-hover:bg-[#991313]"
+                    ? "h-7 w-7 bg-burgundy-primary shadow-md"
+                    : "h-3 w-3 bg-[#B9BEC8] group-hover:bg-burgundy-primary"
                 }`}
               >
                 {isSelected && (
@@ -115,7 +115,7 @@ function DevotionalDateNav({
 
               {/* Date number */}
               {!isSelected && (
-                <span className="w-7 text-left text-sm font-medium text-[#374151] transition-colors duration-300 group-hover:text-[#991313]">
+                <span className="w-7 text-left text-sm font-medium text-[#374151] transition-colors duration-300 group-hover:text-burgundy-primary">
                   {item.day}
                 </span>
               )}

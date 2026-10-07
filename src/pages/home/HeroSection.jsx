@@ -95,7 +95,7 @@ export default function HeroSection() {
                 Highly Sought Episodes
               </p>
 
-              <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#2B2625] leading-[1.12]">
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold tracking-tight text-[#2B2625] leading-[1.12]">
                 {currentSlide.title_first} <br />
                 <span className="italic font-normal text-[#5A181C]">{currentSlide.title_highlight}</span> {currentSlide.title_rest}
               </h1>

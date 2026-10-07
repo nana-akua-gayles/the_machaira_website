@@ -41,24 +41,24 @@ function AuthHeroPanel({ heading, subtitle }) {
 
       <div className="relative flex h-full flex-col justify-between p-8 lg:p-12">
         <div>
-          <h1 className="max-w-[440px] text-4xl font-semibold leading-[1.05] tracking-[-0.02em] text-[#101A2B] md:text-5xl lg:text-[56px]">
+          <h1 className="max-w-[440px] text-4xl font-semibold leading-[1.05] tracking-[-0.02em] text-navy-dark md:text-5xl lg:text-[56px]">
             {heading}
           </h1>
 
-          <div className="mt-6 h-[3px] w-14 bg-[#991313]" />
+          <div className="mt-6 h-[3px] w-14 bg-burgundy-primary" />
 
-          <p className="mt-6 max-w-[380px] text-sm leading-6 text-[#4D5057]">
+          <p className="mt-6 max-w-[380px] text-sm leading-6 text-cool-gray">
             {subtitle}
           </p>
         </div>
 
         <div className="mt-10">
           <div className="max-w-[320px] rounded-2xl bg-white/85 p-5 shadow-[0_8px_30px_rgba(16,26,43,0.08)] backdrop-blur-sm">
-            <span className="font-serif text-3xl leading-none text-[#991313]">"</span>
-            <p className="mt-1 text-sm italic leading-relaxed text-[#101A2B]">
+            <span className="font-serif text-3xl leading-none text-burgundy-primary">"</span>
+            <p className="mt-1 text-sm italic leading-relaxed text-navy-dark">
               Where two or three gather in my name, there am I with them.
             </p>
-            <p className="mt-3 text-xs font-semibold text-[#991313]">
+            <p className="mt-3 text-xs font-semibold text-burgundy-primary">
               — Matthew 18:20
             </p>
           </div>
@@ -66,10 +66,10 @@ function AuthHeroPanel({ heading, subtitle }) {
           <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
             {features.map(({ label, Icon }, index) => (
               <div key={label} className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#991313]/30 bg-white/60 text-[#991313]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#991313]/30 bg-white/60 text-burgundy-primary">
                   <Icon />
                 </span>
-                <span className="max-w-[120px] text-xs leading-5 text-[#101A2B]">
+                <span className="max-w-[120px] text-xs leading-5 text-navy-dark">
                   {label}
                 </span>
                 {index < features.length - 1 && (

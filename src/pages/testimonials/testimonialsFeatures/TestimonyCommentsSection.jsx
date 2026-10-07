@@ -92,7 +92,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
   return (
     <div className="mt-8 border-t border-[#E5E7EB] pt-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-serif text-lg text-[#101A2B]">
+        <h3 className="font-serif text-lg text-navy-dark">
           Comments{" "}
           <span className="text-sm font-normal text-[#6B7280]">
             ({comments.length})
@@ -104,13 +104,13 @@ export default function TestimonyCommentsSection({ testimonyId }) {
       <div className="mt-4 space-y-4">
         {loading && (
           <div className="flex items-center gap-2 py-4 text-sm text-[#6B7280]">
-            <Loader2 className="h-4 w-4 animate-spin text-[#991313]" />
+            <Loader2 className="h-4 w-4 animate-spin text-burgundy-primary" />
             Loading comments…
           </div>
         )}
 
         {!loading && error && (
-          <p className="py-2 text-sm text-[#991313]">{error}</p>
+          <p className="py-2 text-sm text-burgundy-primary">{error}</p>
         )}
 
         {!loading && !error && comments.length === 0 && (
@@ -127,7 +127,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
               : comment.profiles ?? {};
             return (
               <div key={comment.id} className="flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-[11px] font-semibold text-[#991313]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-[11px] font-semibold text-burgundy-primary">
                   {profile.avatar_url ? (
                     <img
                       src={profile.avatar_url}
@@ -144,7 +144,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline gap-2">
-                    <p className="truncate text-sm font-semibold text-[#101A2B]">
+                    <p className="truncate text-sm font-semibold text-navy-dark">
                       {profile.name || "Believer"}
                     </p>
                     <span className="shrink-0 text-xs text-[#6B7280]">
@@ -164,16 +164,16 @@ export default function TestimonyCommentsSection({ testimonyId }) {
       <div className="mt-6">
         {authLoading ? (
           <div className="flex items-center gap-2 text-sm text-[#6B7280]">
-            <Loader2 className="h-4 w-4 animate-spin text-[#991313]" />
+            <Loader2 className="h-4 w-4 animate-spin text-burgundy-primary" />
             Checking your session…
           </div>
         ) : !user ? (
           <div className="rounded-xl border border-[#E5E7EB] bg-[#F8F8F7] p-4 text-center">
-            <p className="text-sm text-[#4D5057]">
+            <p className="text-sm text-cool-gray">
               Please{" "}
               <Link
                 to="/login"
-                className="font-semibold text-[#991313] hover:underline"
+                className="font-semibold text-burgundy-primary hover:underline"
               >
                 sign in
               </Link>{" "}
@@ -195,12 +195,12 @@ export default function TestimonyCommentsSection({ testimonyId }) {
                 disabled={posting}
                 rows={2}
                 placeholder="Write a comment…"
-                className="min-h-[44px] flex-1 resize-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm leading-6 text-[#101A2B] placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] disabled:opacity-60"
+                className="min-h-[44px] flex-1 resize-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm leading-6 text-navy-dark placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] disabled:opacity-60"
               />
               <button
                 type="submit"
                 disabled={posting || !draft.trim()}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#991313] text-white transition-colors hover:bg-[#7F0E0E] disabled:opacity-50"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-burgundy-primary text-white transition-colors hover:bg-[#7F0E0E] disabled:opacity-50"
                 aria-label="Post comment"
               >
                 {posting ? (
@@ -212,7 +212,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
             </div>
 
             {postError && (
-              <p className="mt-2 text-xs text-[#991313]">{postError}</p>
+              <p className="mt-2 text-xs text-burgundy-primary">{postError}</p>
             )}
             <p className="mt-2 text-[11px] text-[#6B7280]">
               Press Enter to post • Shift + Enter for a new line

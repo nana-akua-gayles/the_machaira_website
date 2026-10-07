@@ -10,8 +10,8 @@ export default function WaysToPartner() {
           WE ARE MORE THAN A DEVOTIONAL, WE ARE A TRANSFORMATIONAL MOVEMENT.
         </span>
         <p className="text-cool-gray text-sm text-center max-w-125 mb-8">
-          We are on a mission to storm and flood cities with Christ. <br />
-          When you partner with us, you are helping to raise a generation of leaders who 
+          We are on a mission to storm and flood cities with Christ. When you partner with us,
+          you are helping to raise a generation of leaders who 
           will impact their communities and the world for Christ.
         </p>
 

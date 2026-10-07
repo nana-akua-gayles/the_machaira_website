@@ -85,7 +85,7 @@ export default function DevotionalOverlay({ onReadDevotional }) {
       {!isExpanded ? (
         <button
           onClick={() => setIsExpanded(true)}
-          className="fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full bg-[#FAF8F5] text-burgundy-primary border border-stone-200 shadow-xl shadow-stone-300/40 flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer animate-slide-up group"
+          className="fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full bg-[#FAF8F5] text-burgundy-primary border border-stone-200 shadow-xl shadow-black/10 flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer animate-slide-up group"
           title="Open today's devotional prompt"
         >
           <BookOpen size={20} className="transition-transform duration-300 group-hover:rotate-6" />
@@ -94,7 +94,7 @@ export default function DevotionalOverlay({ onReadDevotional }) {
         </button>
       ) : (
         /* Expanded: Full Classy Prompt Card with Red Accents */
-        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-5 bg-[#FAF8F5] text-[#2B2625] px-6 py-4 rounded-[1.75rem] border border-stone-200/80 shadow-2xl shadow-stone-300/50 backdrop-blur-md animate-slide-up">
+        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-5 bg-[#FAF8F5] text-[#2B2625] px-6 py-4 rounded-[1.75rem] border border-stone-200/80 shadow-2xl shadow-black/15 backdrop-blur-md animate-slide-up">
           
           {/* Icon */}
           <div className="w-10 h-10 rounded-2xl bg-[#DC2626]/10 flex items-center justify-center text-burgundy-primary shrink-0">
@@ -122,7 +122,7 @@ export default function DevotionalOverlay({ onReadDevotional }) {
               onClick={handleNo}
               className="flex items-center gap-1.5 bg-[#2B2625] hover:bg-burgundy-primary text-[#FAF8F5] text-xs font-semibold px-3.5 py-2 rounded-xl transition-all duration-200 shadow-sm cursor-pointer group"
             >
-              <span>No</span>
+              <span>Not yet</span>
               <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
           </div>

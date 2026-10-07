@@ -33,14 +33,14 @@ export default function TestimonyModal({ testimony, onClose }) {
       <div className="relative z-10 flex max-h-[88vh] w-full max-w-[640px] flex-col overflow-hidden rounded-[28px] bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[modalIn_.35s_cubic-bezier(0.16,1,0.3,1)]">
 
         {/* Ambient glow */}
-        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#991313]/8 blur-[70px]" />
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-burgundy-primary/8 blur-[70px]" />
 
         {/* Close */}
         <button
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-5 top-5 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/5 text-[#101A2B]/60 backdrop-blur-md transition-all duration-200 hover:rotate-90 hover:bg-black/10 hover:text-[#101A2B]"
+          className="absolute right-5 top-5 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/5 text-navy-dark/60 backdrop-blur-md transition-all duration-200 hover:rotate-90 hover:bg-black/10 hover:text-navy-dark"
         >
           <X className="h-4 w-4" />
         </button>
@@ -49,7 +49,7 @@ export default function TestimonyModal({ testimony, onClose }) {
         <div className="relative overflow-y-auto px-7 pb-7 pt-9 sm:px-10 sm:pb-10 sm:pt-11 custom-scrollbar">
 
           {/* Big quote mark */}
-          <div className="font-serif text-6xl leading-none text-[#991313]">“</div>
+          <div className="font-serif text-6xl leading-none text-burgundy-primary">“</div>
 
           {/* Full testimony text */}
           <p className="mt-3 font-serif text-[17px] leading-8 text-[#202735] sm:text-[18px]">
@@ -73,7 +73,7 @@ export default function TestimonyModal({ testimony, onClose }) {
           {/* Author row */}
           <div className="mt-5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-sm font-semibold text-[#991313]">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-sm font-semibold text-burgundy-primary">
                 {testimony.avatarUrl ? (
                   <img
                     src={testimony.avatarUrl}
@@ -87,10 +87,10 @@ export default function TestimonyModal({ testimony, onClose }) {
               </div>
 
               <div>
-                <p className="text-sm font-semibold text-[#101A2B]">
+                <p className="text-sm font-semibold text-navy-dark">
                   {testimony.name}
                 </p>
-                <p className="mt-0.5 text-xs text-[#991313]">
+                <p className="mt-0.5 text-xs text-burgundy-primary">
                   {testimony.category}
                 </p>
               </div>

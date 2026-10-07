@@ -27,16 +27,16 @@ function LoginForm() {
         className="mx-auto -mb-24 block h-80 w-80 object-contain"
       />
 
-      <h2 className="text-center text-2xl font-semibold text-[#101A2B]">
+      <h2 className="text-center text-2xl font-semibold text-navy-dark">
         Welcome to Machaira
       </h2>
 
-      <p className="mt-1 text-center text-sm text-[#4D5057]">
+      <p className="mt-1 text-center text-sm text-cool-gray">
         Sign in to continue your journey with us.
       </p>
 
       {authError && (
-        <p className="mt-6 rounded-lg bg-[#FBEAEA] px-4 py-3 text-sm text-[#991313]">
+        <p className="mt-6 rounded-lg bg-[#FBEAEA] px-4 py-3 text-sm text-burgundy-primary">
           {authError}
         </p>
       )}
@@ -49,7 +49,7 @@ function LoginForm() {
         <button
           type="button"
           onClick={() => handleSocialLogin("facebook")}
-          className="flex items-center justify-center gap-2 rounded-full border border-black/10 py-2.5 text-sm font-medium text-[#101A2B] transition-colors hover:bg-[#F8F8F7]"
+          className="flex items-center justify-center gap-2 rounded-full border border-black/10 py-2.5 text-sm font-medium text-navy-dark transition-colors hover:bg-[#F8F8F7]"
         >
           <FacebookIcon />
           Facebook
@@ -57,7 +57,7 @@ function LoginForm() {
         <button
           type="button"
           onClick={() => handleSocialLogin("apple")}
-          className="flex items-center justify-center gap-2 rounded-full border border-black/10 py-2.5 text-sm font-medium text-[#101A2B] transition-colors hover:bg-[#F8F8F7]"
+          className="flex items-center justify-center gap-2 rounded-full border border-black/10 py-2.5 text-sm font-medium text-navy-dark transition-colors hover:bg-[#F8F8F7]"
         >
           <AppleIcon />
           Apple

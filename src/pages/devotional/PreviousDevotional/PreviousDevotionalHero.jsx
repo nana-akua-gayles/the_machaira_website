@@ -6,22 +6,22 @@ function PreviousDevotionalHero() {
     <section className="relative overflow-hidden bg-white">
 
       {/* Decorative background glow */}
-      <div className="pointer-events-none absolute -right-32 top-0 h-[500px] w-[500px] rounded-full bg-[#991313]/[0.035] blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 top-0 h-[500px] w-[500px] rounded-full bg-burgundy-primary/[0.035] blur-3xl" />
 
-      <div className="mx-auto max-w-[1440px] px-8 lg:px-12">
+      <div className="mx-auto max-w-360 px-8 lg:px-12">
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-3 pt-8 text-sm">
           <Link
             to="/"
-            className="text-[#991313] transition-colors hover:text-[#7f0e0e]"
+            className="text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
           >
             ⌂
           </Link>
 
           <span className="text-[#B9BEC8]">/</span>
 
-          <span className="text-[#4D5057]">
+          <span className="text-cool-gray">
             Previous Devotionals
           </span>
         </div>
@@ -32,21 +32,21 @@ function PreviousDevotionalHero() {
           {/* Text */}
           <div className="relative z-20 max-w-[600px]">
 
-            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
               Previous Devotionals
             </p>
 
-            <h1 className="max-w-[580px] text-5xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#101A2B] md:text-6xl lg:text-[68px]">
+            <h1 className="max-w-[580px] text-5xl font-semibold leading-[1.02] tracking-[-0.045em] text-navy-dark md:text-6xl lg:text-[68px]">
               Every Word.
               <br />
-              <span className="text-[#991313]">
+              <span className="text-burgundy-primary">
                 Every Season.
               </span>
             </h1>
 
-            <div className="my-7 h-[2px] w-12 bg-[#991313]" />
+            <div className="my-7 h-[2px] w-12 bg-burgundy-primary" />
 
-            <p className="max-w-[500px] text-base leading-7 text-[#4D5057] md:text-lg">
+            <p className="max-w-[500px] text-base leading-7 text-cool-gray md:text-lg">
               Explore our entire library of devotionals and grow in
               faith through God's timeless Word.
             </p>
@@ -68,16 +68,16 @@ function PreviousDevotionalHero() {
             {/* Scripture card */}
             <div className="absolute bottom-6 right-0 z-20 w-[270px] rounded-2xl border border-black/10 bg-white/95 p-6 shadow-lg backdrop-blur-sm md:right-6 lg:bottom-8 lg:right-0">
 
-              <div className="text-5xl leading-none text-[#991313]">
+              <div className="text-5xl leading-none text-burgundy-primary">
                 “
               </div>
 
-              <p className="mt-1 text-base italic leading-7 text-[#101A2B]">
+              <p className="mt-1 text-base italic leading-7 text-navy-dark">
                 Your word is a lamp to my feet
                 and a light to my path.
               </p>
 
-              <p className="mt-4 text-sm font-semibold text-[#991313]">
+              <p className="mt-4 text-sm font-semibold text-burgundy-primary">
                 Psalm 119:105
               </p>
 
