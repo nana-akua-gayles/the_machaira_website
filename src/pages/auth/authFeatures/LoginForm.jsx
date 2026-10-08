@@ -45,24 +45,55 @@ function LoginForm() {
         <GoogleSignInButton onError={setAuthError} />
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-3">
-        <button
-          type="button"
-          onClick={() => handleSocialLogin("facebook")}
-          className="flex items-center justify-center gap-2 rounded-full border border-black/10 py-2.5 text-sm font-medium text-navy-dark transition-colors hover:bg-[#F8F8F7]"
-        >
-          <FacebookIcon />
+
+    <div className="mt-3 grid grid-cols-2 gap-3">
+      {/* Facebook */}
+      <button
+        type="button"
+        onClick={() => handleSocialLogin("facebook")}
+        className="
+          group flex items-center justify-center gap-2
+          rounded-full border border-black/10
+          bg-white py-2.5 text-sm font-medium
+          text-navy-dark
+          transition-all duration-300 ease-in-out
+          hover:border-[#1877F2]
+          hover:bg-[#1877F2]
+          hover:text-white
+          hover:shadow-[0_6px_20px_rgba(24,119,242,0.20)]
+          active:scale-[0.98]
+        "
+      >
+        <FacebookIcon />
+        <span className="transition-colors duration-300">
           Facebook
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSocialLogin("apple")}
-          className="flex items-center justify-center gap-2 rounded-full border border-black/10 py-2.5 text-sm font-medium text-navy-dark transition-colors hover:bg-[#F8F8F7]"
-        >
-          <AppleIcon />
+        </span>
+      </button>
+
+      {/* Apple */}
+      <button
+        type="button"
+        onClick={() => handleSocialLogin("apple")}
+        className="
+          group flex items-center justify-center gap-2
+          rounded-full border border-black/10
+          bg-white py-2.5 text-sm font-medium
+          text-navy-dark
+          transition-all duration-300 ease-in-out
+          hover:border-black
+          hover:bg-black
+          hover:text-white
+          hover:shadow-[0_6px_20px_rgba(0,0,0,0.18)]
+          active:scale-[0.98]
+        "
+      >
+        <AppleIcon />
+        <span className="transition-colors duration-300">
           Apple
-        </button>
-      </div>
+        </span>
+      </button>
+    </div>
+
 
     </div>
   );
