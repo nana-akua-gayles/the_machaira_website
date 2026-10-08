@@ -222,26 +222,6 @@ function DevotionalHero({
 
           </div>
         </div>
-
-        {/* Scripture */}
-        {hasDevotional && (
-          <div className="hidden w-[300px] -translate-x-8 items-center justify-center lg:flex">
-            <div className="relative flex h-[240px] w-[240px] items-center justify-center rounded-full border border-[#9CA3AF]/50">
-
-              <div className="max-w-[180px]">
-                <p className="text-base italic leading-7 text-[#111827]">
-                  "The Lord is my strength and my shield; my heart trusts in Him."
-                </p>
-
-                <p className="mt-3 text-sm font-semibold text-[#991313]">
-                  — Psalm 28:7
-                </p>
-              </div>
-
-            </div>
-          </div>
-        )}
-
       </div>
     </section>
   );
