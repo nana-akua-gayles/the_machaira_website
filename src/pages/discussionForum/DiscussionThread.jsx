@@ -4,12 +4,11 @@ import {
   MessageCircle,
   Pin,
   ArrowLeft,
-  Sparkles,
   Send,
   Pencil,
   Trash2,
-  HeartHandshake,
-  BookOpen,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -65,6 +64,8 @@ const DiscussionThread = () => {
   // from one thread straight to another (without a full remount) still
   // counts a fresh view, but re-renders of the same thread don't.
   const viewCountedForRef = useRef(null);
+  const repliesEndRef = useRef(null);
+  const [topicExpanded, setTopicExpanded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -130,6 +131,7 @@ const DiscussionThread = () => {
       setReplies(updatedReplies);
       setPost((prev) => (prev ? { ...prev, replies_count: prev.replies_count + 1 } : prev));
       setReplyText('');
+      requestAnimationFrame(() => repliesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
     } catch (err) {
       console.error('REPLY SUBMIT FAILED:', err);
       setReplyError('Your reply could not be posted. Please try again.');
@@ -219,365 +221,106 @@ const DiscussionThread = () => {
   }
 
 
-return (
-  <main className="min-h-screen bg-[#FAF8F6] pb-24">
-    {/* Editorial hero */}
-    <section className="relative overflow-hidden bg-[#101A2B] text-white">
-      <div className="pointer-events-none absolute -right-24 -top-36 h-[400px] w-[400px] rounded-full bg-[#991313]/40 blur-[110px]" />
-      <div className="pointer-events-none absolute bottom-0 left-1/3 h-48 w-72 rounded-full bg-[#D8A65C]/10 blur-[90px]" />
-
-      <div className="relative mx-auto max-w-[1180px] px-6 py-14 lg:px-10 lg:py-20">
-        <Link
-          to="/forum"
-          className="inline-flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
-        >
-          <ArrowLeft size={16} />
-          Back to discussions
-        </Link>
-
-        <div className="mt-12 flex flex-wrap items-center gap-3">
-          <span className="rounded-full border border-[#D8A65C]/40 bg-[#D8A65C]/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#F0C98C]">
-            {post.category || "Community"}
-          </span>
-
-          {post.pinned && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white">
-              <Pin size={12} />
-              Pinned discussion
-            </span>
-          )}
-        </div>
-
-        <h1 className="mt-6 max-w-[900px] font-serif text-4xl leading-[1.12] tracking-tight sm:text-5xl lg:text-[58px]">
-          {post.title}
-        </h1>
-
-        <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-white/15 pt-6">
-          <Avatar author={post.author} sizeClass="w-12 h-12" />
-
-          <div>
-            <p className="text-sm font-semibold text-white">
-              {post.author?.name || "A member"}
-            </p>
-            <p className="mt-1 text-xs text-white/55">
-              {formatRelativeTime(post.created_at)}
-            </p>
+  return (
+    <main className="bg-white text-[#111827] font-['Montserrat',sans-serif] lg:px-6 lg:py-7">
+      {/* Height is bounded so the replies scroll instead of pushing the composer away. */}
+      <div className="mx-auto flex h-[calc(100dvh-5rem)] min-h-[360px] max-w-[1400px] flex-col overflow-hidden bg-white lg:h-[calc(100dvh-8rem)] lg:min-h-[480px] lg:flex-row lg:rounded-[24px] lg:border lg:border-[#B9BEC8]/40 lg:shadow-[0_15px_50px_rgba(16,26,43,0.08)]">
+        {/* Desktop: discussion context remains visible independently of reply scroll. */}
+        <aside className="hidden w-[38%] min-w-0 flex-col overflow-hidden border-r border-[#B9BEC8]/30 bg-[#101A2B] text-white lg:flex">
+          <div className="shrink-0 border-b border-white/15 px-8 py-7">
+            <Link to="/forum" className="inline-flex items-center gap-2 text-sm font-semibold text-white/75 hover:text-white">
+              <ArrowLeft size={17} /> All discussions
+            </Link>
+            <p className="mt-9 text-xs font-bold uppercase tracking-[0.18em] text-white/60">Machaira Community</p>
+            <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight text-white">{post.title}</h1>
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-[#991313] px-3 py-1.5 text-xs font-semibold text-white">{post.category || 'Community'}</span>
+              {post.pinned && <span className="inline-flex items-center gap-1 rounded-full border border-white/25 px-3 py-1.5 text-xs"><Pin size={12} /> Pinned</span>}
+            </div>
           </div>
-
-          <div className="ml-auto flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/90">
-            <MessageCircle size={16} className="text-[#F0C98C]" />
-            {replies.length} {replies.length === 1 ? "reply" : "replies"}
-          </div>
-        </div>
-      </div>
-
-      <div className="h-1 bg-gradient-to-r from-[#991313] via-[#D8A65C] to-[#991313]" />
-    </section>
-
-    <div className="mx-auto max-w-[1180px] px-5 pt-10 sm:px-6 lg:px-10">
-      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_285px]">
-        {/* Main discussion column */}
-        <div className="min-w-0 space-y-8">
-          {/* Original post */}
-          <article className="overflow-hidden rounded-[24px] border border-[#EEE5E1] bg-white shadow-[0_15px_50px_rgba(16,26,43,0.045)]">
-            <div className="flex items-center gap-3 border-b border-[#F0E8E5] px-6 py-5 sm:px-8">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F9EDEE] text-[#991313]">
-                <BookOpen size={19} />
-              </span>
-
+          <div className="min-h-0 flex-1 overflow-y-auto px-8 py-7 [scrollbar-width:thin]">
+            <div className="flex items-center gap-3">
+              <Avatar author={post.author} sizeClass="w-11 h-11" />
               <div>
-                <p className="text-sm font-bold text-[#101A2B]">
-                  The Conversation
-                </p>
-                <p className="text-xs text-[#8B8584]">
-                  A thought shared with the community
-                </p>
+                <p className="text-sm font-semibold">{post.author?.name || 'A member'}</p>
+                <p className="text-xs text-white/60">{formatRelativeTime(post.created_at)}</p>
               </div>
             </div>
-
-            <div className="px-6 py-8 sm:px-8 sm:py-10">
-              <div className="mb-7 h-[3px] w-12 rounded-full bg-[#991313]" />
-
-              <p className="whitespace-pre-line text-[16px] leading-[2] text-[#374151]">
-                {post.body}
-              </p>
+            <div className="mt-7 rounded-2xl border border-white/15 bg-white/10 p-6">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white/70">Original discussion</p>
+              <p className="whitespace-pre-line break-words text-sm leading-8 text-white/90">{post.body}</p>
             </div>
+          </div>
+          <div className="shrink-0 border-t border-white/15 px-8 py-5 text-xs text-white/65">
+            Share thoughtfully. Every voice matters.
+          </div>
+        </aside>
 
-            <div className="flex items-center justify-between border-t border-[#F0E8E5] bg-[#FFFCFB] px-6 py-4 sm:px-8">
-              <span className="inline-flex items-center gap-2 text-xs font-medium text-[#7B7270]">
-                <HeartHandshake size={15} className="text-[#991313]" />
-                Shared with the Machaira family
-              </span>
-            </div>
-          </article>
-
-          {/* Replies */}
-          <section>
-            <div className="mb-6 flex items-end justify-between gap-3">
-              <div>
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#991313]">
-                  Community voices
-                </p>
-
-                <h2 className="font-serif text-3xl text-[#101A2B]">
-                  The Discussion
-                </h2>
+        {/* Mobile: compact messaging header; desktop: replies header. */}
+        <section className="flex min-h-0 min-w-0 flex-1 flex-col bg-[#F8F8F8]">
+          <header className="z-10 shrink-0 border-b border-[#B9BEC8]/35 bg-white px-4 py-3 shadow-sm sm:px-6 lg:px-8 lg:py-5">
+            <div className="flex items-center gap-3">
+              <Link to="/forum" aria-label="Back to discussions" className="rounded-full p-2 text-[#101A2B] hover:bg-[#101A2B]/5 lg:hidden"><ArrowLeft size={21} /></Link>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold text-[#101A2B] lg:text-lg lg:font-semibold">{post.title}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[#4D5057]"><MessageCircle size={13} className="text-[#991313]" /> {replies.length} {replies.length === 1 ? 'reply' : 'replies'} <span className="lg:hidden">· {post.category || 'Community'}</span></p>
               </div>
-
-              <span className="rounded-full bg-[#F3E5E4] px-4 py-2 text-xs font-bold text-[#991313]">
-                {replies.length} {replies.length === 1 ? "Reply" : "Replies"}
-              </span>
+              <button type="button" onClick={() => setTopicExpanded((value) => !value)} aria-expanded={topicExpanded} aria-label={topicExpanded ? 'Hide original discussion' : 'Show original discussion'} className="flex shrink-0 items-center gap-1 rounded-full border border-[#B9BEC8]/50 px-3 py-2 text-xs font-semibold text-[#991313] hover:bg-[#991313]/5 lg:hidden">
+                Topic {topicExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </button>
             </div>
+          </header>
 
-            <div className="space-y-4">
-              {replies.length === 0 && (
-                <div className="rounded-[22px] border border-dashed border-[#DCC9C5] bg-white px-6 py-12 text-center">
-                  <MessageCircle
-                    size={28}
-                    className="mx-auto text-[#991313]"
-                    strokeWidth={1.5}
-                  />
-                  <h3 className="mt-4 font-serif text-xl text-[#101A2B]">
-                    Be the first to respond
-                  </h3>
-                  <p className="mt-2 text-sm text-[#79716E]">
-                    Every meaningful conversation begins with one voice.
-                  </p>
-                </div>
-              )}
+          {/* Mobile topic expands without making the composer scroll offscreen. */}
+          {topicExpanded && <div className="max-h-[35dvh] shrink-0 overflow-y-auto border-b border-[#B9BEC8]/35 bg-white px-5 py-4 lg:hidden">
+            <div className="mb-3 flex items-center gap-2"><Avatar author={post.author} sizeClass="w-8 h-8" /><span className="text-xs font-semibold text-[#101A2B]">{post.author?.name || 'A member'}</span></div>
+            <p className="whitespace-pre-line break-words text-sm leading-7 text-[#4D5057]">{post.body}</p>
+          </div>}
 
+          {/* This is the only vertically scrolling region in the conversation. */}
+          <div role="log" aria-label="Discussion replies" className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-6 [scrollbar-width:thin] sm:px-6 lg:px-8 lg:py-8">
+            <div className="mx-auto max-w-[780px] space-y-5">
+              <div className="mx-auto w-fit rounded-full border border-[#B9BEC8]/40 bg-white px-4 py-1.5 text-[11px] font-semibold text-[#4D5057]">Community conversation</div>
+              {replies.length === 0 && <div className="rounded-2xl border border-[#B9BEC8]/40 bg-white p-8 text-center"><MessageCircle className="mx-auto text-[#991313]" size={27} /><p className="mt-3 font-semibold text-[#101A2B]">Start the conversation</p><p className="mt-2 text-sm text-[#4D5057]">Be the first to share your thoughts.</p></div>}
               {replies.map((reply) => {
-                const isOwnReply = user && reply.user_id === user.id;
+                const isOwnReply = Boolean(user && reply.user_id === user.id);
                 const isEditing = editingReplyId === reply.id;
                 const isDeleting = deletingReplyId === reply.id;
-
-                return (
-                  <article
-                    key={reply.id}
-                    className={`rounded-[22px] border bg-white p-5 shadow-[0_8px_30px_rgba(16,26,43,0.035)] transition-colors sm:p-6 ${
-                      isOwnReply
-                        ? "border-[#E7C9C5]"
-                        : "border-[#EEE5E1] hover:border-[#DCC9C5]"
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <Avatar
-                        author={reply.author}
-                        sizeClass="w-11 h-11"
-                      />
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <p className="text-sm font-bold text-[#101A2B]">
-                            {reply.author?.name || "A member"}
-                          </p>
-
-                          {isOwnReply && (
-                            <span className="rounded-full bg-[#F9EDEE] px-2 py-0.5 text-[10px] font-semibold text-[#991313]">
-                              You
-                            </span>
-                          )}
-                        </div>
-
-                        <p className="mt-1 text-xs text-[#9B9390]">
-                          {formatRelativeTime(reply.created_at)}
-                        </p>
-                      </div>
-
-                      {isOwnReply && !isEditing && (
-                        <div className="flex shrink-0 items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => startEditingReply(reply)}
-                            aria-label="Edit reply"
-                            className="rounded-full bg-[#F7F4F2] p-2 text-[#716966] transition hover:bg-[#F9EDEE] hover:text-[#991313]"
-                          >
-                            <Pencil size={15} />
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteReply(reply.id)}
-                            disabled={isDeleting}
-                            aria-label="Delete reply"
-                            className="rounded-full bg-[#F7F4F2] p-2 text-[#716966] transition hover:bg-[#F9EDEE] hover:text-[#991313] disabled:opacity-50"
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        </div>
-                      )}
+                return <article key={reply.id} className={`flex items-end gap-2.5 ${isOwnReply ? 'flex-row-reverse' : ''}`}>
+                  {!isOwnReply && <Avatar author={reply.author} sizeClass="w-8 h-8" />}
+                  <div className={`min-w-0 max-w-[85%] rounded-2xl border px-4 py-3 shadow-[0_3px_12px_rgba(16,26,43,0.035)] sm:max-w-[75%] ${isOwnReply ? 'rounded-br-sm border-[#991313]/15 bg-[#991313]/10' : 'rounded-bl-sm border-[#B9BEC8]/30 bg-white'}`}>
+                    <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span className={`text-xs font-bold ${isOwnReply ? 'text-[#991313]' : 'text-[#101A2B]'}`}>{isOwnReply ? 'You' : reply.author?.name || 'A member'}</span>
+                      <span className="text-[10px] text-[#4D5057]">{formatRelativeTime(reply.created_at)}</span>
                     </div>
-
-                    <div className="mt-4 pl-0 sm:pl-14">
-                      {isEditing ? (
-                        <div className="space-y-3">
-                          <textarea
-                            value={editText}
-                            onChange={(e) => setEditText(e.target.value)}
-                            rows={4}
-                            autoFocus
-                            className="w-full rounded-xl border border-[#E7D6D3] bg-[#FFFCFB] p-4 text-sm text-[#101A2B] outline-none focus:border-[#991313] focus:ring-2 focus:ring-[#991313]/10"
-                          />
-
-                          <div className="flex gap-3">
-                            <button
-                              type="button"
-                              onClick={() => handleSaveEditedReply(reply.id)}
-                              disabled={editSubmitting || !editText.trim()}
-                              className="rounded-full bg-[#991313] px-5 py-2 text-xs font-semibold text-white hover:bg-[#7F0E0E] disabled:opacity-50"
-                            >
-                              {editSubmitting ? "Saving..." : "Save Changes"}
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={cancelEditingReply}
-                              className="text-xs font-semibold text-[#716966] hover:text-[#101A2B]"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p className="whitespace-pre-line text-sm leading-7 text-[#4D5057]">
-                          {reply.content}
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Reply composer */}
-          <section className="overflow-hidden rounded-[24px] border border-[#E9DAD6] bg-white shadow-[0_15px_45px_rgba(16,26,43,0.05)]">
-            <div className="bg-gradient-to-r from-[#991313] to-[#67121B] px-6 py-6 text-white sm:px-8">
-              <div className="flex items-center gap-3">
-                <span className="rounded-xl bg-white/15 p-2.5">
-                  <MessageCircle size={20} />
-                </span>
-
-                <div>
-                  <h3 className="font-serif text-2xl">
-                    Add Your Voice
-                  </h3>
-                  <p className="mt-1 text-xs text-white/75">
-                    Share a thoughtful response with the community.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 sm:p-8">
-              {user ? (
-                <form onSubmit={handleSubmitReply}>
-                  <label
-                    htmlFor="thread-reply"
-                    className="mb-3 block text-sm font-semibold text-[#101A2B]"
-                  >
-                    Your response
-                  </label>
-
-                  <textarea
-                    id="thread-reply"
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    placeholder="What would you like to share with the community?"
-                    rows={5}
-                    className="w-full resize-y rounded-2xl border border-[#E7D6D3] bg-[#FFFCFB] p-5 text-sm leading-7 text-[#101A2B] outline-none transition focus:border-[#991313] focus:ring-2 focus:ring-[#991313]/10"
-                  />
-
-                  {replyError && (
-                    <p role="alert" className="mt-3 text-sm font-medium text-[#991313]">
-                      {replyError}
-                    </p>
-                  )}
-
-                  <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                    <p className="max-w-[280px] text-xs leading-5 text-[#8B8584]">
-                      Speak with kindness. Your words may encourage someone today.
-                    </p>
-
-                    <button
-                      type="submit"
-                      disabled={submitting || !replyText.trim()}
-                      className="inline-flex items-center gap-2 rounded-full bg-[#991313] px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-[#7F0E0E] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <Send size={16} />
-                      {submitting ? "Posting..." : "Post Reply"}
-                    </button>
+                    {isEditing ? <div className="space-y-2">
+                      <textarea value={editText} onChange={(e) => setEditText(e.target.value)} rows={3} autoFocus className="w-full min-w-[190px] rounded-xl border border-[#B9BEC8] bg-white p-3 text-sm text-[#111827] outline-none focus:border-[#991313]" />
+                      <div className="flex gap-3"><button type="button" onClick={() => handleSaveEditedReply(reply.id)} disabled={editSubmitting || !editText.trim()} className="rounded-full bg-[#991313] px-4 py-1.5 text-xs font-semibold text-white disabled:opacity-50">{editSubmitting ? 'Saving...' : 'Save'}</button><button type="button" onClick={cancelEditingReply} className="text-xs text-[#4D5057]">Cancel</button></div>
+                    </div> : <p className="whitespace-pre-line break-words text-sm leading-7 text-[#111827]">{reply.content}</p>}
+                    {isOwnReply && !isEditing && <div className="mt-2 flex justify-end gap-3 border-t border-[#991313]/10 pt-2"><button type="button" onClick={() => startEditingReply(reply)} className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#4D5057] hover:text-[#991313]"><Pencil size={12} /> Edit</button><button type="button" onClick={() => handleDeleteReply(reply.id)} disabled={isDeleting} className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#4D5057] hover:text-[#991313] disabled:opacity-50"><Trash2 size={12} /> {isDeleting ? 'Deleting...' : 'Delete'}</button></div>}
                   </div>
-                </form>
-              ) : (
-                <div className="text-center">
-                  <p className="text-sm leading-7 text-[#716966]">
-                    Join the Machaira family to contribute to this discussion.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => navigate("/login")}
-                    className="mt-5 rounded-full bg-[#991313] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#7F0E0E]"
-                  >
-                    Log In to Participate
-                  </button>
-                </div>
-              )}
+                </article>;
+              })}
+              <div ref={repliesEndRef} />
             </div>
-          </section>
-        </div>
-
-        {/* Editorial sidebar */}
-        <aside className="space-y-5 lg:sticky lg:top-28">
-          <div className="relative overflow-hidden rounded-[24px] bg-[#101A2B] p-7 text-white">
-            <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border border-white/10" />
-            <div className="pointer-events-none absolute -right-5 -top-5 h-28 w-28 rounded-full border border-white/10" />
-
-            <Sparkles size={22} className="text-[#D8A65C]" />
-
-            <h3 className="relative mt-6 font-serif text-2xl leading-snug">
-              A Community Built on the Word.
-            </h3>
-
-            <p className="relative mt-4 text-sm leading-7 text-white/65">
-              Come with questions. Share your experiences.
-              Leave with new perspectives and renewed faith.
-            </p>
-
-            <div className="mt-6 h-px w-full bg-white/15" />
-
-            <p className="mt-5 text-xs font-medium tracking-wide text-[#F0C98C]">
-              GROW • CONNECT • ENCOURAGE
-            </p>
           </div>
 
-          <div className="rounded-[22px] border border-[#EEDCD8] bg-[#F9EDEC] p-6">
-            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#991313]">
-              A Gentle Reminder
-            </span>
-
-            <h3 className="mt-3 font-serif text-xl text-[#101A2B]">
-              Let grace lead the conversation.
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[#716966]">
-              Listen thoughtfully, respond respectfully,
-              and make room for every voice.
-            </p>
+          {/* Always visible at the bottom of the conversation panel. */}
+          <div className="z-10 shrink-0 border-t border-[#B9BEC8]/35 bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8 lg:py-5">
+            <div className="mx-auto max-w-[780px]">
+              {user ? <form onSubmit={handleSubmitReply} className="flex items-end gap-2.5">
+                <label htmlFor="discussion-reply" className="sr-only">Write a reply</label>
+                <textarea id="discussion-reply" value={replyText} onChange={(e) => setReplyText(e.target.value)} placeholder="Share your thoughts..." rows={2} className="max-h-36 min-h-[52px] min-w-0 flex-1 resize-none rounded-2xl border border-[#B9BEC8]/60 bg-[#F8F8F8] px-4 py-3 text-sm leading-6 text-[#111827] outline-none placeholder:text-[#4D5057]/70 focus:border-[#991313] focus:ring-2 focus:ring-[#991313]/10 lg:resize-y" />
+                <button type="submit" aria-label="Post reply" disabled={submitting || !replyText.trim()} className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full bg-[#991313] text-white transition hover:bg-[#7F0E0E] disabled:cursor-not-allowed disabled:opacity-50"><Send size={19} /></button>
+              </form> : <div className="flex items-center justify-between gap-3"><p className="text-xs text-[#4D5057] sm:text-sm">Sign in to join the conversation.</p><button type="button" onClick={() => navigate('/login')} className="shrink-0 rounded-full bg-[#991313] px-5 py-2.5 text-xs font-semibold text-white">Log In</button></div>}
+              {submitting && <p className="mt-2 text-xs text-[#4D5057]">Posting your reply...</p>}
+              {replyError && <p role="alert" className="mt-2 text-xs font-medium text-[#991313]">{replyError}</p>}
+            </div>
           </div>
-
-          <Link
-            to="/forum"
-            className="flex items-center justify-between rounded-2xl border border-[#E9DAD6] bg-white px-5 py-4 text-sm font-semibold text-[#101A2B] transition hover:border-[#991313] hover:text-[#991313]"
-          >
-            Explore more discussions
-            <ArrowLeft size={16} className="rotate-180" />
-          </Link>
-        </aside>
+        </section>
       </div>
-    </div>
-  </main>
-);
+    </main>
+  );
 };
 
 export default DiscussionThread;

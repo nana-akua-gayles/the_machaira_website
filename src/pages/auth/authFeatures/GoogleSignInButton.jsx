@@ -1,62 +1,65 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { signInWithOAuth } from "../../../lib/authService";
-import { GoogleIcon } from "./authIcons";
+import { useGoogleIdentityScript } from "../../../lib/googleIdentity";
+import { signInWithGoogleIdToken } from "../../../lib/authService";
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function GoogleSignInButton({ onError }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const scriptLoaded = useGoogleIdentityScript();
+  const buttonRef = useRef(null);
+  const onErrorRef = useRef(onError);
 
-  async function handleGoogleLogin() {
-    if (isLoading) return;
+  useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
 
-    setIsLoading(true);
-    onError?.(null);
+  useEffect(() => {
+    if (!scriptLoaded || !buttonRef.current) return;
 
-    try {
-      await signInWithOAuth("google");
-    } catch (err) {
-      onError?.(
-        err?.message || "We couldn't sign you in with Google."
-      );
-      setIsLoading(false);
+    if (!GOOGLE_CLIENT_ID) {
+      onErrorRef.current?.("Google Client ID is missing.");
+      return;
     }
-  }
+
+    window.google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      ux_mode: "popup",
+      callback: async ({ credential }) => {
+        try {
+          if (!credential) {
+            throw new Error("Google did not return a credential.");
+          }
+
+          await signInWithGoogleIdToken(credential);
+          navigate("/", { replace: true });
+        } catch (err) {
+          onErrorRef.current?.(
+            err?.message || "Google sign-in failed."
+          );
+        }
+      },
+    });
+
+    buttonRef.current.replaceChildren();
+
+    window.google.accounts.id.renderButton(buttonRef.current, {
+      type: "standard",
+      theme: "outline",
+      size: "large",
+      shape: "pill",
+      text: "continue_with",
+      logo_alignment: "left",
+      width: 380,
+    });
+  }, [scriptLoaded, navigate]);
 
   return (
-    <button
-      type="button"
-      onClick={handleGoogleLogin}
-      disabled={isLoading}
-      className="
-        group flex w-full items-center justify-center gap-3
-        rounded-full border border-black/10
-        bg-white px-5 py-3
-        text-sm font-medium text-[#101A2B]
-        transition-all duration-300 ease-in-out
-
-        hover:border-[#4285F4]
-        hover:bg-[#4285F4]
-        hover:text-white
-        hover:shadow-[0_6px_20px_rgba(66,133,244,0.22)]
-
-        focus-visible:outline-none
-        focus-visible:ring-2
-        focus-visible:ring-[#4285F4]
-        focus-visible:ring-offset-2
-
-        active:scale-[0.98]
-        disabled:cursor-not-allowed
-        disabled:opacity-60
-      "
-    >
-      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white p-0.5">
-        <GoogleIcon />
-      </span>
-
-      <span>
-        {isLoading ? "Connecting to Google..." : "Continue with Google"}
-      </span>
-    </button>
+    <div className="flex w-full justify-center">
+      <div ref={buttonRef} />
+    </div>
   );
 }
 
