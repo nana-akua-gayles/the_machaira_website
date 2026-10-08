@@ -13,8 +13,7 @@ import About from "./pages/about/About";
 //NEWSFEED
 import Newsfeed from "./pages/newsfeed/NewsfeedPage";
 
-//CHURCH BLOG
-import ChurchBlog from "./pages/churchBlog/ChurchBlog";
+
 
 //DEVOTIONAL
 import Devotional from "./pages/devotional/Devotional";
@@ -25,6 +24,9 @@ import PreviousDevotional from "./pages/devotional/PreviousDevotional";
 import DiscussionForum from "./pages/discussionForum/DiscussionForum";
 import DiscussionThread from "./pages/discussionForum/DiscussionThread";
 import DiscussionNewPost from "./pages/discussionForum/DiscussionNewPost";
+
+import AboutChurch from "./pages/churchabout/AboutChurch";
+
 
 //PARTNERSHIP
 import Partnership from "./pages/partnership/Partnership";
@@ -60,6 +62,11 @@ function App() {
           <Route
             path="/newsfeed"
             element={<Newsfeed />}
+          />
+
+          <Route
+            path="/aboutChurch"
+            element={<AboutChurch />}
           />
 
           {/* Discussion Forum */}

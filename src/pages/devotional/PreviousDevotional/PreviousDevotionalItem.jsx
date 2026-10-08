@@ -42,7 +42,7 @@ function PreviousDevotionalItem({ devotional }) {
           />
 
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-[#101A2B]/55 transition-colors duration-300 group-hover:bg-[#991313]/65" />
+          <div className="absolute inset-0 bg-[#101A2B]/55 transition-colors duration-300 group-hover:bg-burgundy-primary/65" />
 
           {/* Episode information */}
           <div className="relative z-10 flex h-full flex-col justify-between p-4 text-white">
@@ -58,7 +58,7 @@ function PreviousDevotionalItem({ devotional }) {
 
         {/* Mobile metadata */}
         <div className="flex items-center gap-3 md:hidden">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#991313]">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-burgundy-primary">
             Episode {episode_number ?? "—"}
           </span>
 
@@ -74,7 +74,7 @@ function PreviousDevotionalItem({ devotional }) {
         <div className="min-w-0 flex-1">
           <div className="mb-2 hidden items-center gap-3 md:flex">
             {category && (
-              <span className="text-xs font-medium uppercase tracking-[0.16em] text-[#991313]">
+              <span className="text-xs font-medium uppercase tracking-[0.16em] text-burgundy-primary">
                 {category}
               </span>
             )}
@@ -90,7 +90,7 @@ function PreviousDevotionalItem({ devotional }) {
             )}
           </div>
 
-          <h3 className="max-w-[720px] text-xl font-semibold leading-tight tracking-[-0.025em] text-[#101A2B] transition-colors duration-300 group-hover:text-[#991313] md:text-2xl">
+          <h3 className="max-w-[720px] text-xl font-semibold leading-tight tracking-[-0.025em] text-navy-dark transition-colors duration-300 group-hover:text-burgundy-primary md:text-2xl">
             {title}
           </h3>
 
@@ -108,10 +108,10 @@ function PreviousDevotionalItem({ devotional }) {
         </div>
 
         {/* Read action */}
-        <div className="flex shrink-0 items-center gap-3 text-sm font-semibold text-[#991313]">
+        <div className="flex shrink-0 items-center gap-3 text-sm font-semibold text-burgundy-primary">
           <span className="hidden lg:inline">Read</span>
 
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#B9BEC8] transition-all duration-300 group-hover:border-[#991313] group-hover:bg-[#991313] group-hover:text-white">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#B9BEC8] transition-all duration-300 group-hover:border-[#991313] group-hover:bg-burgundy-primary group-hover:text-white">
             <svg
               width="17"
               height="17"

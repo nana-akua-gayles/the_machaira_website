@@ -7,12 +7,12 @@ function AuthPage() {
     <main className="min-h-screen bg-white py-8 lg:py-10">
       <div className="mx-auto max-w-[1400px] px-4 lg:px-8">
 
-        <div className="grid grid-cols-1 overflow-hidden rounded-[32px] bg-white shadow-sm lg:grid-cols-2">
+        <div className="grid grid-cols-1 overflow-hidden rounded-4xl bg-white shadow-sm lg:grid-cols-2">
           <AuthHeroPanel
             heading={
               <>
                 Welcome Back <br />
-                to the <span className="text-[#991313]">Family</span>
+                to the <span className="text-burgundy-primary">Family</span>
               </>
             }
             subtitle="Sign in to continue your faith journey, access exclusive content, and stay connected with our community."
@@ -23,7 +23,7 @@ function AuthPage() {
           </div>
         </div>
 
-        <div className="mt-4 flex items-center justify-center gap-2 text-xs text-[#4D5057]">
+        <div className="mt-4 flex items-center justify-center gap-2 text-xs text-cool-gray">
           <ShieldIcon />
           Your data is secure with us. We value your privacy.
         </div>

@@ -203,11 +203,523 @@ const SCRIPTURE_REF = new RegExp(
 
 // Finds the first scripture reference in a block of text, e.g. matches
 // "1 Thessalonians 5:13 (Amplified Bible)" wherever it appears, not just
-// on its own line.
+// on its own line. Reused below both for citation extraction and for
+// bolding references in the formatted article body, so both pieces stay
+// in sync on the same book-name pattern.
 function findScriptureReference(text) {
   const match = text.match(SCRIPTURE_REF);
   if (!match) return null;
   return { ref: match[1].trim().replace(/\.$/, ""), index: match.index, length: match[0].length };
+}
+
+// ---------------------------------------------------------------------
+// BODY FORMATTING
+// Runs on `mainContent` (the leftover article body after the banner,
+// title, memory verse, and footer sections below have been pulled out)
+// to produce the final display HTML: scripture references bolded,
+// dash/numbered/lettered list runs converted into real <ul>/<ol>
+// elements, and the body chunked into clean <p> tags.
+//
+// Ported from the mobile app's formatDevotionalHtml.js body-formatting
+// stage (boldScriptureRefs / convertDashLists / paragraphize), so both
+// apps render the same raw CMS content the same way.
+// ---------------------------------------------------------------------
+
+function stripTags(str) {
+  return (str || "").replace(/<[^>]+>/g, "");
+}
+
+// Removes a tag pair that only contains whitespace/<br>/&nbsp;.
+function stripEmptyTags(content) {
+  let prev;
+  let result = content;
+  do {
+    prev = result;
+    result = result
+      .replace(/<(h3|h4|p|em|strong|span|div)[^>]*>(\s|<br\s*\/?>|&nbsp;)*<\/\1>/gi, "")
+      .replace(/<a(?![^>]*download)[^>]*>\s*<\/a>/gi, "");
+  } while (result !== prev);
+  return result;
+}
+
+// Bolds every scripture reference found in the text.
+function boldScriptureRefs(text) {
+  const refRe = new RegExp(SCRIPTURE_REF.source, "gi");
+  return text.replace(refRe, (match) => `<strong>${match}</strong>`);
+}
+
+// Only keeps a link if it points at another devotional episode (not a
+// decorative/outbound link); any other <a> is unwrapped to plain text.
+// NOTE: the href pattern here ("episode-123") matches the old WordPress
+// site's URL scheme, which is what the raw CMS content actually
+// contains — it does NOT match this site's own /devotional/:id routes.
+// Kept behaviorally identical to the mobile app (strip decorative
+// links, keep episode-shaped ones) rather than silently rewriting
+// hrefs to internal routes, since that's a routing decision, not a
+// text-cleanup one.
+function isEpisodeNavLink(href) {
+  if (!href) return false;
+  const hasEpisodePattern = /episode-\d+/i.test(href);
+  const looksLikeFileDownload = /\.(pdf|docx?|xlsx?|zip|mp3|mp4)(\?|$)/i.test(href);
+  return hasEpisodePattern && !looksLikeFileDownload;
+}
+
+function stripNonEpisodeLinks(html) {
+  const stripped = html.replace(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi, (match, attrs, inner) => {
+    const hrefMatch = attrs.match(/href=["']([^"']*)["']/i);
+    const href = hrefMatch ? hrefMatch[1] : null;
+    if (isEpisodeNavLink(href)) return match;
+    return inner;
+  });
+  const parensCleaned = stripped.replace(/\(\s*\.?\s*\)\.?/g, "");
+  return parensCleaned.replace(/[ \t]{2,}/g, " ");
+}
+
+// ===================== LIST CONVERSION =====================
+// Converts runs of dash bullets ("– item – item"), line-start dash
+// bullets, numbered markers ("1. item 2. item"), and lettered
+// sub-markers ("a. item b. item") into real <ul>/<ol> elements.
+
+function convertMarkerRun(text, markerRe, matchOffset, stripMarker, tag, maxGap = 260) {
+  const markers = [];
+  let m;
+  while ((m = markerRe.exec(text))) {
+    // Numeric markers ("1.", "12.") get their literal ordinal. Single
+    // lowercase-letter markers ("a.", "b.") get an ordinal too (a=1,
+    // b=2, ...) so the sequence-reset check below also applies to
+    // lettered sub-lists, not just numbered ones.
+    let num = null;
+    if (m[1] && /^\d+$/.test(m[1])) {
+      num = parseInt(m[1], 10);
+    } else if (m[1] && /^[a-z]$/.test(m[1])) {
+      num = m[1].charCodeAt(0) - "a".charCodeAt(0) + 1;
+    }
+    markers.push({ start: m.index + matchOffset(m), end: m.index + m[0].length, num });
+  }
+  if (markers.length < 2) return text;
+
+  const runs = [];
+  let current = [markers[0]];
+  for (let i = 1; i < markers.length; i++) {
+    const withinGap = markers[i].start - markers[i - 1].start <= maxGap;
+    const isSequenceReset =
+      markers[i].num !== null && markers[i - 1].num !== null && markers[i].num <= markers[i - 1].num;
+    if (withinGap && !isSequenceReset) {
+      current.push(markers[i]);
+    } else {
+      if (current.length >= 2) runs.push(current);
+      current = [markers[i]];
+    }
+  }
+  if (current.length >= 2) runs.push(current);
+  if (runs.length === 0) return text;
+
+  const replacements = [];
+  const runLastItemEnds = [];
+
+  runs.forEach((run, runIndex) => {
+    const firstMarker = run[0].start;
+    const lastMarkerEnd = run[run.length - 1].end;
+    const nextRunFirstMarker = runIndex + 1 < runs.length ? runs[runIndex + 1][0].start : text.length;
+    const afterLastMarker = text.slice(lastMarkerEnd, nextRunFirstMarker);
+
+    // A block-level tag (blockquote/h3/h4/p) is a hard structural
+    // boundary: the list run can never extend past it.
+    const blockBoundaryMatch = afterLastMarker.match(/<(blockquote|h3|h4|p)[\s>]/i);
+    const searchWindow = blockBoundaryMatch
+      ? afterLastMarker.slice(0, blockBoundaryMatch.index)
+      : afterLastMarker;
+
+    // A blank line (paragraph break) inside the search window is a
+    // stronger signal of where the last item's own content ends than
+    // the first sentence-ending punctuation.
+    const blankLineMatch = searchWindow.match(/\n\s*\n/);
+    const endMatch = blankLineMatch ? null : searchWindow.match(/[.!?](?=\s+[A-Z]|\s*$)/);
+    const lastItemEnd = blankLineMatch
+      ? lastMarkerEnd + blankLineMatch.index
+      : endMatch
+      ? lastMarkerEnd + endMatch.index + 1
+      : blockBoundaryMatch
+      ? lastMarkerEnd + blockBoundaryMatch.index
+      : nextRunFirstMarker;
+    runLastItemEnds.push(lastItemEnd);
+
+    const before = text.slice(0, firstMarker);
+    // A colon can also appear inside a scripture reference just before
+    // the list ("...Psalm 25:14 (TLB) 1. Honor God..."). Walk backward
+    // past any colon that sits inside a "Book Chapter:Verse" reference.
+    const isScriptureColon = (idx) => {
+      const windowStart = Math.max(0, idx - 40);
+      const window = text.slice(windowStart, idx);
+      const refMatch = window.match(new RegExp(`${SCRIPTURE_REF.source}$`, "i"));
+      return !!refMatch;
+    };
+    let colonIdx = before.lastIndexOf(":");
+    while (colonIdx !== -1 && isScriptureColon(colonIdx)) {
+      colonIdx = before.lastIndexOf(":", colonIdx - 1);
+    }
+    const previousRunEnd = runIndex > 0 ? runLastItemEnds[runIndex - 1] : -1;
+    let introEnd =
+      colonIdx !== -1 && colonIdx >= previousRunEnd && firstMarker - colonIdx < 150 ? colonIdx + 1 : firstMarker;
+    // If the chosen intro boundary sits inside a still-open block tag
+    // (e.g. a colon inside "<blockquote>...wisdom:</blockquote> 1.
+    // Honor God..." — the colon comes before the blockquote's OWN
+    // closing tag), the list must not start there. Move the boundary
+    // to right after the last such closing tag found before the first
+    // marker.
+    const betweenIntroAndMarker = text.slice(introEnd, firstMarker);
+    const closingTagMatches = [...betweenIntroAndMarker.matchAll(/<\/(blockquote|h3|h4|p)>/gi)];
+    if (closingTagMatches.length > 0) {
+      const lastClose = closingTagMatches[closingTagMatches.length - 1];
+      introEnd = introEnd + lastClose.index + lastClose[0].length;
+    }
+
+    const listBlock = text.slice(introEnd, lastItemEnd);
+    const localMarkers = run.map((mk) => mk.start - introEnd).filter((idx) => idx >= 0 && idx <= listBlock.length);
+
+    const anchorSpans = [];
+    const anchorRe = /<a\b[^>]*>[\s\S]*?<\/a>/gi;
+    let am;
+    while ((am = anchorRe.exec(listBlock))) {
+      anchorSpans.push({ start: am.index, end: am.index + am[0].length });
+    }
+    const wouldTearAnchor = localMarkers.some((idx) => anchorSpans.some((span) => idx > span.start && idx < span.end));
+    if (wouldTearAnchor) {
+      return;
+    }
+
+    // A block-level tag can also appear BETWEEN two markers within an
+    // otherwise-continuous run (not just after the last one). Left
+    // unhandled, that block tag gets swallowed into the preceding
+    // item's own <li>, producing invalid nested markup. When found,
+    // the list is split into separate <tag>...</tag> segments around
+    // the block content, floated out raw between them.
+    const BLOCK_TAG_RE = /<(blockquote|h3|h4|p)[\s>]/i;
+    const segments = []; // { type: 'list', items: [...] } | { type: 'raw', html: '...' }
+    let currentItems = [];
+    for (let i = 0; i < localMarkers.length; i++) {
+      const start = localMarkers[i];
+      const end = i + 1 < localMarkers.length ? localMarkers[i + 1] : listBlock.length;
+      const rawSpan = listBlock.slice(start, end);
+      const blockMatch = i < localMarkers.length - 1 ? rawSpan.match(BLOCK_TAG_RE) : null;
+
+      if (!blockMatch) {
+        const cleaned = stripMarker(rawSpan.trim()).trim();
+        if (cleaned) currentItems.push(cleaned);
+        continue;
+      }
+
+      const itemTextRaw = rawSpan.slice(0, blockMatch.index).trim();
+      const itemCleaned = stripMarker(itemTextRaw).trim();
+      if (itemCleaned) currentItems.push(itemCleaned);
+
+      if (currentItems.length >= 2) {
+        segments.push({ type: "list", items: currentItems });
+      } else if (currentItems.length === 1) {
+        // Too few items to form a valid list on their own: surface the
+        // lone item as plain text rather than silently dropping it.
+        segments.push({ type: "raw", html: currentItems[0] });
+      }
+      currentItems = [];
+
+      const closeTagRe = new RegExp(`</${blockMatch[1]}>`, "i");
+      const afterBlockStart = rawSpan.slice(blockMatch.index);
+      const closeMatch = afterBlockStart.match(closeTagRe);
+      const blockHtml = closeMatch
+        ? afterBlockStart.slice(0, closeMatch.index + closeMatch[0].length)
+        : afterBlockStart;
+      segments.push({ type: "raw", html: blockHtml.trim() });
+
+      const trailing = closeMatch ? afterBlockStart.slice(closeMatch.index + closeMatch[0].length).trim() : "";
+      if (trailing) segments.push({ type: "raw", html: trailing });
+    }
+    if (currentItems.length >= 2) {
+      segments.push({ type: "list", items: currentItems });
+    } else if (currentItems.length === 1) {
+      segments.push({ type: "raw", html: currentItems[0] });
+    }
+
+    if (segments.length === 1 && segments[0].type === "list") {
+      const listHtml = `<${tag}>${segments[0].items.map((i) => `<li>${i}</li>`).join("")}</${tag}>`;
+      replacements.push({ start: introEnd, end: lastItemEnd, html: listHtml });
+      return;
+    }
+
+    const hasRealList = segments.some((s) => s.type === "list");
+    if (!hasRealList) return;
+
+    const combinedHtml = segments
+      .map((s) => (s.type === "list" ? `<${tag}>${s.items.map((i) => `<li>${i}</li>`).join("")}</${tag}>` : s.html))
+      .join("");
+    replacements.push({ start: introEnd, end: lastItemEnd, html: combinedHtml });
+  });
+
+  if (replacements.length === 0) return text;
+
+  replacements.sort((a, b) => a.start - b.start);
+  const safeReplacements = [];
+  let lastEnd = -1;
+  replacements.forEach((r) => {
+    if (r.start < lastEnd) return;
+    safeReplacements.push(r);
+    lastEnd = r.end;
+  });
+
+  let result = text;
+  safeReplacements
+    .slice()
+    .reverse()
+    .forEach(({ start, end, html }) => {
+      result = result.slice(0, start) + " " + html + result.slice(end);
+    });
+  return result;
+}
+
+function convertDashLists(text) {
+  const listedDash = convertMarkerRun(
+    text,
+    /(\S)([\u2013\u2014-])(?=\s)/g,
+    (m) => m[1].length,
+    (raw) => raw.replace(/^[\u2013\u2014-]\s*/, ""),
+    "ul"
+  );
+  // Line-start dash bullets (dash sits at the start of its own line, or
+  // right after a closing block tag like </blockquote>) are a distinct
+  // source pattern from the glued-dash style above.
+  const listedLineDash = convertMarkerRun(
+    listedDash,
+    /(^|\n|>)\s*[\u2013\u2014-]\s+(?=[A-Z])/g,
+    (m) => m[1].length,
+    (raw) => raw.replace(/^[\u2013\u2014-]\s*/, ""),
+    "ul",
+    2000
+  );
+  const listedNumeric = convertMarkerRun(
+    listedLineDash,
+    /\b(\d{1,2})\.\s+(?=[A-Z<])/g,
+    () => 0,
+    (raw) => raw.replace(/^\d{1,2}\.\s*/, ""),
+    "ol",
+    1200
+  );
+  // Lettered sub-lists ("a. ... b. ... c. ...") appear inside numbered
+  // points as a second tier. Require a lowercase letter a-f that is NOT
+  // part of a multi-letter abbreviation ("a.k.a.", "e.g.").
+  const listedLettered = convertMarkerRun(
+    listedNumeric,
+    /(?<![a-z]\.)\b([a-f])\.\s+(?=[A-Z<])(?![a-z]\.\s)/g,
+    () => 0,
+    (raw) => raw.replace(/^[a-f]\.\s*/, ""),
+    "ol",
+    400
+  );
+  return listedLettered;
+}
+
+// ===================== PARAGRAPH / SENTENCE CHUNKING =====================
+
+function splitBlocks(html) {
+  return html
+    .split(/(<blockquote[\s\S]*?<\/blockquote>|<ul[\s\S]*?<\/ul>|<ol[\s\S]*?<\/ol>|<h3[\s\S]*?<\/h3>|<h4[\s\S]*?<\/h4>|<p[\s\S]*?<\/p>)/gi)
+    .filter((part) => part.trim().length);
+}
+
+const CLOSING_WORDS_RE = /^(Shalom|Hallelujah|Selah|Glory to God|Oh Hallelujah)[.!?\s]*$/i;
+
+function isAllCapsSentence(text) {
+  const stripped = text.replace(/<[^>]+>/g, "");
+  const core = stripped.replace(/[^A-Za-z]/g, "");
+  return core.length >= 3 && core === core.toUpperCase();
+}
+
+function isLinkSentence(text) {
+  return /<a[\s>]/i.test(text);
+}
+
+function isClosingWordSentence(text) {
+  const stripped = text.replace(/<[^>]+>/g, "").trim();
+  return CLOSING_WORDS_RE.test(stripped);
+}
+
+function findScriptureQuoteSpans(text) {
+  const spans = [];
+  const openRe = /["'\u2018\u201c\u201d]/g;
+  let m;
+  let searchFrom = 0;
+  while ((m = openRe.exec(text))) {
+    if (m.index < searchFrom) continue;
+    const precedingChar = text[m.index - 1];
+    if (precedingChar && /[A-Za-z]/.test(precedingChar)) continue;
+    const openIdx = m.index;
+    const closeRe = /["'\u2018\u201c\u201d]/g;
+    closeRe.lastIndex = openIdx + 1;
+    let closeMatch;
+    let found = null;
+    let usedCloseIdx = -1;
+    while ((closeMatch = closeRe.exec(text))) {
+      if (closeMatch.index - openIdx > 1500) break;
+      const candidate = text.slice(closeMatch.index + 1, closeMatch.index + 1 + 60).match(new RegExp(SCRIPTURE_REF.source, "i"));
+      if (candidate && candidate.index <= 40) {
+        found = candidate;
+        usedCloseIdx = closeMatch.index;
+        break;
+      }
+    }
+    if (found) {
+      const refStart = usedCloseIdx + 1 + found.index;
+      const refEnd = refStart + found[0].length;
+      spans.push({ start: openIdx, end: refEnd });
+      searchFrom = refEnd;
+      openRe.lastIndex = refEnd;
+    }
+  }
+  return spans;
+}
+
+function groupSentenceChunks(text) {
+  const PERIOD_MASK = "\u0001";
+  const textWithMaskedAnchorPeriods = text.replace(/<a\b[^>]*>[\s\S]*?<\/a>/gi, (anchorTag) =>
+    anchorTag.replace(/\./g, PERIOD_MASK)
+  );
+  // A lone numbered/lettered-list-style marker that didn't get
+  // converted into an actual <ol> still looks exactly like an
+  // abbreviated sentence ending to the splitter below.
+  const textWithMaskedMarkerPeriods = textWithMaskedAnchorPeriods
+    .replace(/(^|[\s>])(\d{1,2})\.(\s+[A-Z])/g, (m, pre, num, post) => `${pre}${num}${PERIOD_MASK}${post}`)
+    .replace(/(^|[\s>])([a-f])\.(\s+[A-Z])/g, (m, pre, letter, post) => `${pre}${letter}${PERIOD_MASK}${post}`);
+
+  const spans = findScriptureQuoteSpans(textWithMaskedMarkerPeriods);
+  // If a scripture-quote span's opening quote is immediately preceded
+  // by a short lead-in that starts with a masked list marker, extend
+  // the span backward to include that lead-in.
+  const MARKER_LEADIN_RE = new RegExp(`(?:^|[\\s>])(?:\\d{1,2}|[a-f])${PERIOD_MASK}\\s+[A-Za-z][A-Za-z\\s]{0,30}$`);
+  spans.forEach((span) => {
+    const before = textWithMaskedMarkerPeriods.slice(0, span.start);
+    const leadInMatch = before.match(MARKER_LEADIN_RE);
+    if (leadInMatch) {
+      const leadInStart = before.length - leadInMatch[0].length + (leadInMatch[0].match(/^[\s>]/) ? 1 : 0);
+      span.start = leadInStart;
+    }
+  });
+
+  const protectedUnits = [];
+  let working = textWithMaskedMarkerPeriods;
+  let offset = 0;
+  spans.forEach((span, i) => {
+    const adjStart = span.start - offset;
+    const adjEnd = span.end - offset;
+    const unit = working.slice(adjStart, adjEnd);
+    protectedUnits.push(unit);
+    const token = `@@SCRIPT${i}@@`;
+    working = working.slice(0, adjStart) + token + working.slice(adjEnd);
+    offset += (adjEnd - adjStart) - token.length;
+  });
+
+  const sentences = working
+    .split(
+      /(?<=[.!?:])\s+(?=[A-Z"\u201c(@]|<(?!\/))|(?<=@@SCRIPT\d+@@)\s*(?=[A-Za-z"\u201c\u2018])|(?<=[a-zA-Z:])\s*(?=@@SCRIPT\d+@@)/
+    )
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const chunks = [];
+  let current = [];
+  let fullstopCount = 0;
+  const flush = () => {
+    if (current.length) {
+      chunks.push(current.join(" "));
+      current = [];
+      fullstopCount = 0;
+    }
+  };
+  const restoreTokens = (s) =>
+    s.replace(/@@SCRIPT(\d+)@@/g, (_, i) => protectedUnits[Number(i)]).replace(new RegExp(PERIOD_MASK, "g"), ".");
+
+  sentences.forEach((rawSentence) => {
+    if (!rawSentence) return;
+    const sentence = restoreTokens(rawSentence);
+    const isProtectedUnit = /@@SCRIPT\d+@@/.test(rawSentence);
+    if (isLinkSentence(sentence) || isAllCapsSentence(sentence) || isClosingWordSentence(sentence)) {
+      flush();
+      chunks.push(sentence);
+      return;
+    }
+    const endsInQuestion = /\?\s*$/.test(sentence);
+    if (endsInQuestion && !isProtectedUnit) {
+      current.push(sentence);
+      flush();
+      return;
+    }
+    const periodsHere = (sentence.match(/\./g) || []).length;
+    if (current.length > 0 && fullstopCount + periodsHere > 3) {
+      flush();
+    }
+    current.push(sentence);
+    fullstopCount += periodsHere;
+    if (fullstopCount > 3) {
+      flush();
+    }
+  });
+  flush();
+  return chunks;
+}
+
+function splitAdjacentAnchorChunks(chunks) {
+  const result = [];
+  chunks.forEach((chunk) => {
+    const pieces = chunk.split(/(?<=<\/a>)\s*(?=<a\b)/gi).map((p) => p.trim()).filter(Boolean);
+    pieces.forEach((p) => result.push(p));
+  });
+  return result;
+}
+
+function paragraphizeText(text) {
+  return splitAdjacentAnchorChunks(groupSentenceChunks(text)).map((chunk) => `<p>${chunk}</p>`);
+}
+
+function breakSentencesForList(text) {
+  return groupSentenceChunks(text).join("<br/><br/>");
+}
+
+function breakLongListItems(listHtml) {
+  return listHtml.replace(/<li>([\s\S]*?)<\/li>/gi, (match, inner) => {
+    const plainLength = inner.replace(/<[^>]+>/g, "").length;
+    if (plainLength < 200) return match;
+    return `<li>${breakSentencesForList(inner)}</li>`;
+  });
+}
+
+function paragraphize(bodyHtml) {
+  const parts = splitBlocks(bodyHtml);
+  const htmlParts = [];
+  parts.forEach((part) => {
+    const trimmed = part.trim();
+    if (/^<(ol|ul)/i.test(trimmed)) {
+      htmlParts.push(breakLongListItems(trimmed));
+      return;
+    }
+    if (/^<(blockquote|h3|h4)/i.test(trimmed)) {
+      htmlParts.push(trimmed);
+      return;
+    }
+    if (/^<p/i.test(trimmed)) {
+      const text = trimmed.replace(/^<p[^>]*>/i, "").replace(/<\/p>$/i, "");
+      htmlParts.push(...paragraphizeText(text));
+      return;
+    }
+    htmlParts.push(...paragraphizeText(trimmed));
+  });
+  return htmlParts.join("");
+}
+
+// Runs the full body-formatting pipeline on the leftover article body.
+function formatDevotionalBody(mainContent) {
+  if (!mainContent) return "";
+  let content = stripNonEpisodeLinks(mainContent);
+  content = stripEmptyTags(content);
+  const listed = convertDashLists(content);
+  const bolded = boldScriptureRefs(listed);
+  return paragraphize(bolded);
 }
 
 // Looks for a citation in the text right after the memory verse's closing
@@ -401,12 +913,18 @@ export function parseDevotionalContent(rawContent) {
   const { mainContent, deepDiver, prayer, bibleReading, declarations } =
     extractSections(afterHeader);
 
+  // mainContent at this point is still raw leftover HTML -- run it
+  // through the body-formatting pipeline (scripture refs bolded,
+  // dash/numbered/lettered lists converted, paragraph chunking) so the
+  // caller gets back display-ready HTML, not raw CMS text.
+  const formattedMainContent = formatDevotionalBody(mainContent);
+
   return {
     authorMessage,
     hasBanner,
     titleText,
     memoryVerse,
-    mainContent,
+    mainContent: formattedMainContent,
     deepDiver,
     prayer,
     bibleReading,

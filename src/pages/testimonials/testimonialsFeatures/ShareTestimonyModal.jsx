@@ -171,18 +171,18 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
       <div className="relative z-10 flex max-h-[92vh] w-full max-w-[640px] flex-col overflow-hidden rounded-[28px] bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[modalIn_.35s_cubic-bezier(0.16,1,0.3,1)]">
 
         {/* Ambient glow */}
-        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#991313]/8 blur-[70px]" />
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-burgundy-primary/8 blur-[70px]" />
 
         {/* Header */}
         <div className="relative flex items-start justify-between gap-4 border-b border-[#f0e4db]/80 px-6 py-5 sm:px-8 sm:py-6">
           <div className="min-w-0">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#991313]">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-burgundy-primary">
               Testimonies
             </span>
-            <h2 className="mt-1 font-serif text-[1.5rem] leading-tight tracking-[-0.02em] text-[#101A2B] sm:text-[1.75rem]">
-              Share your <span className="italic text-[#991313]">story</span>
+            <h2 className="mt-1 font-serif text-[1.5rem] leading-tight tracking-[-0.02em] text-navy-dark sm:text-[1.75rem]">
+              Share your <span className="italic text-burgundy-primary">story</span>
             </h2>
-            <p className="mt-1 text-[13px] leading-6 text-[#4D5057]">
+            <p className="mt-1 text-[13px] leading-6 text-cool-gray">
               What has God done in your life? Someone needs to hear it.
             </p>
           </div>
@@ -192,7 +192,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
             onClick={() => !submitting && onClose()}
             aria-label="Close"
             disabled={submitting}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black/5 text-[#101A2B]/60 backdrop-blur-md transition-all duration-200 hover:rotate-90 hover:bg-black/10 hover:text-[#101A2B] disabled:opacity-40"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black/5 text-navy-dark/60 backdrop-blur-md transition-all duration-200 hover:rotate-90 hover:bg-black/10 hover:text-navy-dark disabled:opacity-40"
           >
             <X className="h-4 w-4" />
           </button>
@@ -204,7 +204,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
           {/* ============ AUTH STILL LOADING ============ */}
           {authLoading && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <Loader2 className="h-6 w-6 animate-spin text-[#991313]" />
+              <Loader2 className="h-6 w-6 animate-spin text-burgundy-primary" />
               <p className="mt-3 text-sm text-[#6B7280]">Checking your session…</p>
             </div>
           )}
@@ -227,17 +227,17 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                 </svg>
               </div>
 
-              <p className="mt-5 font-serif text-xl text-[#101A2B]">
+              <p className="mt-5 font-serif text-xl text-navy-dark">
                 Please sign in to share
               </p>
-              <p className="mt-2 max-w-[320px] text-sm leading-6 text-[#4D5057]">
+              <p className="mt-2 max-w-[320px] text-sm leading-6 text-cool-gray">
                 We keep testimonies tied to real accounts so our community
                 stays genuine. Your identity can still be hidden.
               </p>
 
               <Link
                 to="/login"
-                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#991313] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#7F0E0E]"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-burgundy-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#7F0E0E]"
               >
                 Sign In
               </Link>
@@ -250,14 +250,14 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
 
               {/* Category */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#101A2B]">
+                <label className="mb-1.5 block text-sm font-medium text-navy-dark">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   disabled={submitting}
-                  className={`w-full appearance-none rounded-xl border bg-white px-4 py-3 text-sm text-[#101A2B] outline-none transition-colors focus:border-[#991313] disabled:opacity-60 ${
+                  className={`w-full appearance-none rounded-xl border bg-white px-4 py-3 text-sm text-navy-dark outline-none transition-colors focus:border-[#991313] disabled:opacity-60 ${
                     fieldErrors.category ? "border-[#991313]" : "border-[#E5E7EB]"
                   }`}
                 >
@@ -269,7 +269,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                   ))}
                 </select>
                 {fieldErrors.category && (
-                  <p className="mt-1.5 text-xs text-[#991313]">
+                  <p className="mt-1.5 text-xs text-burgundy-primary">
                     {fieldErrors.category}
                   </p>
                 )}
@@ -278,13 +278,13 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
               {/* Content */}
               <div>
                 <div className="mb-1.5 flex items-center justify-between">
-                  <label className="block text-sm font-medium text-[#101A2B]">
+                  <label className="block text-sm font-medium text-navy-dark">
                     Your testimony
                   </label>
                   <span
                     className={`text-xs ${
                       content.length > MAX_CONTENT
-                        ? "text-[#991313]"
+                        ? "text-burgundy-primary"
                         : "text-[#6B7280]"
                     }`}
                   >
@@ -297,12 +297,12 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                   disabled={submitting}
                   rows={7}
                   placeholder="Tell us what God has done…"
-                  className={`w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm leading-6 text-[#101A2B] placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] disabled:opacity-60 ${
+                  className={`w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm leading-6 text-navy-dark placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] disabled:opacity-60 ${
                     fieldErrors.content ? "border-[#991313]" : "border-[#E5E7EB]"
                   }`}
                 />
                 {fieldErrors.content && (
-                  <p className="mt-1.5 text-xs text-[#991313]">
+                  <p className="mt-1.5 text-xs text-burgundy-primary">
                     {fieldErrors.content}
                   </p>
                 )}
@@ -310,7 +310,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
 
               {/* Image upload */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#101A2B]">
+                <label className="mb-1.5 block text-sm font-medium text-navy-dark">
                   Add an image{" "}
                   <span className="font-normal text-[#6B7280]">(optional)</span>
                 </label>
@@ -320,7 +320,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={submitting}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#E5E7EB] bg-white px-4 py-6 text-sm text-[#6B7280] transition-colors hover:border-[#991313] hover:text-[#991313] disabled:opacity-60"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#E5E7EB] bg-white px-4 py-6 text-sm text-[#6B7280] transition-colors hover:border-[#991313] hover:text-burgundy-primary disabled:opacity-60"
                   >
                     <Upload className="h-4 w-4" />
                     Click to upload an image
@@ -353,7 +353,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                 />
 
                 {fieldErrors.image && (
-                  <p className="mt-1.5 text-xs text-[#991313]">
+                  <p className="mt-1.5 text-xs text-burgundy-primary">
                     {fieldErrors.image}
                   </p>
                 )}
@@ -369,7 +369,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                   className="mt-0.5 h-4 w-4 shrink-0 accent-[#991313]"
                 />
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-[#101A2B]">
+                  <p className="text-sm font-medium text-navy-dark">
                     Post anonymously
                   </p>
                   <p className="mt-0.5 text-xs leading-5 text-[#6B7280]">
@@ -381,7 +381,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
 
               {/* Global error */}
               {errorMsg && (
-                <div className="rounded-xl border border-[#991313]/30 bg-[#FBF1F1] px-4 py-3 text-sm text-[#991313]">
+                <div className="rounded-xl border border-[#991313]/30 bg-[#FBF1F1] px-4 py-3 text-sm text-burgundy-primary">
                   {errorMsg}
                 </div>
               )}
@@ -397,7 +397,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                 type="button"
                 onClick={onClose}
                 disabled={submitting}
-                className="rounded-xl border border-[#E5E7EB] px-5 py-2.5 text-sm font-medium text-[#4D5057] transition-colors hover:border-[#991313] hover:text-[#991313] disabled:opacity-60"
+                className="rounded-xl border border-[#E5E7EB] px-5 py-2.5 text-sm font-medium text-cool-gray transition-colors hover:border-[#991313] hover:text-burgundy-primary disabled:opacity-60"
               >
                 Cancel
               </button>
@@ -406,7 +406,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                 type="button"
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#991313] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7F0E0E] disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-burgundy-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7F0E0E] disabled:opacity-60"
               >
                 {submitting ? (
                   <>

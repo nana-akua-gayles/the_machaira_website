@@ -33,7 +33,7 @@ function ExperiencePanelContent() {
         <h2 className="text-lg font-semibold tracking-[-0.02em] text-[#111827]">
           Your Devotional Experience
         </h2>
-        <div className="mt-3 h-[2px] w-12 bg-[#991313]" />
+        <div className="mt-3 h-[2px] w-12 bg-burgundy-primary" />
       </div>
 
       <div className="rounded-2xl border border-black/10 p-4">
@@ -41,7 +41,7 @@ function ExperiencePanelContent() {
           <div>
             <span className="text-sm font-medium text-[#374151]">Streak</span>
             <p className="mt-2 text-2xl font-semibold text-[#111827]">12 Days</p>
-            <p className="mt-1 text-xs font-medium text-[#991313]">Keep going!</p>
+            <p className="mt-1 text-xs font-medium text-burgundy-primary">Keep going!</p>
           </div>
           <div className="relative flex h-[76px] w-[76px] items-center justify-center rounded-full bg-[conic-gradient(#991313_0deg_270deg,#E5E7EB_270deg_360deg)]">
             <div className="flex h-[58px] w-[58px] items-center justify-center rounded-full bg-white">
@@ -60,7 +60,7 @@ function ExperiencePanelContent() {
               <div
                 key={`${day}-${index}`}
                 className={`flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-semibold ${
-                  completed ? "bg-[#991313] text-white" : "bg-[#E5E7EB] text-[#374151]"
+                  completed ? "bg-burgundy-primary text-white" : "bg-[#E5E7EB] text-[#374151]"
                 }`}
               >
                 {day}
@@ -76,7 +76,7 @@ function ExperiencePanelContent() {
       >
         <div>
           <p className="text-sm font-medium text-[#111827]">Download for Offline</p>
-          <p className="mt-1 text-xs text-[#4D5057]">Save and read anywhere</p>
+          <p className="mt-1 text-xs text-cool-gray">Save and read anywhere</p>
         </div>
         <span className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-lg">↓</span>
       </button>
@@ -87,7 +87,7 @@ function ExperiencePanelContent() {
       >
         <div>
           <p className="text-sm font-medium text-[#111827]">Share Today's Devotional</p>
-          <p className="mt-1 text-xs text-[#4D5057]">Encourage someone</p>
+          <p className="mt-1 text-xs text-cool-gray">Encourage someone</p>
         </div>
         <span className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-lg">↗</span>
       </button>
@@ -95,12 +95,12 @@ function ExperiencePanelContent() {
       <div className="relative mt-3 overflow-hidden rounded-2xl border border-[#E7DCD2] bg-[#F8F1EA] p-5">
         <div className="relative z-10 max-w-[190px]">
           <p className="text-sm font-semibold text-[#111827]">Join Our Community</p>
-          <p className="mt-2 text-xs leading-5 text-[#4D5057]">
+          <p className="mt-2 text-xs leading-5 text-cool-gray">
             Discuss, connect and grow together in faith.
           </p>
           <button
             type="button"
-            className="mt-4 rounded-full bg-[#991313] px-5 py-2.5 text-xs font-semibold text-white transition duration-300 hover:bg-[#7F0E0E]"
+            className="mt-4 rounded-full bg-burgundy-primary px-5 py-2.5 text-xs font-semibold text-white transition duration-300 hover:bg-[#7F0E0E]"
           >
             Join Forum
           </button>
@@ -180,7 +180,7 @@ function FloatingToggle({ position, onPositionChange, onOpen }) {
       onClick={handleClick}
       aria-label="Open your devotional experience"
       style={{ left: position.x, top: position.y }}
-      className="fixed z-30 flex h-16 w-16 touch-none select-none flex-col items-center justify-center rounded-full bg-[#991313] text-white shadow-[0_10px_30px_rgba(153,19,19,0.35)] transition-transform duration-150 active:scale-95"
+      className="fixed z-30 flex h-16 w-16 touch-none select-none flex-col items-center justify-center rounded-full bg-burgundy-primary text-white shadow-[0_10px_30px_rgba(153,19,19,0.35)] transition-transform duration-150 active:scale-95"
     >
       <span className="text-lg font-semibold leading-none">12</span>
       <span className="mt-0.5 text-[9px] uppercase tracking-wide">days</span>

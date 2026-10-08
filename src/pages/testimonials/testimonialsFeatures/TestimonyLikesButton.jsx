@@ -64,7 +64,7 @@ export default function TestimonyLikesButton({
       aria-label={optimisticLiked ? "Unlike" : "Like"}
       aria-pressed={optimisticLiked}
       className={`group/like flex items-center gap-1.5 transition-colors ${
-        optimisticLiked ? "text-[#991313]" : "text-[#6B7280] hover:text-[#991313]"
+        optimisticLiked ? "text-burgundy-primary" : "text-[#6B7280] hover:text-burgundy-primary"
       } ${busy ? "opacity-60" : ""}`}
     >
       <Heart

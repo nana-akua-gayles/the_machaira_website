@@ -56,9 +56,9 @@ function DevotionalHero({
       <div className="absolute inset-0 bg-white/30" />
 
       {/* Breadcrumb */}
-      <div className="relative z-10 mx-auto max-w-[1440px] px-8 pt-10 lg:px-12">
+      <div className="relative z-10 mx-auto max-w-360 px-8 pt-10 lg:px-12">
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-lg text-[#991313]">
+          <span className="text-lg text-burgundy-primary">
             ⌂
           </span>
 
@@ -73,7 +73,7 @@ function DevotionalHero({
       </div>
 
       {/* Main hero content */}
-      <div className="relative z-10 mx-auto flex min-h-[510px] max-w-[1440px] px-8 lg:px-12">
+      <div className="relative z-10 mx-auto flex min-h-[510px] max-w-360 px-8 lg:px-12">
 
         {/* Date navigation */}
         <DevotionalDateNav
@@ -90,11 +90,11 @@ function DevotionalHero({
 
             {loading ? (
               <>
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
                   Daily Devotional
                 </p>
 
-                <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#101A2B] lg:text-6xl">
+                <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
                   Loading today's
                   <br />
                   devotional...
@@ -102,11 +102,11 @@ function DevotionalHero({
               </>
             ) : error ? (
               <>
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
                   Devotional
                 </p>
 
-                <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#101A2B] lg:text-6xl">
+                <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
                   Something went
                   <br />
                   wrong.
@@ -119,24 +119,24 @@ function DevotionalHero({
             ) : hasDevotional ? (
               <>
                 {/* Category */}
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
                   {devotional.category || "Daily Devotional"}
                 </p>
 
                 {/* Title */}
-                <h1 className="max-w-[560px] text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#101A2B] lg:text-6xl">
+                <h1 className="max-w-[560px] text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
                   {formatted.mainTitle}
                 </h1>
 
                 {/* Episode */}
                 {formatted.episodeLabel && (
-                  <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#4D5057]">
+                  <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-cool-gray">
                     {formatted.episodeLabel}
                   </p>
                 )}
 
                 {/* Accent line */}
-                <div className="my-7 h-[2px] w-12 bg-[#991313]" />
+                <div className="my-7 h-[2px] w-12 bg-burgundy-primary" />
 
                 {/* Description */}
                 <p className="max-w-[500px] text-lg leading-8 text-[#374151]">
@@ -154,7 +154,7 @@ function DevotionalHero({
                           <button
                             type="button"
                             onClick={() => setShowFullExcerpt((prev) => !prev)}
-                            className="font-semibold text-[#991313] transition-colors duration-200 hover:text-[#7f0e0e]"
+                            className="font-semibold text-burgundy-primary transition-colors duration-200 hover:text-[#7f0e0e]"
                           >
                             {showFullExcerpt ? "See less" : "See more"}
                           </button>
@@ -172,7 +172,7 @@ function DevotionalHero({
                 <button
                   type="button"
                   onClick={() => navigate(`/devotional/${devotional.id}`)}
-                  className="rounded-full bg-[#991313] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
+                  className="rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
                 >
                   <span className="mr-2">▢</span>
                   Read Devotional
@@ -188,17 +188,17 @@ function DevotionalHero({
             ) : (
               <>
                 {/* No devotional today */}
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
                   Your Journey Continues
                 </p>
 
-                <h1 className="max-w-[560px] text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#101A2B] lg:text-6xl">
+                <h1 className="max-w-[560px] text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
                   Recap Your
                   <br />
                   Learning Experience
                 </h1>
 
-                <div className="my-7 h-[2px] w-12 bg-[#991313]" />
+                <div className="my-7 h-[2px] w-12 bg-burgundy-primary" />
 
                 <p className="max-w-[500px] text-lg leading-8 text-[#374151]">
                   There isn't a new devotional for today yet. Take a moment
@@ -209,7 +209,7 @@ function DevotionalHero({
                 <div className="mt-9">
                   <button
                     type="button" onClick={() => navigate("/previous-devotionals")}
-                    className="rounded-full bg-[#991313] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
+                    className="rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
                   >
                     Explore Previous Devotionals
                     <span className="ml-2">
@@ -222,6 +222,26 @@ function DevotionalHero({
 
           </div>
         </div>
+
+        {/* Scripture */}
+        {hasDevotional && (
+          <div className="hidden w-[300px] -translate-x-8 items-center justify-center lg:flex">
+            <div className="relative flex h-[240px] w-[240px] items-center justify-center rounded-full border border-[#9CA3AF]/50">
+
+              <div className="max-w-[180px]">
+                <p className="text-base italic leading-7 text-[#111827]">
+                  "The Lord is my strength and my shield; my heart trusts in Him."
+                </p>
+
+                <p className="mt-3 text-sm font-semibold text-burgundy-primary">
+                  — Psalm 28:7
+                </p>
+              </div>
+
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
   );

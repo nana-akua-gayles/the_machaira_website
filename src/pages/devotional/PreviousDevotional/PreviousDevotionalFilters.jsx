@@ -28,11 +28,11 @@ function PreviousDevotionalFilters({
       <div className="mb-7 flex items-center justify-between">
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#991313]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-burgundy-primary">
             Refine
           </p>
 
-          <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-[#101A2B]">
+          <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-navy-dark">
             Filter devotionals
           </h2>
         </div>
@@ -40,7 +40,7 @@ function PreviousDevotionalFilters({
         <button
           type="button"
           onClick={onClear}
-          className="text-sm font-medium text-[#991313] transition-colors hover:text-[#7f0e0e]"
+          className="text-sm font-medium text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
         >
           Clear filters
         </button>
@@ -50,7 +50,7 @@ function PreviousDevotionalFilters({
       {/* Category */}
       <div className="border-t border-black/[0.08] py-6">
 
-        <h3 className="mb-4 text-sm font-semibold text-[#101A2B]">
+        <h3 className="mb-4 text-sm font-semibold text-navy-dark">
           Category
         </h3>
 
@@ -74,14 +74,14 @@ function PreviousDevotionalFilters({
                 }`}
               >
                 {isActive && (
-                  <span className="h-2 w-2 rounded-full bg-[#991313]" />
+                  <span className="h-2 w-2 rounded-full bg-burgundy-primary" />
                 )}
               </span>
 
               <span
                 className={`text-sm ${
                   isActive
-                    ? "font-medium text-[#101A2B]"
+                    ? "font-medium text-navy-dark"
                     : "text-[#6B7280]"
                 }`}
               >
@@ -139,7 +139,7 @@ function PreviousDevotionalFilters({
       {/* Date Range */}
       <div className="border-t border-black/[0.08] py-6">
 
-        <h3 className="mb-4 text-sm font-semibold text-[#101A2B]">
+        <h3 className="mb-4 text-sm font-semibold text-navy-dark">
           Date Range
         </h3>
 

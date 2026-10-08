@@ -61,7 +61,7 @@ function PreviousDevotionalPagination({
         type="button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="group flex items-center gap-2 text-sm font-medium text-[#101A2B] transition-colors hover:text-[#991313] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-[#101A2B]"
+        className="group flex items-center gap-2 text-sm font-medium text-navy-dark transition-colors hover:text-burgundy-primary disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-navy-dark"
       >
         <svg
           width="18"
@@ -108,8 +108,8 @@ function PreviousDevotionalPagination({
               aria-current={isActive ? "page" : undefined}
               className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium transition-all ${
                 isActive
-                  ? "bg-[#991313] text-white"
-                  : "text-[#101A2B] hover:bg-[#F9EAEA] hover:text-[#991313]"
+                  ? "bg-burgundy-primary text-white"
+                  : "text-navy-dark hover:bg-[#F9EAEA] hover:text-burgundy-primary"
               }`}
             >
               {pageNumber}
@@ -123,7 +123,7 @@ function PreviousDevotionalPagination({
         type="button"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="group flex items-center gap-2 text-sm font-medium text-[#101A2B] transition-colors hover:text-[#991313] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-[#101A2B]"
+        className="group flex items-center gap-2 text-sm font-medium text-navy-dark transition-colors hover:text-burgundy-primary disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:text-navy-dark"
       >
         <span className="hidden sm:inline">Next</span>
 

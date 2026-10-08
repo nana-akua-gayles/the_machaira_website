@@ -168,7 +168,7 @@ function PreviousDevotional() {
             ) : error ? (
               <div className="flex min-h-[280px] items-center justify-center border border-dashed border-[#D1D5DB] px-6 text-center">
                 <div>
-                  <p className="text-lg font-semibold text-[#101A2B]">
+                  <p className="text-lg font-semibold text-navy-dark">
                     Something went wrong
                   </p>
 

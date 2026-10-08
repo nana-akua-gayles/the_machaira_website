@@ -118,11 +118,11 @@ function DevotionalReader() {
     return (
       <main className="min-h-[70vh] bg-white">
         <div className="mx-auto max-w-[900px] px-8 py-20 lg:px-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
             Devotional
           </p>
 
-          <h1 className="mt-5 text-4xl font-semibold text-[#101A2B]">
+          <h1 className="mt-5 text-4xl font-semibold text-navy-dark">
             Loading devotional...
           </h1>
         </div>
@@ -134,17 +134,17 @@ function DevotionalReader() {
     return (
       <main className="min-h-[70vh] bg-white">
         <div className="mx-auto max-w-[900px] px-8 py-20 text-center lg:px-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
             Devotional
           </p>
 
-          <h1 className="mt-5 text-4xl font-semibold text-[#101A2B]">
+          <h1 className="mt-5 text-4xl font-semibold text-navy-dark">
             {error || "Devotional not found."}
           </h1>
 
           <Link
             to="/devotional"
-            className="mt-8 inline-flex rounded-full bg-[#991313] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-[#7f0e0e]"
+            className="mt-8 inline-flex rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-[#7f0e0e]"
           >
             ← Back to Devotional
           </Link>
@@ -177,17 +177,17 @@ function DevotionalReader() {
           <div className="flex flex-col gap-6 rounded-2xl border border-black/10 bg-[#FBF8F6] p-6 md:flex-row md:items-center md:gap-8 md:p-8">
 
             <div className="flex flex-1 items-start gap-4">
-              <span className="shrink-0 font-serif text-5xl leading-none text-[#991313]">
+              <span className="shrink-0 font-serif text-5xl leading-none text-burgundy-primary">
                 “
               </span>
 
               {parsed.authorMessage && (
-                <p className="max-w-[560px] text-base italic leading-relaxed text-[#101A2B] md:text-lg">
+                <p className="max-w-[560px] text-base italic leading-relaxed text-navy-dark md:text-lg">
                   {parsed.authorMessage}
                 </p>
               )}
               {!parsed.authorMessage && (
-                <p className="text-base font-semibold text-[#101A2B] md:text-lg">
+                <p className="text-base font-semibold text-navy-dark md:text-lg">
                   Welcome to Today's Machaira
                 </p>
               )}
@@ -201,10 +201,10 @@ function DevotionalReader() {
                 className="h-12 w-12 shrink-0 rounded-full object-cover"
               />
               <div>
-                <p className="text-sm font-semibold text-[#101A2B]">
+                <p className="text-sm font-semibold text-navy-dark">
                   Apostle Bennie
                 </p>
-                <p className="text-xs text-[#4D5057]">Author</p>
+                <p className="text-xs text-cool-gray">Author</p>
               </div>
             </div>
 
@@ -216,7 +216,7 @@ function DevotionalReader() {
 
           <Link
             to="/devotional"
-            className="inline-flex items-center text-sm font-semibold text-[#991313] transition-colors hover:text-[#7f0e0e]"
+            className="inline-flex items-center text-sm font-semibold text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
           >
             ← Back to Devotionals
           </Link>
@@ -227,7 +227,7 @@ function DevotionalReader() {
               onClick={handlePrint}
               aria-label="Download devotional"
               title="Download"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-full border border-black/10 px-3 text-sm font-semibold text-[#991313] transition-colors hover:bg-[#991313] hover:text-white"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-full border border-black/10 px-3 text-sm font-semibold text-burgundy-primary transition-colors hover:bg-burgundy-primary hover:text-white"
             >
               <span aria-hidden="true">⭳</span>
               <span>Download</span>
@@ -239,7 +239,7 @@ function DevotionalReader() {
                 onClick={toggleAudio}
                 aria-label={isPlaying ? "Pause audio" : "Play audio"}
                 title={isPlaying ? "Pause" : "Listen"}
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#991313] px-3 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e]"
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-burgundy-primary px-3 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e]"
               >
                 <span aria-hidden="true">{isPlaying ? "❚❚" : "▶"}</span>
                 <span>{isPlaying ? "Pause" : "Listen"}</span>
@@ -266,7 +266,7 @@ function DevotionalReader() {
           <div>
 
             {dateNotice && (
-              <p className="mb-4 text-sm font-medium text-[#991313]">
+              <p className="mb-4 text-sm font-medium text-burgundy-primary">
                 {dateNotice}
               </p>
             )}
@@ -276,34 +276,34 @@ function DevotionalReader() {
               <div className="flex items-center gap-3 text-sm">
                 <Link
                   to="/devotional"
-                  className="text-[#991313] transition-colors hover:text-[#7f0e0e]"
+                  className="text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
                 >
                   Devotional
                 </Link>
 
                 <span className="text-[#B9BEC8]">/</span>
 
-                <span className="text-[#4D5057]">
+                <span className="text-cool-gray">
                   {formatted.episodeLabel || "Reading"}
                 </span>
               </div>
             </div>
 
             {/* Category */}
-            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-[#991313]">
+            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
               {devotional.category || "Daily Devotional"}
             </p>
 
             {/* Title */}
-            <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#101A2B] md:text-5xl lg:text-6xl">
+            <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-navy-dark md:text-5xl lg:text-6xl">
               {formatted.mainTitle}
             </h1>
 
             {/* Accent underline */}
-            <div className="mt-6 h-[3px] w-16 bg-[#991313]" />
+            <div className="mt-6 h-[3px] w-16 bg-burgundy-primary" />
 
             {/* Meta */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#4D5057]">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-cool-gray">
               {formatted.episodeLabel && (
                 <span>{formatted.episodeLabel}</span>
               )}

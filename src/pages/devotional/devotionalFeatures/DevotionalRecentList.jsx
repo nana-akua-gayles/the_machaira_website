@@ -8,20 +8,20 @@ function DevotionalRecentList({ devotionals }) {
 
   return (
     <section className="bg-white py-16">
-      <div className="mx-auto max-w-[1440px] px-8 lg:px-12">
+      <div className="mx-auto max-w-360 px-8 lg:px-12">
 
         {/* Section heading */}
         <div className="flex items-end justify-between gap-6">
           <div>
-            <Link to="/previous-devotionals" className="text-xs font-semibold uppercase tracking-[0.25em] text-[#991313]">
+            <Link to="/previous-devotionals" className="text-xs font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
               Previous Devotionals
             </Link>
 
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#101A2B] md:text-4xl">
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-navy-dark md:text-4xl">
               Catch Up On Recent Episodes
             </h2>
 
-            <p className="mt-3 max-w-[560px] text-sm leading-6 text-[#4D5057]">
+            <p className="mt-3 max-w-[560px] text-sm leading-6 text-cool-gray">
               Missed a day? Revisit recent episodes of Machaira with Apostle
               Bennie.
             </p>
@@ -29,7 +29,7 @@ function DevotionalRecentList({ devotionals }) {
 
           <Link
             to="/previous-devotionals"
-            className="hidden shrink-0 rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-[#101A2B] transition duration-300 hover:border-[#991313] hover:bg-[#991313] hover:text-white md:block"
+            className="hidden shrink-0 rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-[#991313] hover:bg-burgundy-primary hover:text-white md:block"
           >
             View All
           </Link>
@@ -64,11 +64,11 @@ function DevotionalRecentList({ devotionals }) {
                   )}
 
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#101A2B]/90 via-[#101A2B]/20 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#101A2B]/90 via-[#101A2B]/20 to-transparent" />
 
                   {/* Content */}
                   <div className="absolute inset-x-0 bottom-0 p-5">
-                    <div className="mb-3 h-[2px] w-8 bg-[#991313] transition-all duration-300 group-hover:w-12" />
+                    <div className="mb-3 h-[2px] w-8 bg-burgundy-primary transition-all duration-300 group-hover:w-12" />
 
                     <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#e3a8a8]">
                       {item.category || "Daily Devotional"}
@@ -99,7 +99,7 @@ function DevotionalRecentList({ devotionals }) {
         {/* Mobile View All */}
         <Link
           to="/previous-devotionals"
-          className="mt-3 inline-block rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-[#101A2B] transition duration-300 hover:border-[#991313] hover:bg-[#991313] hover:text-white md:hidden"
+          className="mt-3 inline-block rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-[#991313] hover:bg-burgundy-primary hover:text-white md:hidden"
         >
           View All
         </Link>

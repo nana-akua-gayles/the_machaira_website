@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BookOpen, ArrowRight, X } from "lucide-react";
 import machairaImg from "../assets/images/wave2.png";
 
@@ -14,11 +15,10 @@ const POPULAR_MOODS = [
 ];
 
 export default function WelcomeModal({
-  allDevotionals = [],
-  onSelectEpisode,
   onTodayEpisode
 }) {
   const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -46,44 +46,8 @@ export default function WelcomeModal({
 
     const targetCategory = categoryMapping[categoryKey] || categoryKey;
 
-    // Flexible filtering (ignoring casing and trailing spaces)
-    const matchingEpisodes = allDevotionals.filter(
-      (item) => item.category?.trim().toLowerCase() === targetCategory.trim().toLowerCase()
-    );
-
-    if (matchingEpisodes.length === 0) {
-      console.warn(`No episodes found for category: ${targetCategory}. Total devotionals loaded:`, allDevotionals.length);
-      
-      // Fallback: try searching if any item includes the key text
-      const fallbackEpisodes = allDevotionals.filter(
-        (item) => item.category?.toLowerCase().includes(categoryKey.toLowerCase())
-      );
-      
-      if (fallbackEpisodes.length > 0) {
-        const todayString = new Date().toISOString().slice(0, 10);
-        let seed = 0;
-        for (let i = 0; i < todayString.length; i++) {
-          seed += todayString.charCodeAt(i);
-        }
-        const index = (seed + categoryKey.length) % fallbackEpisodes.length;
-        onSelectEpisode?.(fallbackEpisodes[index], categoryKey);
-        close();
-        return;
-      }
-      return;
-    }
-
-    const todayString = new Date().toISOString().slice(0, 10);
-    let seed = 0;
-    for (let i = 0; i < todayString.length; i++) {
-      seed += todayString.charCodeAt(i);
-    }
-
-    const index = (seed + categoryKey.length) % matchingEpisodes.length;
-    const selectedEpisode = matchingEpisodes[index];
-
-    onSelectEpisode?.(selectedEpisode, categoryKey);
     close();
+    navigate(`/previous-devotionals?category=${encodeURIComponent(targetCategory)}`);
   };
 
   return (
@@ -125,7 +89,6 @@ export default function WelcomeModal({
                 src={machairaImg}
                 alt="Machaira Waving"
                 className="h-full w-full object-contain drop-shadow-[0_20px_40px_rgba(114,47,34,0.25)] animate-[gentleWave_2.2s_ease-in-out_infinite]"
-                onError={(e) => { e.target.style.display = 'none'; }}
               />
             </div>
 

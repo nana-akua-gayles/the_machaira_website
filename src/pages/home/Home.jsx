@@ -5,6 +5,7 @@ import RecentDevotionalSection from "./RecentDevotionalSection";
 import SaturdayChurchSection from "./SaturdayChurchSection";
 import ExploreCardsSection from "./ExploreCardsSection";
 import NewsfeedSection from "./NewsfeedSection";
+import ApostlesImage from "../../assets/images/Apostle2.jpg";
 
 export default function Home({ onSaturdayChurchPress }) {
   const [heroSlides, setHeroSlides] = useState([]);
@@ -19,6 +20,10 @@ export default function Home({ onSaturdayChurchPress }) {
   const [textAnimState, setTextAnimState] = useState('visible'); 
   const [imageAnimState, setImageAnimState] = useState('visible'); 
   const [animatingQuote, setAnimatingQuote] = useState(false);
+
+  // Modal states matching NewsfeedPage
+  const [activeStory, setActiveStory] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -82,6 +87,51 @@ export default function Home({ onSaturdayChurchPress }) {
     };
   }, [heroSlides.length]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isExpanded]);
+
+  const handleSelectStory = (article) => {
+    setActiveStory({
+      id: article.id,
+      title: article.title,
+      subtitle: article.subtitle || (article.category ? article.category.toUpperCase() : "ARTICLE"),
+      body: article.body || article.content || article.description,
+      image_url: article.image_url || article.hero_image_url || ApostlesImage,
+      isFeatured: article.isFeatured || false,
+    });
+    setIsExpanded(true);
+  };
+
+  const formatDualDropCapText = (text) => {
+    const cleanText = text ? text.replace(/\\n/g, '\n') : "";
+    if (!cleanText) return { part1Letter: "", part1Rest: "", part2Letter: "", part2Rest: "" };
+
+    const midpoint = Math.floor(cleanText.length / 2);
+    let breakIndex = cleanText.indexOf('.', midpoint);
+    if (breakIndex === -1) breakIndex = midpoint;
+
+    const firstChunk = cleanText.slice(0, breakIndex + 1).trim();
+    const secondChunk = cleanText.slice(breakIndex + 1).trim();
+
+    return {
+      part1Letter: firstChunk.charAt(0),
+      part1Rest: firstChunk.slice(1),
+      part2Letter: secondChunk.length > 0 ? secondChunk.charAt(0) : "",
+      part2Rest: secondChunk.length > 0 ? secondChunk.slice(1) : "",
+    };
+  };
+
+  const articleTextParts = activeStory ? formatDualDropCapText(activeStory.body) : { part1Letter: "", part1Rest: "", part2Letter: "", part2Rest: "" };
+
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-32 flex justify-center items-center bg-[#FBF9F5]">
@@ -95,7 +145,7 @@ export default function Home({ onSaturdayChurchPress }) {
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-32 text-center space-y-4 bg-[#FBF9F5]">
         <h2 className="text-xl font-medium tracking-tight text-[#2B2625]">Unable to load content</h2>
         <p className="text-sm text-[#6E6563] max-w-md mx-auto">
-          Please check your internet connection or database configuration.
+          Please check your internet connection.
         </p>
       </div>
     );
@@ -111,7 +161,7 @@ export default function Home({ onSaturdayChurchPress }) {
     : "";
 
   return (
-    <div className="bg-[#FBF9F5] text-[#2B2625] min-h-screen overflow-x-hidden">
+    <div className="bg-[#FBF9F5] text-[#2B2625] min-h-screen overflow-x-hidden relative">
       
       <HeroSection 
         slide={slide} 
@@ -136,8 +186,89 @@ export default function Home({ onSaturdayChurchPress }) {
 
         <ExploreCardsSection />
 
-        <NewsfeedSection />
+        {/* Newsfeed Section connected with the exact handler */}
+        <NewsfeedSection onSelectStory={handleSelectStory} />
       </div>
+
+      {/* Exact NewsfeedPage Editorial Modal */}
+      {isExpanded && activeStory && (
+        <div className="fixed inset-0 z-9999 bg-[#0c0a09]/95 backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in duration-300">
+          
+          <header className="w-full px-6 sm:px-12 py-5 border-b border-white/10 flex items-center justify-between bg-black/40 backdrop-blur-md shrink-0">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-burgundy-primary animate-pulse"></span>
+              <span className="text-[10px] font-semibold tracking-[0.25em] text-white/70 uppercase">
+                {activeStory.subtitle}
+              </span>
+            </div>
+
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center text-xs transition-all group cursor-pointer"
+              aria-label="Close reading"
+            >
+              <span className="group-hover:rotate-90 transition-transform">✕</span>
+            </button>
+          </header>
+
+          <div className="flex-1 overflow-y-auto px-4 py-8 sm:py-12">
+            <div className="mx-auto max-w-4xl space-y-8">
+              
+              <div className="space-y-3 text-center lg:text-left border-b border-white/10 pb-6">
+                <h1 className="text-3xl sm:text-5xl text-white tracking-tight leading-[1.15]">
+                  {activeStory.title}
+                </h1>
+                <div>
+                  <span className="uppercase tracking-widest text-burgundy-primary font-semibold text-xs">
+                    {activeStory.isFeatured ? "Featured Article of the Week" : "Newsfeed Update"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
+                
+                <div className="lg:col-span-5 w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black relative group">
+                  <img
+                    src={activeStory.image_url}
+                    alt={activeStory.title}
+                    className="w-full h-75 sm:h-95 object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+
+                <div className="lg:col-span-7">
+                  {activeStory.body && (
+                    <div className="text-base sm:text-lg text-white/90 leading-relaxed whitespace-pre-line font-light tracking-wide">
+                      <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none">
+                        {articleTextParts.part1Letter}
+                      </span> 
+                      {articleTextParts.part1Rest}
+                    </div>
+                  )}
+                </div>
+
+              </div>
+
+              {articleTextParts.part2Letter && (
+                <div className="pt-6 border-t border-white/10">
+                  <div className="text-base sm:text-lg text-white/90 leading-relaxed whitespace-pre-line font-light tracking-wide">
+                    <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none">
+                      {articleTextParts.part2Letter}
+                    </span>
+                    {articleTextParts.part2Rest}
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+
+          <footer className="w-full py-4 px-6 border-t border-white/10 bg-black/80 text-center text-xs text-white/40 tracking-widest uppercase shrink-0">
+            End of Article • Press Close to Return
+          </footer>
+
+        </div>
+      )}
 
     </div>
   );

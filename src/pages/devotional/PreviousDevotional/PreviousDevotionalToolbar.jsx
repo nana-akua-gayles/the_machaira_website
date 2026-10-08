@@ -14,7 +14,7 @@ function PreviousDevotionalToolbar({
         {/* Search */}
         <div className="flex min-w-0 flex-1 items-center px-3 lg:px-4">
 
-          <span className="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#991313]/[0.06] text-[#991313]">
+          <span className="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-burgundy-primary/[0.06] text-burgundy-primary">
             <svg
               width="17"
               height="17"
@@ -58,7 +58,7 @@ function PreviousDevotionalToolbar({
             <option value="oldest">Oldest First</option>
           </select>
 
-          <span className="-ml-5 pointer-events-none text-xs text-[#991313]">
+          <span className="-ml-5 pointer-events-none text-xs text-burgundy-primary">
             ▾
           </span>
 
@@ -85,7 +85,7 @@ function PreviousDevotionalToolbar({
             <option value={100}>100</option>
           </select>
 
-          <span className="-ml-5 pointer-events-none text-xs text-[#991313]">
+          <span className="-ml-5 pointer-events-none text-xs text-burgundy-primary">
             ▾
           </span>
 
@@ -100,7 +100,7 @@ function PreviousDevotionalToolbar({
           <button
             type="button"
             aria-label="List view"
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#991313]/[0.07] text-[#991313]"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-burgundy-primary/[0.07] text-burgundy-primary"
           >
             <svg
               width="18"

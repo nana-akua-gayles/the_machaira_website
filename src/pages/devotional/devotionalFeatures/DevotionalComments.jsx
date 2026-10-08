@@ -23,7 +23,7 @@ function CommentAvatar({ author }) {
   }
 
   return (
-    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#991313] text-sm font-semibold text-white">
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-burgundy-primary text-sm font-semibold text-white">
       {getInitials(author?.name)}
     </div>
   );
@@ -175,7 +175,7 @@ function DevotionalComments({ episodeNumber }) {
   return (
     <section className="mt-16 border-t border-black/10 pt-10">
 
-      <h3 className="text-xl font-semibold text-[#101A2B]">
+      <h3 className="text-xl font-semibold text-navy-dark">
         Comments {comments.length > 0 && `(${comments.length})`}
       </h3>
 
@@ -186,18 +186,18 @@ function DevotionalComments({ episodeNumber }) {
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Share your thoughts on today's devotional..."
             rows={3}
-            className="w-full resize-none rounded-2xl border border-black/10 bg-[#F8F8F7] p-4 text-sm text-[#101A2B] placeholder:text-[#B9BEC8] focus:border-[#991313] focus:outline-none"
+            className="w-full resize-none rounded-2xl border border-black/10 bg-[#F8F8F7] p-4 text-sm text-navy-dark placeholder:text-[#B9BEC8] focus:border-[#991313] focus:outline-none"
           />
 
           {submitError && (
-            <p className="mt-2 text-sm text-[#991313]">{submitError}</p>
+            <p className="mt-2 text-sm text-burgundy-primary">{submitError}</p>
           )}
 
           <div className="mt-3 flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting || !newComment.trim()}
-              className="rounded-full bg-[#991313] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e] disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-full bg-burgundy-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting ? "Posting..." : "Post Comment"}
             </button>
@@ -205,12 +205,12 @@ function DevotionalComments({ episodeNumber }) {
         </form>
       ) : (
         <div className="mt-6 rounded-2xl bg-[#F8F8F7] p-5 text-center">
-          <p className="text-sm text-[#4D5057]">
+          <p className="text-sm text-cool-gray">
             Sign in to join the conversation.
           </p>
           <Link
             to="/login"
-            className="mt-3 inline-flex items-center justify-center rounded-full border border-[#991313] px-6 py-2.5 text-sm font-semibold text-[#991313] transition-colors hover:bg-[#991313] hover:text-white"
+            className="mt-3 inline-flex items-center justify-center rounded-full border border-[#991313] px-6 py-2.5 text-sm font-semibold text-burgundy-primary transition-colors hover:bg-burgundy-primary hover:text-white"
           >
             Sign In
           </Link>
@@ -218,15 +218,15 @@ function DevotionalComments({ episodeNumber }) {
       )}
 
       {loading && (
-        <p className="mt-8 text-sm text-[#4D5057]">Loading comments...</p>
+        <p className="mt-8 text-sm text-cool-gray">Loading comments...</p>
       )}
 
       {error && (
-        <p className="mt-8 text-sm text-[#991313]">{error}</p>
+        <p className="mt-8 text-sm text-burgundy-primary">{error}</p>
       )}
 
       {!loading && !error && comments.length === 0 && (
-        <p className="mt-8 text-sm text-[#4D5057]">
+        <p className="mt-8 text-sm text-cool-gray">
           No comments yet. Be the first to share your thoughts.
         </p>
       )}
@@ -238,7 +238,7 @@ function DevotionalComments({ episodeNumber }) {
 
             <div className="flex-1">
               <div className="flex flex-wrap items-baseline gap-x-2">
-                <p className="text-sm font-semibold text-[#101A2B]">
+                <p className="text-sm font-semibold text-navy-dark">
                   {comment.author?.name || "Anonymous"}
                 </p>
                 <span className="text-xs text-[#B9BEC8]">
@@ -259,7 +259,7 @@ function DevotionalComments({ episodeNumber }) {
                 <span
                   className={
                     likedCommentIds.has(comment.id)
-                      ? "font-semibold text-[#991313]"
+                      ? "font-semibold text-burgundy-primary"
                       : "text-[#B9BEC8]"
                   }
                 >

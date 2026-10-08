@@ -150,14 +150,14 @@ function Testimonials() {
   const hasMore = testimonials.length < totalCount;
   
   return (
-    <main className="min-h-screen bg-white text-[#101A2B]">
+    <main className="min-h-screen bg-white text-navy-dark">
       {/* =========================================================
           HERO
       ========================================================== */}
       <section className="relative overflow-hidden">
         {/* Breadcrumb */}
         <div className="mx-auto max-w-[1350px] px-6 pt-7 lg:px-10">
-          <div className="flex items-center gap-4 text-sm text-[#4D5057]">
+          <div className="flex items-center gap-4 text-sm text-cool-gray">
             <svg
               width="16"
               height="16"
@@ -167,7 +167,7 @@ function Testimonials() {
               strokeWidth="1.7"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-[#991313]"
+              className="text-burgundy-primary"
             >
               <path d="M3 10.5L12 3l9 7.5" />
               <path d="M5 9.5V21h14V9.5" />
@@ -195,27 +195,27 @@ function Testimonials() {
             </div>
 
             {/* Decorative glow */}
-            <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#991313]/5 blur-3xl" />
+            <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-burgundy-primary/5 blur-3xl" />
 
             {/* Hero content */}
             <div className="relative z-10 flex min-h-[330px] items-center px-8 py-12 sm:px-12 lg:w-[55%] lg:px-16">
               <div className="max-w-[570px]">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#991313]">
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-burgundy-primary">
                   Testimonials
                 </p>
 
-                <h1 className="font-serif text-4xl leading-[1.08] tracking-[-0.04em] text-[#101A2B] sm:text-5xl lg:text-[52px]">
+                <h1 className="font-serif text-4xl leading-[1.08] tracking-[-0.04em] text-navy-dark sm:text-5xl lg:text-[52px]">
                   Real Stories.
                   <br />
                   Real{" "}
-                  <span className="text-[#991313]">
+                  <span className="text-burgundy-primary">
                     Transformations.
                   </span>
                 </h1>
 
-                <div className="mt-5 h-[2px] w-9 bg-[#991313]" />
+                <div className="mt-5 h-[2px] w-9 bg-burgundy-primary" />
 
-                <p className="mt-5 max-w-[500px] text-sm leading-7 text-[#4D5057] sm:text-[15px]">
+                <p className="mt-5 max-w-[500px] text-sm leading-7 text-cool-gray sm:text-[15px]">
                   Read how God is changing lives through His word,
                   grace, and the Machaira community.
                 </p>
@@ -248,8 +248,8 @@ function Testimonials() {
                     onClick={() => setActiveCategory(category)}
                     className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
                       active
-                        ? "border-[#991313] bg-[#991313] text-white"
-                        : "border-[#E5E7EB] bg-white text-[#4D5057] hover:border-[#991313] hover:text-[#991313]"
+                        ? "border-[#991313] bg-burgundy-primary text-white"
+                        : "border-[#E5E7EB] bg-white text-cool-gray hover:border-[#991313] hover:text-burgundy-primary"
                     }`}
                   >
                     {category}
@@ -280,7 +280,7 @@ function Testimonials() {
                   value={categorySearch}
                   onChange={(e) => setCategorySearch(e.target.value)}
                   placeholder="Search category..."
-                  className="w-full rounded-full border border-[#E5E7EB] bg-white py-2 pl-9 pr-9 text-xs text-[#101A2B] placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] sm:w-[190px]"
+                  className="w-full rounded-full border border-[#E5E7EB] bg-white py-2 pl-9 pr-9 text-xs text-navy-dark placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] sm:w-[190px]"
                 />
 
                 {categorySearch && (
@@ -288,7 +288,7 @@ function Testimonials() {
                     type="button"
                     onClick={() => setCategorySearch("")}
                     aria-label="Clear search"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#991313]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-burgundy-primary"
                   >
                     <svg
                       width="13"
@@ -312,7 +312,7 @@ function Testimonials() {
               <select
                 value={sortBy}
                 onChange={(event) => setSortBy(event.target.value)}
-                className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-[#101A2B] outline-none focus:border-[#991313]"
+                className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-navy-dark outline-none focus:border-[#991313]"
               >
                 <option>Latest</option>
                 <option>Most Liked</option>
@@ -340,11 +340,11 @@ function Testimonials() {
                 return (
                   <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-[#D1D5DB] text-center">
                     <div>
-                      <p className="font-serif text-xl text-[#101A2B]">{error}</p>
+                      <p className="font-serif text-xl text-navy-dark">{error}</p>
                       <button
                         type="button"
                         onClick={fetchTestimonies}
-                        className="mt-3 text-sm font-medium text-[#991313] underline"
+                        className="mt-3 text-sm font-medium text-burgundy-primary underline"
                       >
                         Try again
                       </button>
@@ -364,7 +364,7 @@ function Testimonials() {
                       >
                         {/* Quote */}
                         <div>
-                          <div className="font-serif text-5xl leading-none text-[#991313]">
+                          <div className="font-serif text-5xl leading-none text-burgundy-primary">
                             “
                           </div>
 
@@ -376,7 +376,7 @@ function Testimonials() {
                         {/* Bottom */}
                         <div className="mt-8">
                           <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-xs font-semibold text-[#991313]">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-xs font-semibold text-burgundy-primary">
                             {testimonial.avatarUrl ? (
                               <img
                                 src={testimonial.avatarUrl}
@@ -393,11 +393,11 @@ function Testimonials() {
                           </div>
 
                             <div>
-                              <p className="text-sm font-semibold text-[#101A2B]">
+                              <p className="text-sm font-semibold text-navy-dark">
                                 {testimonial.name}
                               </p>
 
-                              <p className="mt-0.5 text-xs text-[#991313]">
+                              <p className="mt-0.5 text-xs text-burgundy-primary">
                                 {testimonial.category}
                               </p>
                             </div>
@@ -490,7 +490,7 @@ function Testimonials() {
               return (
                 <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-dashed border-[#D1D5DB] text-center">
                   <div>
-                    <p className="font-serif text-xl text-[#101A2B]">No stories found</p>
+                    <p className="font-serif text-xl text-navy-dark">No stories found</p>
                     <p className="mt-2 text-sm text-[#6B7280]">
                       Try another testimonial category.
                     </p>
@@ -504,7 +504,7 @@ function Testimonials() {
                 <button
                   type="button"
                   onClick={() => setPage((p) => p + 1)}
-                  className="inline-flex items-center gap-3 rounded-xl border border-[#991313] px-6 py-3 text-sm font-medium text-[#991313] transition-all hover:bg-[#991313] hover:text-white"
+                  className="inline-flex items-center gap-3 rounded-xl border border-[#991313] px-6 py-3 text-sm font-medium text-burgundy-primary transition-all hover:bg-burgundy-primary hover:text-white"
                 >
                   Load More Stories
                   <svg
@@ -530,13 +530,13 @@ function Testimonials() {
           <aside className="space-y-4">
             {/* Share testimony */}
             <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
-              <p className="font-serif text-lg text-[#101A2B]">
+              <p className="font-serif text-lg text-navy-dark">
                 Share Your Testimony
               </p>
 
-              <div className="mt-3 h-[2px] w-8 bg-[#991313]" />
+              <div className="mt-3 h-[2px] w-8 bg-burgundy-primary" />
 
-              <p className="mt-4 text-sm leading-6 text-[#4D5057]">
+              <p className="mt-4 text-sm leading-6 text-cool-gray">
                 Your story can inspire someone else today. Share
                 what God has done in your life.
               </p>
@@ -544,7 +544,7 @@ function Testimonials() {
               <button
                 type="button"
                 onClick={() => setShareOpen(true)}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#991313] px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[#7F0E0E]"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-burgundy-primary px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[#7F0E0E]"
               >
                 Share Your Story
 
@@ -571,11 +571,11 @@ function Testimonials() {
 
             {/* Impact */}
             <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
-              <p className="font-serif text-lg text-[#101A2B]">
+              <p className="font-serif text-lg text-navy-dark">
                 Testimonies Impact
               </p>
 
-              <div className="mt-3 h-[2px] w-8 bg-[#991313]" />
+              <div className="mt-3 h-[2px] w-8 bg-burgundy-primary" />
 
               <div className="mt-5 space-y-5">
                 {impactStats.map((stat) => (
@@ -583,7 +583,7 @@ function Testimonials() {
                     key={stat.label}
                     className="flex items-center gap-4"
                   >
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F8EDED] text-[#991313]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F8EDED] text-burgundy-primary">
                       {stat.icon === "users" && (
                         <svg
                           width="19"
@@ -628,7 +628,7 @@ function Testimonials() {
                     </div>
 
                     <div>
-                      <p className="text-lg font-semibold text-[#101A2B]">
+                      <p className="text-lg font-semibold text-navy-dark">
                         {stat.value}
                       </p>
 
@@ -643,11 +643,11 @@ function Testimonials() {
 
             {/* Date filter */}
             <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
-              <p className="font-serif text-lg text-[#101A2B]">
+              <p className="font-serif text-lg text-navy-dark">
                 Filter by Date
               </p>
 
-              <div className="mt-3 h-[2px] w-8 bg-[#991313]" />
+              <div className="mt-3 h-[2px] w-8 bg-burgundy-primary" />
 
               <div className="relative mt-5">
                 <select
@@ -655,7 +655,7 @@ function Testimonials() {
                   onChange={(event) =>
                     setDateFilter(event.target.value)
                   }
-                  className="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 pr-10 text-sm text-[#4D5057] outline-none focus:border-[#991313]"
+                  className="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 pr-10 text-sm text-cool-gray outline-none focus:border-[#991313]"
                 >
                   <option>All Time</option>
                   <option>This Month</option>
