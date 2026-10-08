@@ -21,7 +21,7 @@ function DevotionalRecentList({ devotionals }) {
               Catch Up On Recent Episodes
             </h2>
 
-            <p className="mt-3 max-w-[560px] text-sm leading-6 text-cool-gray">
+            <p className="mt-3 max-w-140 text-sm leading-6 text-cool-gray">
               Missed a day? Revisit recent episodes of Machaira with Apostle
               Bennie.
             </p>
@@ -29,7 +29,7 @@ function DevotionalRecentList({ devotionals }) {
 
           <Link
             to="/previous-devotionals"
-            className="hidden shrink-0 rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-[#991313] hover:bg-burgundy-primary hover:text-white md:block"
+            className="hidden shrink-0 rounded-full border border-soft-gray px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-burgundy-primary hover:bg-burgundy-primary hover:text-white md:block"
           >
             View All
           </Link>
@@ -68,7 +68,7 @@ function DevotionalRecentList({ devotionals }) {
 
                   {/* Content */}
                   <div className="absolute inset-x-0 bottom-0 p-5">
-                    <div className="mb-3 h-[2px] w-8 bg-burgundy-primary transition-all duration-300 group-hover:w-12" />
+                    <div className="mb-3 h-0.5 w-8 bg-burgundy-primary transition-all duration-300 group-hover:w-12" />
 
                     <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#e3a8a8]">
                       {item.category || "Daily Devotional"}
@@ -99,7 +99,7 @@ function DevotionalRecentList({ devotionals }) {
         {/* Mobile View All */}
         <Link
           to="/previous-devotionals"
-          className="mt-3 inline-block rounded-full border border-[#B9BEC8] px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-[#991313] hover:bg-burgundy-primary hover:text-white md:hidden"
+          className="mt-3 inline-block rounded-full border border-soft-gray px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-burgundy-primary hover:bg-burgundy-primary hover:text-white md:hidden"
         >
           View All
         </Link>

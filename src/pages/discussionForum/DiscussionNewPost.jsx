@@ -137,7 +137,7 @@ const DiscussionNewPost = () => {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="What's your discussion about?"
               maxLength={150}
-              className="mt-2 w-full rounded-xl border border-black/10 p-3.5 text-sm text-navy-dark placeholder:text-[#B9BEC8] focus:border-burgundy-primary focus:outline-none focus:ring-1 focus:ring-burgundy-primary"
+              className="mt-2 w-full rounded-xl border border-black/10 p-3.5 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none focus:ring-1 focus:ring-burgundy-primary"
             />
           </div>
 
@@ -151,7 +151,7 @@ const DiscussionNewPost = () => {
               onChange={(e) => setBody(e.target.value)}
               placeholder="Share the details, ask your question, or open the conversation..."
               rows={8}
-              className="mt-2 w-full rounded-2xl border border-black/10 p-4 text-sm text-navy-dark placeholder:text-[#B9BEC8] focus:border-burgundy-primary focus:outline-none focus:ring-1 focus:ring-burgundy-primary"
+              className="mt-2 w-full rounded-2xl border border-black/10 p-4 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none focus:ring-1 focus:ring-burgundy-primary"
             />
           </div>
 

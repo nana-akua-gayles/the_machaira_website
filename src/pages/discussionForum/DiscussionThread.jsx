@@ -275,7 +275,7 @@ const DiscussionThread = () => {
                       <p className="text-sm font-semibold text-navy-dark">
                         {reply.author?.name || 'A member'}
                       </p>
-                      <span className="text-[#B9BEC8]">•</span>
+                      <span className="text-soft-gray">•</span>
                       <p className="text-xs text-cool-gray">{formatRelativeTime(reply.created_at)}</p>
 
                       {isOwnReply && !isEditing && (
@@ -346,7 +346,7 @@ const DiscussionThread = () => {
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Share your thoughts..."
                   rows={4}
-                  className="w-full rounded-2xl border border-black/10 p-4 text-sm text-navy-dark placeholder:text-[#B9BEC8] focus:border-burgundy-primary focus:outline-none focus:ring-1 focus:ring-burgundy-primary"
+                  className="w-full rounded-2xl border border-black/10 p-4 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none focus:ring-1 focus:ring-burgundy-primary"
                 />
                 {replyError && (
                   <p className="text-sm font-medium text-burgundy-primary">{replyError}</p>

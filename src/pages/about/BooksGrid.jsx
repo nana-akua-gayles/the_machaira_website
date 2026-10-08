@@ -165,7 +165,7 @@ export default function BooksGrid() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-[#f9f8f6] text-[#1a1918] flex flex-col overflow-hidden"
+            className="fixed inset-0 z-9999 bg-[#f9f8f6] text-[#1a1918] flex flex-col overflow-hidden"
           >
             
             {/* Top Archive Bar */}
@@ -299,9 +299,7 @@ export default function BooksGrid() {
                   </div>
 
                   <div className="pt-12 border-t border-[#e6e2de] text-center">
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#6d6260]">
-                      End of Preview • Order Hardcover to Read Full Manuscript
-                    </span>
+                    
                   </div>
 
                 </div>

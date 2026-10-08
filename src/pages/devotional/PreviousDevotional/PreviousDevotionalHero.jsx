@@ -19,7 +19,7 @@ function PreviousDevotionalHero() {
             ⌂
           </Link>
 
-          <span className="text-[#B9BEC8]">/</span>
+          <span className="text-soft-gray">/</span>
 
           <span className="text-cool-gray">
             Previous Devotionals
@@ -44,9 +44,9 @@ function PreviousDevotionalHero() {
               </span>
             </h1>
 
-            <div className="my-7 h-[2px] w-12 bg-burgundy-primary" />
+            <div className="my-7 h-0.5 w-12 bg-burgundy-primary" />
 
-            <p className="max-w-[500px] text-base leading-7 text-cool-gray md:text-lg">
+            <p className="max-w-125 text-base leading-7 text-cool-gray md:text-lg">
               Explore our entire library of devotionals and grow in
               faith through God's timeless Word.
             </p>

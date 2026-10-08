@@ -257,8 +257,8 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   disabled={submitting}
-                  className={`w-full appearance-none rounded-xl border bg-white px-4 py-3 text-sm text-navy-dark outline-none transition-colors focus:border-[#991313] disabled:opacity-60 ${
-                    fieldErrors.category ? "border-[#991313]" : "border-[#E5E7EB]"
+                  className={`w-full appearance-none rounded-xl border bg-white px-4 py-3 text-sm text-navy-dark outline-none transition-colors focus:border-burgundy-primary disabled:opacity-60 ${
+                    fieldErrors.category ? "border-burgundy-primary" : "border-[#E5E7EB]"
                   }`}
                 >
                   <option value="">Choose a category…</option>
@@ -297,8 +297,8 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                   disabled={submitting}
                   rows={7}
                   placeholder="Tell us what God has done…"
-                  className={`w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm leading-6 text-navy-dark placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] disabled:opacity-60 ${
-                    fieldErrors.content ? "border-[#991313]" : "border-[#E5E7EB]"
+                  className={`w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm leading-6 text-navy-dark placeholder:text-soft-gray outline-none transition-colors focus:border-burgundy-primary disabled:opacity-60 ${
+                    fieldErrors.content ? "border-burgundy-primary" : "border-[#E5E7EB]"
                   }`}
                 />
                 {fieldErrors.content && (
@@ -320,7 +320,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={submitting}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#E5E7EB] bg-white px-4 py-6 text-sm text-[#6B7280] transition-colors hover:border-[#991313] hover:text-burgundy-primary disabled:opacity-60"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#E5E7EB] bg-white px-4 py-6 text-sm text-[#6B7280] transition-colors hover:border-burgundy-primary hover:text-burgundy-primary disabled:opacity-60"
                   >
                     <Upload className="h-4 w-4" />
                     Click to upload an image
@@ -366,7 +366,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                   checked={isAnonymous}
                   onChange={(e) => setIsAnonymous(e.target.checked)}
                   disabled={submitting}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-[#991313]"
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-burgundy-primary"
                 />
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-navy-dark">
@@ -381,7 +381,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
 
               {/* Global error */}
               {errorMsg && (
-                <div className="rounded-xl border border-[#991313]/30 bg-[#FBF1F1] px-4 py-3 text-sm text-burgundy-primary">
+                <div className="rounded-xl border border-burgundy-primary/30 bg-[#FBF1F1] px-4 py-3 text-sm text-burgundy-primary">
                   {errorMsg}
                 </div>
               )}
@@ -397,7 +397,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                 type="button"
                 onClick={onClose}
                 disabled={submitting}
-                className="rounded-xl border border-[#E5E7EB] px-5 py-2.5 text-sm font-medium text-cool-gray transition-colors hover:border-[#991313] hover:text-burgundy-primary disabled:opacity-60"
+                className="rounded-xl border border-[#E5E7EB] px-5 py-2.5 text-sm font-medium text-cool-gray transition-colors hover:border-burgundy-primary hover:text-burgundy-primary disabled:opacity-60"
               >
                 Cancel
               </button>

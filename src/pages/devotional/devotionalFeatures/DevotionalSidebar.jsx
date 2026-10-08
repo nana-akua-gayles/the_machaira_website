@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import DevotionalAudio from "./DevotionalAudio";
 
-function DevotionalSidebar({ deepDiver, prayer, bibleReading, declarations }) {
+function DevotionalSidebar({ deepDiver, prayer, bibleReading, declarations, audioUrl, title, episode }) {
   const hasAnySection =
     (deepDiver && deepDiver.length > 0) ||
     prayer ||
@@ -82,29 +82,17 @@ function DevotionalSidebar({ deepDiver, prayer, bibleReading, declarations }) {
         </div>
       )}
 
-      {/* Join Our Community */}
-      <div className="devotional-sidebar-promo devotional-sidebar-promo-community">
-        <h4>Join Our Community</h4>
-        <p>Discuss, connect and grow together in faith.</p>
-        <Link to="/forum" className="devotional-sidebar-promo-button">
-          Join Forum
-        </Link>
-      </div>
-
       {/* Listen */}
-      <div className="devotional-sidebar-promo devotional-sidebar-promo-listen">
-        <div className="devotional-sidebar-promo-icon">♪</div>
-        <div>
-          <h4>Prefer to listen?</h4>
-          <p>Listen to today's devotional and be inspired on the go.</p>
+      {audioUrl && (
+        <div className="devotional-sidebar-promo devotional-sidebar-promo-listen print:hidden">
+          <div className="devotional-sidebar-promo-icon">♪</div>
+          <div>
+            <h4>Prefer to listen?</h4>
+            <p>Listen to today's devotional and be inspired on the go.</p>
+          </div>
+          <DevotionalAudio variant="light" audioUrl={audioUrl} title={title} episode={episode} />
         </div>
-        <a
-          href="#devotional-audio"
-          className="devotional-sidebar-promo-button-light"
-        >
-          Listen Now
-        </a>
-      </div>
+      )}
     </aside>
   );
 }

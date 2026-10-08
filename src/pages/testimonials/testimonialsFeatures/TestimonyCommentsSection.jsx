@@ -195,7 +195,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
                 disabled={posting}
                 rows={2}
                 placeholder="Write a comment…"
-                className="min-h-[44px] flex-1 resize-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm leading-6 text-navy-dark placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] disabled:opacity-60"
+                className="min-h-[44px] flex-1 resize-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm leading-6 text-navy-dark placeholder:text-soft-gray outline-none transition-colors focus:border-burgundy-primary disabled:opacity-60"
               />
               <button
                 type="submit"

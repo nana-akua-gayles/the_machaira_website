@@ -186,7 +186,7 @@ function DevotionalComments({ episodeNumber }) {
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Share your thoughts on today's devotional..."
             rows={3}
-            className="w-full resize-none rounded-2xl border border-black/10 bg-[#F8F8F7] p-4 text-sm text-navy-dark placeholder:text-[#B9BEC8] focus:border-[#991313] focus:outline-none"
+            className="w-full resize-none rounded-2xl border border-black/10 bg-[#F8F8F7] p-4 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none"
           />
 
           {submitError && (
@@ -210,7 +210,7 @@ function DevotionalComments({ episodeNumber }) {
           </p>
           <Link
             to="/login"
-            className="mt-3 inline-flex items-center justify-center rounded-full border border-[#991313] px-6 py-2.5 text-sm font-semibold text-burgundy-primary transition-colors hover:bg-burgundy-primary hover:text-white"
+            className="mt-3 inline-flex items-center justify-center rounded-full border border-burgundy-primary px-6 py-2.5 text-sm font-semibold text-burgundy-primary transition-colors hover:bg-burgundy-primary hover:text-white"
           >
             Sign In
           </Link>
@@ -241,7 +241,7 @@ function DevotionalComments({ episodeNumber }) {
                 <p className="text-sm font-semibold text-navy-dark">
                   {comment.author?.name || "Anonymous"}
                 </p>
-                <span className="text-xs text-[#B9BEC8]">
+                <span className="text-xs text-soft-gray">
                   {formatCommentDate(comment.created_at)}
                 </span>
               </div>
@@ -260,7 +260,7 @@ function DevotionalComments({ episodeNumber }) {
                   className={
                     likedCommentIds.has(comment.id)
                       ? "font-semibold text-burgundy-primary"
-                      : "text-[#B9BEC8]"
+                      : "text-soft-gray"
                   }
                 >
                   {comment.likes_count || 0}
