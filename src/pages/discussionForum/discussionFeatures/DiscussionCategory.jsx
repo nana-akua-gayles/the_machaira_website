@@ -58,10 +58,10 @@ const DiscussionCategory = ({ selectedCategory, onSelectCategory }) => {
   ];
 
   return (
-    <aside className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm space-y-4">
-      <h3 className="font-serif font-bold text-stone-900 text-base">Categories</h3>
+    <aside className="min-w-0 bg-transparent lg:bg-white lg:border lg:border-[#B9BEC8]/30 lg:rounded-2xl lg:p-5 lg:shadow-sm lg:space-y-4">
+      <h3 className="mb-2 text-sm font-bold text-[#101A2B] lg:mb-0 lg:text-base">Categories</h3>
 
-      <nav className="space-y-1">
+      <nav aria-label="Discussion categories" className="flex min-w-0 gap-2 overflow-x-auto overscroll-x-contain pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
         {categories.map((cat) => {
           const Icon = cat.icon;
           const active = cat.label === selectedCategory;
@@ -70,17 +70,17 @@ const DiscussionCategory = ({ selectedCategory, onSelectCategory }) => {
               key={cat.label}
               type="button"
               onClick={() => onSelectCategory(cat.label)}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${
+              className={`shrink-0 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border px-3.5 py-2.5 text-xs font-medium transition-all lg:w-full lg:justify-between lg:rounded-xl lg:border-transparent ${
                 active
-                  ? 'bg-red-50 text-red-900 font-semibold'
-                  : 'text-stone-600 hover:bg-stone-50 hover:text-stone-900'
+                  ? 'border-[#991313] bg-[#991313] text-white font-semibold lg:border-transparent lg:bg-[#FBF0F0] lg:text-[#991313]'
+                  : 'border-[#B9BEC8]/60 bg-white text-[#4D5057] hover:border-[#991313] hover:text-[#991313] lg:border-transparent'
               }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`w-4 h-4 ${active ? 'text-red-800' : 'text-stone-400'}`} />
+                <Icon className={`hidden h-4 w-4 lg:block ${active ? 'text-[#991313]' : 'text-[#B9BEC8]'}`} />
                 <span>{cat.label}</span>
               </div>
-              <span className={`text-[11px] ${active ? 'text-red-800 font-bold' : 'text-stone-400'}`}>
+              <span className={`hidden text-[11px] lg:inline ${active ? 'text-[#991313] font-bold' : 'text-[#4D5057]'}`}>
                 {loading ? '...' : formatCount(cat.count)}
               </span>
             </button>

@@ -12,17 +12,17 @@ const DiscussionForum = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Discussions');
 
   return (
-    <div className="min-h-screen bg-stone-50/50 font-sans text-stone-800 antialiased selection:bg-red-100 selection:text-red-900">
+    <div className="min-h-screen min-w-0 overflow-x-clip bg-[#F8F8F8] font-[Montserrat,sans-serif] text-[#111827] antialiased selection:bg-red-100 selection:text-red-900">
 
       {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <main className="max-w-7xl mx-auto min-w-0 px-3 sm:px-6 lg:px-8 pb-16">
         {/* Banner */}
         <DiscussionHero />
 
         {/* Responsive Grid Structure */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-6">
+        <div className="flex min-w-0 flex-col gap-4 lg:mt-6 lg:grid lg:grid-cols-12 lg:items-start lg:gap-8">
           {/* Left Navigation Column */}
-          <div className="lg:col-span-3">
+          <div className="min-w-0 lg:col-span-3">
             <DiscussionCategory
               selectedCategory={selectedCategory}
               onSelectCategory={setSelectedCategory}
@@ -30,12 +30,12 @@ const DiscussionForum = () => {
           </div>
 
           {/* Center Main Discussions Column */}
-          <div className="lg:col-span-6">
+          <div className="min-w-0 lg:col-span-6">
             <DiscussionFeed selectedCategory={selectedCategory} />
           </div>
 
           {/* Right Highlights Column */}
-          <div className="lg:col-span-3">
+          <div className="min-w-0 lg:col-span-3">
             <DiscussionRightSidebar />
           </div>
         </div>
