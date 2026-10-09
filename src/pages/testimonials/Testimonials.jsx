@@ -213,9 +213,9 @@ function Testimonials() {
                   </span>
                 </h1>
 
-                <div className="mt-5 h-[2px] w-9 bg-burgundy-primary" />
+                <div className="mt-5 h-0.5 w-9 bg-burgundy-primary" />
 
-                <p className="mt-5 max-w-[500px] text-sm leading-7 text-cool-gray sm:text-[15px]">
+                <p className="mt-5 max-w-125 text-sm leading-7 text-cool-gray sm:text-[15px]">
                   Read how God is changing lives through His word,
                   grace, and the Machaira community.
                 </p>
@@ -248,8 +248,8 @@ function Testimonials() {
                     onClick={() => setActiveCategory(category)}
                     className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
                       active
-                        ? "border-[#991313] bg-burgundy-primary text-white"
-                        : "border-[#E5E7EB] bg-white text-cool-gray hover:border-[#991313] hover:text-burgundy-primary"
+                        ? "border-burgundy-primary bg-burgundy-primary text-white"
+                        : "border-[#E5E7EB] bg-white text-cool-gray hover:border-burgundy-primary hover:text-burgundy-primary"
                     }`}
                   >
                     {category}
@@ -280,7 +280,7 @@ function Testimonials() {
                   value={categorySearch}
                   onChange={(e) => setCategorySearch(e.target.value)}
                   placeholder="Search category..."
-                  className="w-full rounded-full border border-[#E5E7EB] bg-white py-2 pl-9 pr-9 text-xs text-navy-dark placeholder:text-[#B9BEC8] outline-none transition-colors focus:border-[#991313] sm:w-[190px]"
+                  className="w-full rounded-full border border-[#E5E7EB] bg-white py-2 pl-9 pr-9 text-xs text-navy-dark placeholder:text-soft-gray outline-none transition-colors focus:border-burgundy-primary sm:w-[190px]"
                 />
 
                 {categorySearch && (
@@ -312,7 +312,7 @@ function Testimonials() {
               <select
                 value={sortBy}
                 onChange={(event) => setSortBy(event.target.value)}
-                className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-navy-dark outline-none focus:border-[#991313]"
+                className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-navy-dark outline-none focus:border-burgundy-primary"
               >
                 <option>Latest</option>
                 <option>Most Liked</option>
@@ -504,7 +504,7 @@ function Testimonials() {
                 <button
                   type="button"
                   onClick={() => setPage((p) => p + 1)}
-                  className="inline-flex items-center gap-3 rounded-xl border border-[#991313] px-6 py-3 text-sm font-medium text-burgundy-primary transition-all hover:bg-burgundy-primary hover:text-white"
+                  className="inline-flex items-center gap-3 rounded-xl border border-burgundy-primary px-6 py-3 text-sm font-medium text-burgundy-primary transition-all hover:bg-burgundy-primary hover:text-white"
                 >
                   Load More Stories
                   <svg
@@ -534,7 +534,7 @@ function Testimonials() {
                 Share Your Testimony
               </p>
 
-              <div className="mt-3 h-[2px] w-8 bg-burgundy-primary" />
+              <div className="mt-3 h-0.5 w-8 bg-burgundy-primary" />
 
               <p className="mt-4 text-sm leading-6 text-cool-gray">
                 Your story can inspire someone else today. Share
@@ -575,7 +575,7 @@ function Testimonials() {
                 Testimonies Impact
               </p>
 
-              <div className="mt-3 h-[2px] w-8 bg-burgundy-primary" />
+              <div className="mt-3 h-0.5 w-8 bg-burgundy-primary" />
 
               <div className="mt-5 space-y-5">
                 {impactStats.map((stat) => (
@@ -647,7 +647,7 @@ function Testimonials() {
                 Filter by Date
               </p>
 
-              <div className="mt-3 h-[2px] w-8 bg-burgundy-primary" />
+              <div className="mt-3 h-0.5 w-8 bg-burgundy-primary" />
 
               <div className="relative mt-5">
                 <select
@@ -655,7 +655,7 @@ function Testimonials() {
                   onChange={(event) =>
                     setDateFilter(event.target.value)
                   }
-                  className="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 pr-10 text-sm text-cool-gray outline-none focus:border-[#991313]"
+                  className="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 pr-10 text-sm text-cool-gray outline-none focus:border-burgundy-primary"
                 >
                   <option>All Time</option>
                   <option>This Month</option>

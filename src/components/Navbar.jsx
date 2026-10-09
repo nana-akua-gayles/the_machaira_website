@@ -256,7 +256,7 @@ function Navbar() {
                   <span className="flex items-center gap-4">
                     <span
                       className={`text-[11px] font-semibold tabular-nums ${
-                        isActive ? "text-burgundy-primary" : "text-[#B9BEC8]"
+                        isActive ? "text-burgundy-primary" : "text-soft-gray"
                       }`}
                     >
                       {String(index + 1).padStart(2, "0")}

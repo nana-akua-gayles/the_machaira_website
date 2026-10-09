@@ -64,7 +64,7 @@ function PreviousDevotionalItem({ devotional }) {
 
           {category && (
             <>
-              <span className="h-1 w-1 rounded-full bg-[#B9BEC8]" />
+              <span className="h-1 w-1 rounded-full bg-soft-gray" />
               <span className="text-xs text-[#6B7280]">{category}</span>
             </>
           )}
@@ -80,7 +80,7 @@ function PreviousDevotionalItem({ devotional }) {
             )}
 
             {category && date && (
-              <span className="h-1 w-1 rounded-full bg-[#B9BEC8]" />
+              <span className="h-1 w-1 rounded-full bg-soft-gray" />
             )}
 
             {date && (
@@ -111,7 +111,7 @@ function PreviousDevotionalItem({ devotional }) {
         <div className="flex shrink-0 items-center gap-3 text-sm font-semibold text-burgundy-primary">
           <span className="hidden lg:inline">Read</span>
 
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#B9BEC8] transition-all duration-300 group-hover:border-[#991313] group-hover:bg-burgundy-primary group-hover:text-white">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-soft-gray transition-all duration-300 group-hover:border-burgundy-primary group-hover:bg-burgundy-primary group-hover:text-white">
             <svg
               width="17"
               height="17"

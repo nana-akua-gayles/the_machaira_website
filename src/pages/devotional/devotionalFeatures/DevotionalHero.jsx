@@ -3,6 +3,7 @@ import DevotionalDateNav from "./DevotionalDateNav";
 import DevotionalAudio from "./DevotionalAudio";
 import heroImage from "../../../assets/devotionalImages/devotional-hero.png";
 import { useNavigate } from "react-router-dom";
+import { BookOpen } from "lucide-react";
 
 function formatDevotionalTitle(title) {
   if (!title) {
@@ -12,8 +13,6 @@ function formatDevotionalTitle(title) {
     };
   }
 
-  // Example:
-  // EPISODE 1327 - IS ANYTHING TOO HARD FOR THE LORD?
   const match = title.match(/^EPISODE\s+(\d+)\s*-\s*(.+)$/i);
 
   if (match) {
@@ -42,7 +41,7 @@ function DevotionalHero({
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-[570px] overflow-hidden bg-white">
+    <section className="relative overflow-hidden bg-white lg:min-h-142.5">
 
       {/* Background image */}
       <div
@@ -53,27 +52,10 @@ function DevotionalHero({
       />
 
       {/* Soft white overlay */}
-      <div className="absolute inset-0 bg-white/30" />
-
-      {/* Breadcrumb */}
-      <div className="relative z-10 mx-auto max-w-360 px-8 pt-10 lg:px-12">
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-lg text-burgundy-primary">
-            ⌂
-          </span>
-
-          <span className="text-[#B9BEC8]">
-            /
-          </span>
-
-          <span className="text-[#374151]">
-            Devotional
-          </span>
-        </div>
-      </div>
+      <div className="absolute inset-0 bg-white/60 sm:bg-white/45 lg:bg-white/30" />
 
       {/* Main hero content */}
-      <div className="relative z-10 mx-auto flex min-h-[510px] max-w-360 px-8 lg:px-12">
+      <div className="relative z-10 mx-auto flex max-w-360 flex-col gap-8 px-5 py-8 sm:px-8 sm:py-12 lg:min-h-127.5 lg:flex-row lg:gap-0 lg:px-12 lg:py-0">
 
         {/* Date navigation */}
         <DevotionalDateNav
@@ -86,7 +68,7 @@ function DevotionalHero({
         {/* Main devotional content */}
         <div className="flex flex-1 items-center">
 
-          <div className="max-w-[560px] pt-8">
+          <div className="w-full max-w-140 lg:pt-8">
 
             {loading ? (
               <>
@@ -94,7 +76,7 @@ function DevotionalHero({
                   Daily Devotional
                 </p>
 
-                <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
+                <h1 className="text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark sm:text-5xl lg:text-6xl">
                   Loading today's
                   <br />
                   devotional...
@@ -106,13 +88,13 @@ function DevotionalHero({
                   Devotional
                 </p>
 
-                <h1 className="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
+                <h1 className="text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark sm:text-5xl lg:text-6xl">
                   Something went
                   <br />
                   wrong.
                 </h1>
 
-                <p className="mt-6 max-w-[500px] text-lg leading-8 text-[#374151]">
+                <p className="mt-6 max-w-125 text-base leading-7 text-[#374151] sm:text-lg sm:leading-8">
                   We couldn't load today's devotional. Please try again.
                 </p>
               </>
@@ -124,7 +106,7 @@ function DevotionalHero({
                 </p>
 
                 {/* Title */}
-                <h1 className="max-w-[560px] text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
+                <h1 className="max-w-140 text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark sm:text-4xl lg:text-5xl">
                   {formatted.mainTitle}
                 </h1>
 
@@ -136,10 +118,10 @@ function DevotionalHero({
                 )}
 
                 {/* Accent line */}
-                <div className="my-7 h-[2px] w-12 bg-burgundy-primary" />
+                <div className="my-5 h-0.5 w-12 bg-burgundy-primary sm:my-7" />
 
                 {/* Description */}
-                <p className="max-w-[500px] text-lg leading-8 text-[#374151]">
+                <p className="max-w-125 text-base leading-7 text-[#374151] sm:text-lg sm:leading-8">
                   {devotional.excerpt ? (
                     <>
                       {showFullExcerpt
@@ -167,15 +149,15 @@ function DevotionalHero({
                 </p>
 
                 {/* Actions */}
-                <div className="mt-9 flex flex-wrap items-center gap-4">
+                <div className="mt-7 flex flex-wrap items-center gap-4 sm:mt-9">
 
                 <button
                   type="button"
                   onClick={() => navigate(`/devotional/${devotional.id}`)}
-                  className="rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
+                  className="inline-flex items-center gap-2 rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
                 >
-                  <span className="mr-2">▢</span>
-                  Read Devotional
+                  <BookOpen size={18} strokeWidth={2} />
+                  Read
                 </button>
 
                   <DevotionalAudio
@@ -192,21 +174,21 @@ function DevotionalHero({
                   Your Journey Continues
                 </p>
 
-                <h1 className="max-w-[560px] text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark lg:text-6xl">
+                <h1 className="max-w-140 text-3xl font-semibold leading-none tracking-[-0.04em] text-navy-dark lg:text-3xl">
                   Recap Your
                   <br />
                   Learning Experience
                 </h1>
 
-                <div className="my-7 h-[2px] w-12 bg-burgundy-primary" />
+                <div className="my-5 h-0.5 w-12 bg-burgundy-primary sm:my-7" />
 
-                <p className="max-w-[500px] text-lg leading-8 text-[#374151]">
+                <p className="max-w-125 text-base leading-7 text-[#374151] sm:text-lg sm:leading-8">
                   There isn't a new devotional for today yet. Take a moment
                   to revisit the lessons and wisdom from previous Machaira
                   devotionals.
                 </p>
 
-                <div className="mt-9">
+                <div className="mt-7 sm:mt-9">
                   <button
                     type="button" onClick={() => navigate("/previous-devotionals")}
                     className="rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
@@ -225,21 +207,35 @@ function DevotionalHero({
 
         {/* Scripture */}
         {hasDevotional && (
-          <div className="hidden w-[300px] -translate-x-8 items-center justify-center lg:flex">
-            <div className="relative flex h-[240px] w-[240px] items-center justify-center rounded-full border border-[#9CA3AF]/50">
+          <>
+            {/* Mobile scripture */}
+            <div className="rounded-2xl border border-[#9CA3AF]/40 bg-white/70 p-5 backdrop-blur-sm lg:hidden">
+              <p className="text-base italic leading-7 text-charcoal-text">
+                "The Lord is my strength and my shield; my heart trusts in Him."
+              </p>
 
-              <div className="max-w-[180px]">
-                <p className="text-base italic leading-7 text-[#111827]">
-                  "The Lord is my strength and my shield; my heart trusts in Him."
-                </p>
-
-                <p className="mt-3 text-sm font-semibold text-burgundy-primary">
-                  — Psalm 28:7
-                </p>
-              </div>
-
+              <p className="mt-3 text-sm font-semibold text-burgundy-primary">
+                — Psalm 28:7
+              </p>
             </div>
-          </div>
+
+            {/* Desktop scripture */}
+            <div className="hidden w-75 -translate-x-8 items-center justify-center lg:flex">
+              <div className="relative flex h-60 w-60 items-center justify-center rounded-full border border-[#9CA3AF]/50">
+
+                <div className="max-w-45">
+                  <p className="text-base italic leading-7 text-charcoal-text">
+                    "The Lord is my strength and my shield; my heart trusts in Him."
+                  </p>
+
+                  <p className="mt-3 text-sm font-semibold text-burgundy-primary">
+                    — Psalm 28:7
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </>
         )}
 
       </div>

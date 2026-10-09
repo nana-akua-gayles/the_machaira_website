@@ -69,8 +69,8 @@ function PreviousDevotionalFilters({
               <span
                 className={`flex h-4 w-4 items-center justify-center rounded-full border ${
                   isActive
-                    ? "border-[#991313]"
-                    : "border-[#B9BEC8]"
+                    ? "border-burgundy-primary"
+                    : "border-soft-gray"
                 }`}
               >
                 {isActive && (
@@ -130,7 +130,7 @@ function PreviousDevotionalFilters({
               onCategoryChange(event.target.value)
             }
             placeholder="Search category..."
-            className="w-full rounded-xl border border-[#E5E7EB] bg-white py-2.5 pl-10 pr-3 text-sm text-[#111827] outline-none transition placeholder:text-[#9CA3AF] focus:border-[#991313]"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white py-2.5 pl-10 pr-3 text-sm text-charcoal-text outline-none transition placeholder:text-[#9CA3AF] focus:border-burgundy-primary"
           />
         </div>
       </div>
@@ -155,7 +155,7 @@ function PreviousDevotionalFilters({
             onChange={(event) =>
               onDateFromChange(event.target.value)
             }
-            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-charcoal-text outline-none transition focus:border-burgundy-primary"
           />
         </div>
 
@@ -170,7 +170,7 @@ function PreviousDevotionalFilters({
             onChange={(event) =>
               onDateToChange(event.target.value)
             }
-            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-charcoal-text outline-none transition focus:border-burgundy-primary"
           />
         </div>
       </div>
@@ -191,7 +191,7 @@ function PreviousDevotionalFilters({
               onEpisodeFromChange(event.target.value)
             }
             placeholder="1"
-            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-charcoal-text outline-none transition focus:border-burgundy-primary"
           />
         </div>
 
@@ -208,7 +208,7 @@ function PreviousDevotionalFilters({
               onEpisodeToChange(event.target.value)
             }
             placeholder="1334"
-            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#991313]"
+            className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm text-charcoal-text outline-none transition focus:border-burgundy-primary"
           />
         </div>
       </div>

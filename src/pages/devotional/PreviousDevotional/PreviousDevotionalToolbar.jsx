@@ -35,7 +35,7 @@ function PreviousDevotionalToolbar({
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
             placeholder="Search by title, topic, scripture or keyword..."
-            className="w-full bg-transparent py-3 text-sm text-[#111827] outline-none placeholder:text-[#9CA3AF]"
+            className="w-full bg-transparent py-3 text-sm text-charcoal-text outline-none placeholder:text-[#9CA3AF]"
           />
         </div>
 
@@ -52,7 +52,7 @@ function PreviousDevotionalToolbar({
           <select
             value={sortBy}
             onChange={(event) => onSortChange(event.target.value)}
-            className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-medium text-[#111827] outline-none"
+            className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-medium text-charcoal-text outline-none"
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
@@ -77,7 +77,7 @@ function PreviousDevotionalToolbar({
           <select
             value={pageSize}
             onChange={(event) => onPageSizeChange(Number(event.target.value))}
-            className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-semibold text-[#111827] outline-none"
+            className="cursor-pointer appearance-none bg-transparent pr-5 text-sm font-semibold text-charcoal-text outline-none"
           >
             <option value={10}>10</option>
             <option value={25}>25</option>
@@ -123,7 +123,7 @@ function PreviousDevotionalToolbar({
           <button
             type="button"
             aria-label="Grid view"
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-[#6B7280] transition-colors hover:bg-black/[0.04] hover:text-[#111827]"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-[#6B7280] transition-colors hover:bg-black/[0.04] hover:text-charcoal-text"
           >
             <svg
               width="18"

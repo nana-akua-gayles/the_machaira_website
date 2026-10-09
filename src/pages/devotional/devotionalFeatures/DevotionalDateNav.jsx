@@ -70,7 +70,7 @@ function DevotionalDateNav({
               {selectedParts.month}
             </span>
 
-            <span className="mt-1 text-4xl font-semibold leading-none text-[#111827]">
+            <span className="mt-1 text-4xl font-semibold leading-none text-charcoal-text">
               {selectedParts.day}
             </span>
 
@@ -85,7 +85,7 @@ function DevotionalDateNav({
       <div className="relative mt-6 flex flex-col items-center">
 
         {/* Vertical line */}
-        <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#B9BEC8]" />
+        <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-soft-gray" />
 
         {dates.map((item) => {
           const isSelected = item.date === selectedDate;
@@ -103,7 +103,7 @@ function DevotionalDateNav({
                 className={`flex shrink-0 rounded-full transition-all duration-300 ${
                   isSelected
                     ? "h-7 w-7 bg-burgundy-primary shadow-md"
-                    : "h-3 w-3 bg-[#B9BEC8] group-hover:bg-burgundy-primary"
+                    : "h-3 w-3 bg-soft-gray group-hover:bg-burgundy-primary"
                 }`}
               >
                 {isSelected && (

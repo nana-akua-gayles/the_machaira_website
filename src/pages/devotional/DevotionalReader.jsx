@@ -1,20 +1,25 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import DevotionalContent from "./devotionalFeatures/DevotionalContent";
 import DevotionalDateNav from "./devotionalFeatures/DevotionalDateNav";
 import DevotionalSidebar from "./devotionalFeatures/DevotionalSidebar";
 import DevotionalPrevNext from "./devotionalFeatures/DevotionalPrevNext";
+import DevotionalAudio from "./devotionalFeatures/DevotionalAudio";
 import { formatDevotionalTitle, formatDate } from "./devotionalFeatures/formatDevotional";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
 import { getDevotionalById, getDevotionalByDate,  getPreviousDevotional, getNextDevotional, } from "../../lib/devotionalService";
+import { recordDevotionalActivity } from "../../lib/recordDevotionalActivity";
 import apostleBennieAvatar from "../../assets/images/Apostle1.jpg";
 import DevotionalComments from "./devotionalFeatures/DevotionalComments";
 import "./devotional.css";
 
+const MIN_READ_MS = 30000;
+
 function DevotionalReader() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [devotional, setDevotional] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,21 +78,49 @@ function DevotionalReader() {
   );
   
 
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const recordedRef = useRef(false);
+  const readEndRef = useRef(null);
+  const readStartRef = useRef(Date.now());
 
-  function toggleAudio() {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-
-    setIsPlaying((prev) => !prev);
+  function recordOnce() {
+    if (recordedRef.current) return;
+    recordedRef.current = true;
+    recordDevotionalActivity();
   }
+
+  useEffect(() => {
+    recordedRef.current = false;
+    readStartRef.current = Date.now();
+  }, [id]);
+
+  useEffect(() => {
+    const node = readEndRef.current;
+    if (!node || !devotional) return;
+
+    let timer;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || timer) return;
+      const wait = Math.max(0, MIN_READ_MS - (Date.now() - readStartRef.current));
+      timer = setTimeout(recordOnce, wait);
+    });
+
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, [devotional]);
+
+  useEffect(() => {
+    if (searchParams.get("print") !== "1" || loading || !devotional) return;
+
+    const timer = setTimeout(() => {
+      window.print();
+      setSearchParams({}, { replace: true });
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [loading, devotional, searchParams, setSearchParams]);
 
   function handlePrint() {
     window.print();
@@ -182,7 +215,7 @@ function DevotionalReader() {
               </span>
 
               {parsed.authorMessage && (
-                <p className="max-w-[560px] text-base italic leading-relaxed text-navy-dark md:text-lg">
+                <p className="max-w-140 text-base italic leading-relaxed text-navy-dark md:text-lg">
                   {parsed.authorMessage}
                 </p>
               )}
@@ -234,16 +267,12 @@ function DevotionalReader() {
             </button>
 
             {devotional.audio_url && (
-              <button
-                type="button"
-                onClick={toggleAudio}
-                aria-label={isPlaying ? "Pause audio" : "Play audio"}
-                title={isPlaying ? "Pause" : "Listen"}
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-burgundy-primary px-3 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e]"
-              >
-                <span aria-hidden="true">{isPlaying ? "❚❚" : "▶"}</span>
-                <span>{isPlaying ? "Pause" : "Listen"}</span>
-              </button>
+              <DevotionalAudio
+                variant="topbar"
+                audioUrl={devotional.audio_url}
+                title={formatted.mainTitle}
+                episode={formatted.episodeLabel}
+              />
             )}
           </div>
 
@@ -313,15 +342,6 @@ function DevotionalReader() {
               <span>{formatDate(devotional.created_at)}</span>
             </div>
 
-            {devotional.audio_url && (
-              <audio
-                ref={audioRef}
-                src={devotional.audio_url}
-                onEnded={() => setIsPlaying(false)}
-                className="hidden"
-              />
-            )}
-
             {/* Devotional Content */}
             <article className="mt-14 text-[17px] leading-[2] text-[#374151]">
               <DevotionalContent
@@ -330,11 +350,15 @@ function DevotionalReader() {
               />
             </article>
 
+            <div ref={readEndRef} aria-hidden="true" />
+
             {/* Bottom navigation */}
 
             <DevotionalPrevNext previous={prevFormatted} next={nextFormatted} />
 
-            <DevotionalComments episodeNumber={devotional.episode_number} />
+            <div className="print:hidden">
+              <DevotionalComments episodeNumber={devotional.episode_number} />
+            </div>
 
           </div>
 
@@ -343,6 +367,9 @@ function DevotionalReader() {
             prayer={parsed?.prayer}
             bibleReading={parsed?.bibleReading}
             declarations={parsed?.declarations}
+            audioUrl={devotional.audio_url}
+            title={formatted.mainTitle}
+            episode={formatted.episodeLabel}
           />
 
         </div>

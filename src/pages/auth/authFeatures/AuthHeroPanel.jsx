@@ -45,7 +45,7 @@ function AuthHeroPanel({ heading, subtitle }) {
             {heading}
           </h1>
 
-          <div className="mt-6 h-[3px] w-14 bg-burgundy-primary" />
+          <div className="mt-6 h-0.75 w-14 bg-burgundy-primary" />
 
           <p className="mt-6 max-w-[380px] text-sm leading-6 text-cool-gray">
             {subtitle}
@@ -66,7 +66,7 @@ function AuthHeroPanel({ heading, subtitle }) {
           <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
             {features.map(({ label, Icon }, index) => (
               <div key={label} className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#991313]/30 bg-white/60 text-burgundy-primary">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-burgundy-primary/30 bg-white/60 text-burgundy-primary">
                   <Icon />
                 </span>
                 <span className="max-w-[120px] text-xs leading-5 text-navy-dark">
