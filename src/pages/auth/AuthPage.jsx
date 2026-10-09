@@ -1,25 +1,34 @@
+
 import AuthHeroPanel from "./authFeatures/AuthHeroPanel";
 import LoginForm from "./authFeatures/LoginForm";
+import AuthWelcome from "./authFeatures/AuthWelcome";
 import { ShieldIcon } from "./authFeatures/authIcons";
 
 function AuthPage() {
   return (
     <main className="min-h-screen bg-white py-8 lg:py-10">
       <div className="mx-auto max-w-[1400px] px-4 lg:px-8">
-
         <div className="grid grid-cols-1 overflow-hidden rounded-4xl bg-white shadow-sm lg:grid-cols-2">
           <AuthHeroPanel
             heading={
               <>
                 Welcome Back <br />
-                to the <span className="text-burgundy-primary">Family</span>
+                to the{" "}
+                <span className="text-burgundy-primary">
+                  Family
+                </span>
               </>
             }
             subtitle="Sign in to continue your faith journey, access exclusive content, and stay connected with our community."
           />
 
-          <div className="flex items-center justify-center bg-white px-8 py-10 lg:px-14 lg:py-14">
-            <LoginForm />
+          {/* Login and welcome panel */}
+          <div className="flex flex-col  bg-white px-6 py-10 sm:px-10 lg:px-12 lg:py-12">
+            <div className="mx-auto w-full max-w-[430px]">
+              <LoginForm />
+
+              <AuthWelcome />
+            </div>
           </div>
         </div>
 
@@ -27,7 +36,6 @@ function AuthPage() {
           <ShieldIcon />
           Your data is secure with us. We value your privacy.
         </div>
-
       </div>
     </main>
   );

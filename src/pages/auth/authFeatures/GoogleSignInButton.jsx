@@ -1,43 +1,63 @@
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-import { useGoogleIdentityScript } from "../../../lib/googleIdentity";
-import { signInWithGoogleIdToken } from "../../../lib/authService";
-
-// Same Web Client ID you already entered in Supabase's Google
-// provider settings — replace this with the real one.
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+import { signInWithOAuth } from "../../../lib/authService";
+import { GoogleIcon } from "./authIcons";
 
 function GoogleSignInButton({ onError }) {
-  const navigate = useNavigate();
-  const scriptLoaded = useGoogleIdentityScript();
-  const buttonRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!scriptLoaded || !buttonRef.current) return;
+  async function handleGoogleLogin() {
+    if (isLoading) return;
 
-    window.google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: async ({ credential }) => {
-        try {
-          await signInWithGoogleIdToken(credential);
-          navigate("/");
-        } catch (err) {
-          onError?.(err?.message || "We couldn't sign you in with Google.");
-        }
-      },
-    });
+    setIsLoading(true);
+    onError?.(null);
 
-    window.google.accounts.id.renderButton(buttonRef.current, {
-      type: "standard",
-      theme: "outline",
-      size: "large",
-      shape: "pill",
-      width: 380,
-    });
-  }, [scriptLoaded, navigate, onError]);
+    try {
+      await signInWithOAuth("google");
+    } catch (err) {
+      onError?.(
+        err?.message || "We couldn't sign you in with Google."
+      );
+      setIsLoading(false);
+    }
+  }
 
-  return <div ref={buttonRef} className="flex justify-center" />;
+  return (
+    <button
+      type="button"
+      onClick={handleGoogleLogin}
+      disabled={isLoading}
+      className="
+        group flex w-full items-center justify-center gap-3
+        rounded-full border border-black/10
+        bg-white px-5 py-3
+        text-sm font-medium text-[#101A2B]
+        transition-all duration-300 ease-in-out
+
+        hover:border-[#4285F4]
+        hover:bg-[#4285F4]
+        hover:text-white
+        hover:shadow-[0_6px_20px_rgba(66,133,244,0.22)]
+
+        focus-visible:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-[#4285F4]
+        focus-visible:ring-offset-2
+
+        active:scale-[0.98]
+        disabled:cursor-not-allowed
+        disabled:opacity-60
+      "
+    >
+      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white p-0.5">
+        <GoogleIcon />
+      </span>
+
+      <span>
+        {isLoading ? "Connecting to Google..." : "Continue with Google"}
+      </span>
+    </button>
+  );
 }
 
 export default GoogleSignInButton;
