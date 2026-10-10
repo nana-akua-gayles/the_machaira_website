@@ -22,7 +22,7 @@ function DevotionalPrintView({ devotional }) {
     <div id="devotional-print-root" className="bg-white">
       <style>{PRINT_CSS}</style>
 
-      <div className="mx-auto max-w-[800px]">
+      <div className="mx-auto max-w-200">
         {parsed?.hasBanner && (
           <div className="mb-8 flex items-center gap-6 rounded-2xl border border-black/10 bg-[#FBF8F6] p-6">
             <div className="flex flex-1 items-start gap-4">
@@ -41,20 +41,20 @@ function DevotionalPrintView({ devotional }) {
           </div>
         )}
 
-        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
-          {devotional.category || "Daily Devotional"}
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-burgundy-primary">
+          {devotional.category || "Machaira with Apostle Bennie"}
         </p>
-        <h1 className="mt-4 text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-navy-dark">
+        <h1 className="mt-4 text-2xl font-semibold leading-[1.08] tracking-[-0.02em] text-navy-dark">
           {formatted.mainTitle}
         </h1>
-        <div className="mt-6 h-[3px] w-16 bg-burgundy-primary" />
+        <div className="mt-6 h-0.75 w-16 bg-burgundy-primary" />
         <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-cool-gray">
           {formatted.episodeLabel && <span>{formatted.episodeLabel}</span>}
-          <span className="text-[#B9BEC8]">•</span>
+          <span className="text-soft-gray">•</span>
           <span>{formatDate(devotional.created_at)}</span>
         </div>
 
-        <article className="mt-10 text-[17px] leading-[2] text-[#374151]">
+        <article className="mt-10 text-[17px] leading-loose text-[#374151]">
           <DevotionalContent parsed={parsed} fallbackContent={devotional.pure_content} />
         </article>
 

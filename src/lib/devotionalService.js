@@ -1,9 +1,5 @@
 import { supabase } from "./supabaseClient";
 
-/**
- * Get today's date in Ghana (UTC).
- * Ghana uses UTC, so this keeps the devotional date consistent.
- */
 function getGhanaDateParts(date = new Date()) {
   const formatter = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Africa/Accra",
@@ -29,15 +25,7 @@ function getGhanaDateParts(date = new Date()) {
   };
 }
 
-/**
- * Get today's devotional.
- *
- * We use created_at as the devotional date.
- *
- * Returns:
- * - devotional object if one exists
- * - null if no devotional has been created today
- */
+
 export async function getTodaysDevotional() {
   try {
     const { year, month, day } = getGhanaDateParts();
@@ -81,12 +69,7 @@ export async function getTodaysDevotional() {
   }
 }
 
-/**
- * Get a devotional for a specific date.
- *
- * Example:
- * getDevotionalByDate("2026-09-01")
- */
+
 export async function getDevotionalByDate(dateString) {
   try {
     const startOfDay = `${dateString}T00:00:00+00:00`;
@@ -287,23 +270,6 @@ export async function getNextDevotional(createdAt) {
   }
 }
 
-/**
- * Get paginated devotionals for the Previous Devotionals library.
- *
- * Supports:
- * - Pagination
- * - Search
- * - Category filtering
- * - Date range filtering
- * - Episode number filtering
- * - Sorting
- *
- * Returns:
- * {
- *   data: [...],
- *   count: number
- * }
- */
 export async function getDevotionals({
   page = 1,
   pageSize = 10,

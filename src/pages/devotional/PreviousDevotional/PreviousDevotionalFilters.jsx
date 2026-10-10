@@ -29,22 +29,9 @@ function PreviousDevotionalFilters({
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-burgundy-primary">
-            Refine
-          </p>
-
-          <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-navy-dark">
             Filter devotionals
-          </h2>
+          </p>
         </div>
-
-        <button
-          type="button"
-          onClick={onClear}
-          className="text-sm font-medium text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
-        >
-          Clear filters
-        </button>
-
       </div>
 
       {/* Category */}

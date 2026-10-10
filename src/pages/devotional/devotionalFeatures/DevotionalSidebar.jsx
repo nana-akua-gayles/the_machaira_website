@@ -88,7 +88,7 @@ function DevotionalSidebar({ deepDiver, prayer, bibleReading, declarations, audi
           <div className="devotional-sidebar-promo-icon">♪</div>
           <div>
             <h4>Prefer to listen?</h4>
-            <p>Listen to today's devotional and be inspired on the go.</p>
+            <p>Listen to today's devotional and be charged.</p>
           </div>
           <DevotionalAudio variant="light" audioUrl={audioUrl} title={title} episode={episode} />
         </div>

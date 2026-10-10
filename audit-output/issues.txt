@@ -1,0 +1,78 @@
+
+=== Errors: broken links / lost content ===
+
+21009  EPISODE 103 - BE ENRICHED WITH CHRIST'S WORD
+   href-has-space: n the Faith</a> —Episode 98<a href="https:</p><ul><li>Episode 99<a href="https://christcommonwealth.org/commonwealthlive
+
+24169  EPISODE 232 - ARE YOU GROWING? 6 (THE FRUIT OF YOUR MATURITY 1)
+   possible-content-loss: output keeps 80% of source text
+
+24187  EPISODE 233 - ARE YOU GROWING? 7 (THE FRUIT OF YOUR MATURITY 2)
+   possible-content-loss: output keeps 80% of source text
+
+28842  EPISODE 410 - PORTRAIT OF GRACE 3
+   href-has-space: e concerning Jesus, who is <a href="https:</p><ol><li>Unlike the law of Moses which condemns, <a href="https://christcom
+
+34335  EPISODE 625 - THE 5 BETTER NOTS 4 (Gleanings From the Book of Hebrews)
+   href-has-space: e Lord is also warning you.<a href="https:</p><ol><li>DON'T DISREGARD THE WORD OF CHRIST TO YOU.</a></li><li>Second warn
+
+35229  EPISODE 660 - THE LAMB SONG – THE NEW SONG 4
+   possible-content-loss: output keeps 75% of source text
+
+35496  EPISODE 674 - HEARING GOD'S VOICE 23 – PERCEIVING GOD'S VOICE 4
+   href-has-space: tainty of the Lord's voice.<a href="https:</p><ul><li>The voice of the Lord is precise and peaceful.</li><li>The voice o
+
+45414  EPISODE 1058 - A DESTROYER OF DESTINY
+   href-has-space: the act of the poor.</p><p><a href="https://withapostlebennie.org/ commonwealthlive/episode-179-dealing-with-laziness/" 
+
+47453  EPISODE 1228 - BE DILIGENT WITH THE WORK COMMITTED TO YOU
+   href-has-space: the act of the poor.</p><p><a href="https://withapostlebennie.org/ commonwealthlive/episode-179-dealing-with-laziness/" 
+
+=== Footer problems (prayer / bible plans / declarations) ===
+
+19906  EPISODE 55 - PRACTICE BROTHERLY LOVE - ABOUND IN THESE THINGS 8 ( ABUNDANT FRUIT
+   no-prayer: 
+
+19936   EPISODE 56 - THE VERTEX - ABOUND IN THESE THINGS 9 (ABUNDANT FRUIT-BEARERS 22)
+   no-prayer: 
+
+20074  EPISODE 64 - THIS IS WAR 2
+   no-prayer: 
+
+20099  EPISODE 65 - THIS IS WAR 3 [GIVE YOURSELF TO TRAINING]
+   no-prayer: 
+
+20121  EPISODE 66 - BE VALIANT 1 (THIS IS WAR 4)
+   no-prayer: 
+
+20432  EPISODE 79 - TESTIFY OF THE GOSPEL
+   no-prayer: 
+
+20872  EPISODE 92 - DEAD TO SIN
+   no-prayer: 
+
+22747  EPISODE 183 - TESTIFY
+   no-prayer: 
+
+24885  EPISODE 261 - FEAR NO EVIL
+   no-prayer: 
+
+39962  EPISODE 877 - HIS LOVE FOR YOU IS UNFAILING
+   no-declarations: 
+
+=== Tiny paragraphs ===
+
+20864  EPISODE 17 - THE COMMANDMENTS OF JESUS (God’s Love Language 8) 
+   tiny-paragraph: The
+
+19487  EPISODE 43 - HOW TO GET A SOUL SAVED 2 (ABUNDANT FRUIT-BEARERS 10)
+   tiny-paragraph: B.
+
+28692  EPISODE 406 - THE PRACTICE OF WISDOM 4
+   tiny-paragraph: ).
+
+35891  EPISODE 697 - DEAL WITH UNFORGIVENESS
+   tiny-paragraph: ).
+
+47603  EPISODE 1270 - GOD'S UNLIMITED AND IMMEASURABLE LAVISHNESS OF GRACE
+   tiny-paragraph: The

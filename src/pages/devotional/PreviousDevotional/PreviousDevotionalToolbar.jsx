@@ -1,3 +1,5 @@
+import React from 'react';
+
 function PreviousDevotionalToolbar({
   search,
   onSearchChange,
@@ -5,7 +7,13 @@ function PreviousDevotionalToolbar({
   onSortChange,
   pageSize,
   onPageSizeChange,
+  viewMode = 'list',
+  onViewModeChange = () => {},
 }) {
+  const activeClass =
+    'bg-burgundy-primary/[0.07] text-burgundy-primary';
+  const inactiveClass =
+    'text-[#6B7280] hover:bg-black/[0.04] hover:text-charcoal-text';
 
   return (
     <div className="relative z-30 mx-auto -mb-8 max-w-[1350px] px-6 lg:px-10">
@@ -13,18 +21,8 @@ function PreviousDevotionalToolbar({
 
         {/* Search */}
         <div className="flex min-w-0 flex-1 items-center px-3 lg:px-4">
-
           <span className="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-burgundy-primary/[0.06] text-burgundy-primary">
-            <svg
-              width="17"
-              height="17"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-4-4" />
             </svg>
@@ -39,16 +37,11 @@ function PreviousDevotionalToolbar({
           />
         </div>
 
-        {/* Divider */}
         <div className="hidden h-9 w-px bg-[#E5E7EB] lg:block" />
 
         {/* Sort */}
         <div className="flex items-center gap-3 px-3 lg:px-5">
-
-          <span className="whitespace-nowrap text-sm text-[#6B7280]">
-            Sort by:
-          </span>
-
+          <span className="whitespace-nowrap text-sm text-[#6B7280]">Sort by:</span>
           <select
             value={sortBy}
             onChange={(event) => onSortChange(event.target.value)}
@@ -57,23 +50,14 @@ function PreviousDevotionalToolbar({
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
           </select>
-
-          <span className="-ml-5 pointer-events-none text-xs text-burgundy-primary">
-            ▾
-          </span>
-
+          <span className="-ml-5 pointer-events-none text-xs text-burgundy-primary">▾</span>
         </div>
 
-        {/* Divider */}
         <div className="hidden h-9 w-px bg-[#E5E7EB] lg:block" />
 
         {/* Items per page */}
         <div className="flex items-center gap-3 px-3 lg:px-5">
-
-          <span className="whitespace-nowrap text-sm text-[#6B7280]">
-            Items:
-          </span>
-          
+          <span className="whitespace-nowrap text-sm text-[#6B7280]">Items:</span>
           <select
             value={pageSize}
             onChange={(event) => onPageSizeChange(Number(event.target.value))}
@@ -84,33 +68,21 @@ function PreviousDevotionalToolbar({
             <option value={50}>50</option>
             <option value={100}>100</option>
           </select>
-
-          <span className="-ml-5 pointer-events-none text-xs text-burgundy-primary">
-            ▾
-          </span>
-
+          <span className="-ml-5 pointer-events-none text-xs text-burgundy-primary">▾</span>
         </div>
 
-        {/* Divider */}
         <div className="hidden h-9 w-px bg-[#E5E7EB] lg:block" />
 
         {/* View controls */}
         <div className="flex items-center gap-1 px-2">
-
           <button
             type="button"
             aria-label="List view"
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-burgundy-primary/[0.07] text-burgundy-primary"
+            aria-pressed={viewMode === 'list'}
+            onClick={() => onViewModeChange('list')}
+            className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${viewMode === 'list' ? activeClass : inactiveClass}`}
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M8 6h13" />
               <path d="M8 12h13" />
               <path d="M8 18h13" />
@@ -123,23 +95,17 @@ function PreviousDevotionalToolbar({
           <button
             type="button"
             aria-label="Grid view"
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-[#6B7280] transition-colors hover:bg-black/[0.04] hover:text-charcoal-text"
+            aria-pressed={viewMode === 'grid'}
+            onClick={() => onViewModeChange('grid')}
+            className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${viewMode === 'grid' ? activeClass : inactiveClass}`}
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-            >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
               <rect x="4" y="4" width="6" height="6" rx="1" />
               <rect x="14" y="4" width="6" height="6" rx="1" />
               <rect x="4" y="14" width="6" height="6" rx="1" />
               <rect x="14" y="14" width="6" height="6" rx="1" />
             </svg>
           </button>
-
         </div>
 
       </div>
@@ -148,3 +114,4 @@ function PreviousDevotionalToolbar({
 }
 
 export default PreviousDevotionalToolbar;
+

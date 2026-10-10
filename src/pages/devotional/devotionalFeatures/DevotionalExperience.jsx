@@ -146,10 +146,10 @@ function ExperiencePanelContent({ currentStreak, weekDays, todayStatus, preparin
             </p>
           </div>
           <div
-            className="relative flex h-[76px] w-[76px] items-center justify-center rounded-full"
+            className="relative flex h-19 w-19 items-center justify-center rounded-full"
             style={{ background: `conic-gradient(#991313 0deg ${degrees}deg, #E5E7EB ${degrees}deg 360deg)` }}
           >
-            <div className="flex h-[58px] w-[58px] items-center justify-center rounded-full bg-white">
+            <div className="flex h-14.5 w-14.5 items-center justify-center rounded-full bg-white">
               <span className="text-sm font-semibold text-charcoal-text">{percent}%</span>
             </div>
           </div>
@@ -356,7 +356,7 @@ function DevotionalExperience() {
 
   return (
     <>
-      <aside className="hidden w-[330px] rounded-[26px] border border-black/10 bg-white/90 p-5 shadow-[0_10px_35px_rgba(0,0,0,0.06)] backdrop-blur-xl lg:block print:hidden">
+      <aside className="hidden w-82.5 rounded-[26px] border border-black/10 bg-white/90 p-5 shadow-[0_10px_35px_rgba(0,0,0,0.06)] backdrop-blur-xl lg:block print:hidden">
         <ExperiencePanelContent {...panelProps} />
       </aside>
 
