@@ -6,6 +6,7 @@ import { formatDevotionalTitle } from "./formatDevotional";
 import DevotionalPrintView from "./DevotionalPrintView";
 
 const BUTTON_SIZE = 64;
+const POSITION_KEY = "machaira_devotional_experience_position_v1";
 const DRAG_THRESHOLD = 6;
 const DAY_MS = 1000 * 60 * 60 * 24;
 
@@ -15,7 +16,11 @@ function clamp(value, min, max) {
 
 function getDefaultPosition() {
   if (typeof window === "undefined") return { x: 0, y: 0 };
-  return { x: window.innerWidth / 2 - BUTTON_SIZE / 2, y: window.innerHeight / 2 - BUTTON_SIZE / 2 };
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(POSITION_KEY));
+    if (Number.isFinite(stored?.x) && Number.isFinite(stored?.y)) return clampToViewport(stored);
+  } catch { /* Storage may be unavailable */ }
+  return clampToViewport({ x: 16, y: window.innerHeight - BUTTON_SIZE - 32 });
 }
 
 function clampToViewport(pos) {
@@ -244,6 +249,7 @@ function FloatingToggle({ position, onPositionChange, onOpen, currentStreak }) {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
       onClick={handleClick}
       aria-label="Open your devotional experience"
       style={{ left: position.x, top: position.y }}
@@ -259,6 +265,10 @@ function DevotionalExperience() {
   const user = useAuthUser();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(getDefaultPosition);
+  const updatePosition = useCallback((next) => {
+    setPosition(next);
+    try { window.localStorage.setItem(POSITION_KEY, JSON.stringify(next)); } catch { /* Storage may be unavailable */ }
+  }, []);
   const [shareCopied, setShareCopied] = useState(false);
   const [printJob, setPrintJob] = useState(0);
   const [preparing, setPreparing] = useState(false);
@@ -362,7 +372,7 @@ function DevotionalExperience() {
 
       <div className="lg:hidden print:hidden">
         {!isOpen && (
-          <FloatingToggle position={position} onPositionChange={setPosition} onOpen={() => setIsOpen(true)} currentStreak={currentStreak} />
+          <FloatingToggle position={position} onPositionChange={updatePosition} onOpen={() => setIsOpen(true)} currentStreak={currentStreak} />
         )}
 
         {isOpen && (

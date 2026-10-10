@@ -41,9 +41,9 @@ const DiscussionRightSidebar = () => {
   }, []);
 
   return (
-    <aside className="space-y-6">
+    <aside className="min-w-0 space-y-3 lg:space-y-6">
       {/* Trending Topics Widget */}
-      <div className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm space-y-4">
+      <div className="bg-white border border-[#B9BEC8]/30 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
         <div className="flex items-center gap-2 text-stone-900 font-serif font-bold text-base">
           <TrendingUp className="w-4 h-4 text-red-800" />
           <h3>Trending Discussions</h3>
@@ -88,9 +88,9 @@ const DiscussionRightSidebar = () => {
       </div>
 
       {/* Community Spotlight Widget */}
-      <div className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm space-y-4">
+      <div className="bg-white border border-[#B9BEC8]/30 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
         <div className="flex items-center gap-2 text-stone-900 font-serif font-bold text-base">
-          <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+          <Star className="w-4 h-4 text-[#991313]" />
           <h3>Community Spotlight</h3>
         </div>
 
@@ -110,7 +110,7 @@ const DiscussionRightSidebar = () => {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-xs font-bold text-stone-900">{topContributor.name || 'Community member'}</h4>
-                <span className="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                <span className="bg-[#FBF0F0] text-[#991313] text-[10px] font-bold px-2 py-0.5 rounded-full">
                   Top Contributor
                 </span>
               </div>
@@ -124,15 +124,15 @@ const DiscussionRightSidebar = () => {
 
       {/* Call to Action Banner — only shown to admins, since only they can start a discussion */}
       {canStartDiscussion && (
-        <div className="bg-stone-100 border border-stone-200/60 rounded-2xl p-6 relative overflow-hidden space-y-4">
+        <div className="bg-[#F8F8F8] border border-[#B9BEC8]/30 rounded-2xl p-6 relative overflow-hidden space-y-4">
           <div className="space-y-1 relative z-10">
-            <h4 className="font-serif font-bold text-stone-900 text-base">Your voice matters.</h4>
+            <h4 className="font-bold text-[#101A2B] text-sm sm:text-base">Your voice matters.</h4>
             <p className="text-xs text-stone-600">Be a blessing today!</p>
           </div>
           <button
             type="button"
             onClick={() => navigate('/forum/new')}
-            className="relative z-10 bg-red-800 hover:bg-red-900 text-white text-xs font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 transition-all shadow-md"
+            className="relative z-10 bg-[#991313] hover:bg-[#7F0E0E] text-white text-xs font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 transition-all shadow-md"
           >
             Start a New Discussion <ArrowRight className="w-3.5 h-3.5" />
           </button>

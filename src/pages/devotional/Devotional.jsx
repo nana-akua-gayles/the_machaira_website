@@ -111,12 +111,14 @@ function Devotional() {
           onDateSelect={handleDateSelect}
         />
 
-        <div className="pointer-events-none absolute right-8 top-16 z-20 lg:right-10">
+        <div className="pointer-events-none absolute right-8 top-16 z-20 hidden lg:block lg:right-10">
           <div className="pointer-events-auto">
             <DevotionalExperience />
           </div>
         </div>
       </section>
+
+      <div className="lg:hidden"><DevotionalExperience /></div>
 
       <DevotionalRecentList devotionals={recentToShow} />
 

@@ -131,7 +131,10 @@ const DiscussionThread = () => {
       setReplies(updatedReplies);
       setPost((prev) => (prev ? { ...prev, replies_count: prev.replies_count + 1 } : prev));
       setReplyText('');
-      requestAnimationFrame(() => repliesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+      // Avoid scrolling the entire mobile page when a reply is posted.
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        requestAnimationFrame(() => repliesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+      }
     } catch (err) {
       console.error('REPLY SUBMIT FAILED:', err);
       setReplyError('Your reply could not be posted. Please try again.');
@@ -223,8 +226,8 @@ const DiscussionThread = () => {
 
   return (
     <main className="bg-white text-[#111827] font-['Montserrat',sans-serif] lg:px-6 lg:py-7">
-      {/* Height is bounded so the replies scroll instead of pushing the composer away. */}
-      <div className="mx-auto flex h-[calc(100dvh-5rem)] min-h-[360px] max-w-[1400px] flex-col overflow-hidden bg-white lg:h-[calc(100dvh-8rem)] lg:min-h-[480px] lg:flex-row lg:rounded-[24px] lg:border lg:border-[#B9BEC8]/40 lg:shadow-[0_15px_50px_rgba(16,26,43,0.08)]">
+      {/* Mobile scrolls with the document; desktop uses a bounded split panel. */}
+      <div className="mx-auto flex min-h-[calc(100dvh-5rem)] max-w-[1400px] flex-col bg-white lg:h-[calc(100dvh-8rem)] lg:min-h-[480px] lg:overflow-hidden lg:min-h-[480px] lg:flex-row lg:rounded-[24px] lg:border lg:border-[#B9BEC8]/40 lg:shadow-[0_15px_50px_rgba(16,26,43,0.08)]">
         {/* Desktop: discussion context remains visible independently of reply scroll. */}
         <aside className="hidden w-[38%] min-w-0 flex-col overflow-hidden border-r border-[#B9BEC8]/30 bg-[#101A2B] text-white lg:flex">
           <div className="shrink-0 border-b border-white/15 px-8 py-7">
@@ -257,7 +260,7 @@ const DiscussionThread = () => {
         </aside>
 
         {/* Mobile: compact messaging header; desktop: replies header. */}
-        <section className="flex min-h-0 min-w-0 flex-1 flex-col bg-[#F8F8F8]">
+        <section className="flex min-w-0 flex-1 flex-col bg-[#F8F8F8] lg:min-h-0">
           <header className="z-10 shrink-0 border-b border-[#B9BEC8]/35 bg-white px-4 py-3 shadow-sm sm:px-6 lg:px-8 lg:py-5">
             <div className="flex items-center gap-3">
               <Link to="/forum" aria-label="Back to discussions" className="rounded-full p-2 text-[#101A2B] hover:bg-[#101A2B]/5 lg:hidden"><ArrowLeft size={21} /></Link>
@@ -277,8 +280,8 @@ const DiscussionThread = () => {
             <p className="whitespace-pre-line break-words text-sm leading-7 text-[#4D5057]">{post.body}</p>
           </div>}
 
-          {/* This is the only vertically scrolling region in the conversation. */}
-          <div role="log" aria-label="Discussion replies" className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-6 [scrollbar-width:thin] sm:px-6 lg:px-8 lg:py-8">
+          {/* On mobile, use document scrolling; on desktop, scroll replies independently. */}
+          <div role="log" aria-label="Discussion replies" className="flex-1 px-4 py-6 lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain [scrollbar-width:thin] sm:px-6 lg:px-8 lg:py-8">
             <div className="mx-auto max-w-[780px] space-y-5">
               <div className="mx-auto w-fit rounded-full border border-[#B9BEC8]/40 bg-white px-4 py-1.5 text-[11px] font-semibold text-[#4D5057]">Community conversation</div>
               {replies.length === 0 && <div className="rounded-2xl border border-[#B9BEC8]/40 bg-white p-8 text-center"><MessageCircle className="mx-auto text-[#991313]" size={27} /><p className="mt-3 font-semibold text-[#101A2B]">Start the conversation</p><p className="mt-2 text-sm text-[#4D5057]">Be the first to share your thoughts.</p></div>}
@@ -305,8 +308,8 @@ const DiscussionThread = () => {
             </div>
           </div>
 
-          {/* Always visible at the bottom of the conversation panel. */}
-          <div className="z-10 shrink-0 border-t border-[#B9BEC8]/35 bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8 lg:py-5">
+          {/* Sticky on mobile, fixed within the flex panel on desktop. */}
+          <div className="sticky bottom-0 z-10 shrink-0 border-t border-[#B9BEC8]/35 bg-white px-3 py-3 lg:static pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8 lg:py-5">
             <div className="mx-auto max-w-[780px]">
               {user ? <form onSubmit={handleSubmitReply} className="flex items-end gap-2.5">
                 <label htmlFor="discussion-reply" className="sr-only">Write a reply</label>

@@ -69,26 +69,26 @@ const DiscussionFeed = ({ selectedCategory }) => {
   }
 
   return (
-    <div className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm space-y-5">
+    <div className="min-w-0 bg-white border border-[#B9BEC8]/30 rounded-2xl px-3 py-4 sm:p-5 shadow-sm space-y-4 sm:space-y-5">
       {/* Feed Filters Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-stone-100 pb-4">
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+      <div className="flex min-w-0 items-center gap-2 border-b border-[#B9BEC8]/25 pb-3 sm:pb-4">
+        <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {TABS.map((tab) => (
             <button
               key={tab.key}
               type="button"
               onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all ${
                 activeTab === tab.key
-                  ? 'bg-red-50 text-red-900'
-                  : 'text-stone-500 hover:text-stone-900 hover:bg-stone-50'
+                  ? 'bg-[#FBF0F0] text-[#991313]'
+                  : 'text-[#4D5057] hover:text-[#101A2B] hover:bg-[#F8F8F8]'
               }`}
             >
               {tab.label}
             </button>
           ))}
         </div>
-        <button className="flex items-center gap-2 border border-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-medium hover:bg-stone-50 transition-colors">
+        <button className="hidden items-center gap-2 border border-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-medium hover:bg-stone-50 transition-colors">
           <SlidersHorizontal className="w-3.5 h-3.5" /> Filter
         </button>
       </div>
@@ -106,30 +106,30 @@ const DiscussionFeed = ({ selectedCategory }) => {
             <Link
               key={post.id}
               to={`/forum/${post.id}`}
-              className="block py-4 hover:bg-stone-50/50 rounded-xl px-2 transition-colors no-underline"
+              className="block min-w-0 py-4 hover:bg-[#F8F8F8] rounded-xl px-1 sm:px-2 transition-colors no-underline"
             >
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 min-w-0">
+              <div className="flex min-w-0 items-start justify-between gap-2 sm:gap-4">
+                <div className="flex min-w-0 items-start gap-2.5 sm:gap-3">
                   {post.author?.avatar_url ? (
                     <img
                       src={post.author.avatar_url}
                       alt={post.author.name || 'Author'}
-                      className="w-10 h-10 rounded-full object-cover border border-stone-200 shrink-0"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-stone-200 shrink-0"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-red-50 text-red-800 text-xs font-bold flex items-center justify-center border border-stone-200 shrink-0">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-red-50 text-red-800 text-xs font-bold flex items-center justify-center border border-stone-200 shrink-0">
                       {initials(post.author?.name)}
                     </div>
                   )}
 
-                  <div className="space-y-1 min-w-0">
+                  <div className="min-w-0 space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-semibold text-sm text-stone-900 hover:text-red-900 transition-colors">
+                      <h4 className="font-semibold text-[13px] leading-5 sm:text-sm text-[#101A2B] hover:text-red-900 transition-colors">
                         {post.title}
                       </h4>
                       {post.pinned && <Pin className="w-3.5 h-3.5 text-red-800 fill-current" />}
                     </div>
-                    <div className="flex items-center gap-2 text-[11px] text-stone-500 flex-wrap">
+                    <div className="flex min-w-0 items-center gap-x-1.5 gap-y-1 text-[10px] sm:text-[11px] text-[#4D5057] flex-wrap">
                       <span className="font-medium text-stone-700">{post.category}</span>
                       <span>•</span>
                       <span>Started by {post.author?.name || 'A member'}</span>
@@ -139,7 +139,7 @@ const DiscussionFeed = ({ selectedCategory }) => {
                   </div>
                 </div>
 
-                <span className="flex items-center gap-1.5 text-xs text-stone-400 font-medium shrink-0">
+                <span className="flex items-center gap-1 text-[11px] text-[#4D5057] font-medium shrink-0 pt-1">
                   <MessageCircle className="w-3.5 h-3.5" /> {post.replies_count}
                 </span>
               </div>

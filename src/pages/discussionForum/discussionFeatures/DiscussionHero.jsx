@@ -39,18 +39,18 @@ const DiscussionHero = () => {
   ];
 
   return (
-    <section className="bg-white pt-10 pb-8 border-b border-black/8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+    <section className="bg-white pt-6 pb-5 sm:pt-10 sm:pb-8 border-b border-black/8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-10 items-center">
         {/* Headline + action */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-3 sm:space-y-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
               Community
             </p>
-            <h1 className="mt-4 text-4xl md:text-5xl font-semibold leading-[1.1] tracking-[-0.03em] text-navy-dark">
+            <h1 className="mt-2 text-[clamp(1.65rem,6vw,2.4rem)] sm:mt-4 md:text-5xl font-semibold leading-[1.1] tracking-[-0.03em] text-navy-dark">
               Let's Grow Together in Faith &amp; Purpose
             </h1>
-            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-cool-gray">
+            <p className="mt-3 max-w-lg text-[13px] sm:mt-4 sm:text-[15px] leading-relaxed text-cool-gray">
               Ask questions, share insights, and encourage others. Together, we build a stronger faith community.
             </p>
           </div>
@@ -59,19 +59,19 @@ const DiscussionHero = () => {
             <button
               type="button"
               onClick={() => navigate('/forum/new')}
-              className="inline-flex items-center gap-2 rounded-full bg-burgundy-primary px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#7f0e0e] hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(153,19,19,0.25)]"
+              className="inline-flex items-center gap-2 rounded-full bg-burgundy-primary px-4 py-2.5 sm:px-6 sm:py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#7f0e0e] hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(153,19,19,0.25)]"
             >
               <Plus className="w-4 h-4" /> Start a New Discussion
             </button>
           ) : (
-            <p className="text-sm text-cool-gray">
+            <p className="text-xs sm:text-sm text-cool-gray">
               New discussions are started by the ministry team. Jump into a conversation below.
             </p>
           )}
         </div>
 
         {/* Scripture quote — same editorial treatment as the devotional blockquote */}
-        <div className="lg:col-span-5">
+        <div className="hidden lg:block lg:col-span-5">
           <div className="relative rounded-2xl border border-black/8 bg-[#FBF8F6] p-7">
             <span className="font-[Georgia,serif] text-5xl leading-none text-burgundy-primary">
               &ldquo;
@@ -87,22 +87,22 @@ const DiscussionHero = () => {
       </div>
 
       {/* Stats */}
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="mt-5 grid grid-cols-3 gap-2 sm:mt-10 sm:gap-4">
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
             <div
               key={stat.label}
-              className="flex items-center gap-4 rounded-2xl border border-black/8 bg-white p-5"
+              className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-[#B9BEC8]/35 bg-white px-1 py-3 text-center sm:flex-row sm:justify-start sm:gap-4 sm:rounded-2xl sm:p-5 sm:text-left"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FBF0F0] text-burgundy-primary">
+              <div className="hidden sm:flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FBF0F0] text-burgundy-primary">
                 <Icon className="w-5 h-5" />
               </div>
               <div>
-                <span className="block text-xl font-semibold leading-none text-navy-dark">
+                <span className="block text-lg sm:text-xl font-semibold leading-none text-navy-dark">
                   {loading ? '...' : stat.value.toLocaleString()}
                 </span>
-                <span className="mt-1 block text-xs font-medium text-cool-gray">{stat.label}</span>
+                <span className="mt-1 block text-[10px] sm:text-xs font-medium text-cool-gray">{stat.label}</span>
               </div>
             </div>
           );
