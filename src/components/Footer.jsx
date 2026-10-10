@@ -54,145 +54,99 @@ function Footer() {
     }
   };
 
+  const linkClass = "w-fit text-soft-gray no-underline text-[13px] sm:text-[14px] leading-6 transition-colors duration-200 hover:text-white focus-visible:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+
   return (
-    <footer className="w-full mt-20 bg-charcoal-text text-white pt-17.5 pb-6.25 relative overflow-visible">
-      
-      {/* CHAT BUBBLE ALERT NOTIFICATION */}
+    <footer className="relative mt-20 w-full bg-charcoal-text pt-12 pb-7 text-white sm:pt-14 lg:pt-17.5 lg:pb-6.25">
+      {/* Subscription feedback: readable and contained on narrow screens */}
       {message && (
-        <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-50 animate-fadeIn">
-          <div className="relative bg-white text-black px-4 py-2.5 rounded-xl shadow-2xl border border-gray-200 flex items-center gap-2.5 whitespace-nowrap">
-            {/* Chat Icon */}
-            <svg 
-              className="w-4 h-4 text-black shrink-0" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              viewBox="0 0 24 24"
-            >
+        <div
+          role="status"
+          aria-live="polite"
+          className="absolute inset-x-4 -top-12 z-50 mx-auto max-w-md animate-fadeIn sm:inset-x-auto sm:left-1/2 sm:w-max sm:max-w-[min(90vw,28rem)] sm:-translate-x-1/2"
+        >
+          <div className="relative flex items-start gap-2.5 rounded-xl border border-gray-200 bg-white px-4 py-3 text-[#101A2B] shadow-2xl">
+            <svg className="mt-0.5 h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <p className="text-[13px] font-medium m-0 tracking-wide">{message}</p>
-            
-            {/* Speech Bubble Arrow Tail */}
-            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r border-b border-gray-200 rotate-45"></div>
+            <p className="min-w-0 text-[12px] font-medium leading-5 sm:text-[13px]">{message}</p>
+            <span className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-gray-200 bg-white" />
           </div>
         </div>
       )}
 
-      {/* MAIN FOOTER CONTAINER */}
-      <div className="max-w-350 mx-auto px-15 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.5fr] gap-12.5 lg:gap-17.5">
-
-        {/* BRAND */}
-        <div className="flex flex-col">
-          <div className="relative h-9 w-full mb-3">
-            <img 
-              src={logoImage} 
-              alt="Machaira Logo" 
-              className="absolute top-0 left-0 -translate-y-1/2 h-56 w-auto object-contain pointer-events-none"
+      {/* Mobile: brand, paired navigation, full-width newsletter.
+          Desktop: original four-column arrangement. */}
+      <div className="mx-auto grid max-w-350 grid-cols-2 gap-x-5 gap-y-9 px-5 sm:px-8 md:grid-cols-2 md:gap-x-10 lg:grid-cols-[1.4fr_1fr_1fr_1.5fr] lg:gap-17.5 lg:px-15">
+        {/* Brand */}
+        <div className="col-span-2 flex min-w-0 flex-col items-start lg:col-span-1">
+          <div className="mb-3 flex h-20 w-full items-center sm:h-24 lg:relative lg:mb-3 lg:h-9">
+            <img
+              src={logoImage}
+              alt="Machaira Logo"
+              className="h-full max-w-[220px] object-contain object-left lg:pointer-events-none lg:absolute lg:left-0 lg:top-0 lg:h-56 lg:max-w-none lg:w-auto lg:-translate-y-1/2"
             />
           </div>
-          <span className="text-soft-gray text-[14px] leading-relaxed">
+          <p className="max-w-sm text-[13px] leading-6 text-soft-gray sm:text-[14px] lg:max-w-none lg:leading-relaxed">
             Every word is written like a love letter from God to you.
-          </span>
+          </p>
         </div>
 
-        {/* EXPLORE */}
-        <div className="flex flex-col gap-3.5">
-          <h3 className="m-0 mb-2 text-[15px] font-bold text-white">Explore</h3>
+        {/* Explore and Community are two adjacent columns on phones */}
+        <nav aria-label="Explore" className="flex min-w-0 flex-col items-start gap-3 lg:gap-3.5">
+          <h3 className="mb-1 text-[14px] font-bold text-white sm:text-[15px] lg:mb-2">Explore</h3>
+          <NavLink to="/devotional" className={linkClass}>Devotionals</NavLink>
+          <NavLink to="/forum" className={linkClass}>Discussion Forum</NavLink>
+          <NavLink to="/testimonials" className={linkClass}>Testimonials</NavLink>
+        </nav>
 
-          <NavLink 
-            to="/devotional" 
-            className="w-fit text-soft-gray no-underline text-[14px] transition-all duration-250 hover:text-white hover:translate-x-0.75"
-          >
-            Devotionals
-          </NavLink>
+        <nav aria-label="Community" className="flex min-w-0 flex-col items-start gap-3 lg:gap-3.5">
+          <h3 className="mb-1 text-[14px] font-bold text-white sm:text-[15px] lg:mb-2">Community</h3>
+          <NavLink to="/aboutChurch" className={linkClass}>Our Digital Church</NavLink>
+          <NavLink to="/partnership" className={linkClass}>Partner With Us</NavLink>
+          <NavLink to="/newsfeed" className={linkClass}>Ministry Blog</NavLink>
+        </nav>
 
-          <NavLink 
-            to="/forum" 
-            className="w-fit text-soft-gray no-underline text-[14px] transition-all duration-250 hover:text-white hover:translate-x-0.75"
-          >
-            Discussion Forum
-          </NavLink>
-
-          <NavLink 
-            to="/testimonials" 
-            className="w-fit text-soft-gray no-underline text-[14px] transition-all duration-250 hover:text-white hover:translate-x-0.75"
-          >
-            Testimonials
-          </NavLink>
-        </div>
-
-        {/* COMMUNITY */}
-        <div className="flex flex-col gap-3.5">
-          <h3 className="m-0 mb-2 text-[15px] font-bold text-white">Community</h3>
-
-          <NavLink 
-            to="/aboutChurch" 
-            className="w-fit text-soft-gray no-underline text-[14px] transition-all duration-250 hover:text-white hover:translate-x-0.75"
-          >
-            Our Digital Church
-          </NavLink>
-
-          <NavLink 
-            to="/partnership" 
-            className="w-fit text-soft-gray no-underline text-[14px] transition-all duration-250 hover:text-white hover:translate-x-0.75"
-          >
-            Partner With Us
-          </NavLink>
-
-          <NavLink 
-            to="/newsfeed" 
-            className="w-fit text-soft-gray no-underline text-[14px] transition-all duration-250 hover:text-white hover:translate-x-0.75"
-          >
-            Ministry Blog
-          </NavLink>
-        </div>
-
-        {/* NEWSLETTER */}
-        <div className="flex flex-col gap-3.5">
-          <h3 className="m-0 mb-2 text-[15px] font-bold text-white">Stay Connected</h3>
-
-          <p className="m-0 max-w-75 text-soft-gray text-[14px] leading-[1.6]">
+        {/* Newsletter spans full width on mobile, unchanged in desktop grid */}
+        <div className="col-span-2 min-w-0 border-t border-white/10 pt-7 lg:col-span-1 lg:border-0 lg:pt-0">
+          <h3 className="mb-3 text-[15px] font-bold text-white">Stay Connected</h3>
+          <p className="max-w-sm text-[13px] leading-6 text-soft-gray sm:text-[14px] lg:max-w-75 lg:leading-[1.6]">
             Receive devotionals, updates and encouraging messages.
           </p>
-
-          <form onSubmit={handleSubscribe} className="w-full max-w-82.5 flex flex-col gap-2 mt-2">
-            <div className="w-full h-12 flex items-center p-1 border border-white/15 rounded-full bg-white/6 shadow-inner">
+          <form onSubmit={handleSubscribe} className="mt-4 w-full max-w-md lg:mt-5 lg:max-w-82.5">
+            <div className="flex h-12 w-full min-w-0 items-center rounded-full border border-white/15 bg-white/6 p-1 shadow-inner focus-within:border-white/50">
+              <label htmlFor="footer-subscribe-email" className="sr-only">Email address</label>
               <input
+                id="footer-subscribe-email"
                 type="email"
+                autoComplete="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                disabled={status === 'loading'}
-                className="flex-1 h-full px-4 border-none outline-none bg-transparent text-white text-[13px] placeholder:text-[#8f96a3]"
+                disabled={status === "loading"}
+                className="h-full min-w-0 flex-1 border-none bg-transparent px-4 text-[13px] text-white outline-none placeholder:text-[#8f96a3]"
               />
-              <button 
+              <button
                 type="submit"
-                disabled={status === 'loading'}
-                className="w-10 h-10 border-none rounded-full bg-[#a41414] text-white text-[18px] cursor-pointer flex items-center justify-center transition-all duration-250 hover:bg-[#c01818] hover:translate-x-0.5 disabled:opacity-50 shadow-md"
+                aria-label={status === "loading" ? "Subscribing" : "Subscribe to newsletter"}
+                disabled={status === "loading"}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#a41414] text-[18px] text-white shadow-md transition-all duration-200 hover:bg-[#c01818] disabled:cursor-wait disabled:opacity-50"
               >
-                {status === 'loading' ? '...' : '→'}
+                {status === "loading" ? "…" : "→"}
               </button>
             </div>
           </form>
         </div>
-
       </div>
 
-      {/* BOTTOM BAR */}
-      <div className="max-w-350 mx-auto mt-13.75 pt-5.5 px-15 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between text-[#8f96a3] text-[13px] gap-4 md:gap-0">
-        <span>
-          © {new Date().getFullYear()} Machaira with Apostle Bennie. All rights reserved.
-        </span>
-
-        <div className="flex gap-5.5">
-          <NavLink to="/privacy" className="text-[#8f96a3] no-underline transition-colors duration-250 hover:text-white">
-            Privacy
-          </NavLink>
-          <NavLink to="/terms" className="text-[#8f96a3] no-underline transition-colors duration-250 hover:text-white">
-            Terms
-          </NavLink>
-        </div>
+      {/* Mobile: privacy links first, copyright below; desktop original order */}
+      <div className="mx-auto mt-10 flex max-w-350 flex-col-reverse items-start justify-between gap-5 border-t border-white/10 px-5 pt-6 text-[12px] leading-5 text-[#8f96a3] sm:px-8 sm:text-[13px] md:flex-row md:items-center md:gap-0 lg:mt-13.75 lg:px-15 lg:pt-5.5">
+        <span>© {new Date().getFullYear()} Machaira with Apostle Bennie. All rights reserved.</span>
+        <nav aria-label="Legal" className="flex items-center gap-6">
+          <NavLink to="/privacy" className="transition-colors hover:text-white">Privacy</NavLink>
+          <NavLink to="/terms" className="transition-colors hover:text-white">Terms</NavLink>
+        </nav>
       </div>
     </footer>
   );

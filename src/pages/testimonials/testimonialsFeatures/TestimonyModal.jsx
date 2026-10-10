@@ -22,7 +22,7 @@ export default function TestimonyModal({ testimony, onClose }) {
   if (!testimony) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-0 sm:p-6">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-[#1c0c09]/55 backdrop-blur-md animate-[fadeIn_.25s_ease-out]"
@@ -30,7 +30,7 @@ export default function TestimonyModal({ testimony, onClose }) {
       />
 
       {/* Card */}
-      <div className="relative z-10 flex max-h-[88vh] w-full max-w-[640px] flex-col overflow-hidden rounded-[28px] bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 animate-[modalIn_.35s_cubic-bezier(0.16,1,0.3,1)]">
+      <div className="relative z-10 flex h-[100dvh] w-full max-w-[640px] flex-col overflow-hidden bg-[#fdfaf7] shadow-[0_30px_80px_rgba(42,17,14,0.35)] ring-1 ring-white/90 sm:h-auto sm:max-h-[88vh] sm:rounded-[28px] animate-[modalIn_.35s_cubic-bezier(0.16,1,0.3,1)]">
 
         {/* Ambient glow */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-burgundy-primary/8 blur-[70px]" />
@@ -46,8 +46,9 @@ export default function TestimonyModal({ testimony, onClose }) {
         </button>
 
         {/* Scrollable content */}
-        <div className="relative overflow-y-auto px-7 pb-7 pt-9 sm:px-10 sm:pb-10 sm:pt-11 custom-scrollbar">
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden sm:block sm:overflow-y-auto sm:px-10 sm:pb-10 sm:pt-11 custom-scrollbar">
 
+          <div className="max-h-[38dvh] shrink-0 overflow-y-auto px-5 pb-4 pt-9 sm:max-h-none sm:overflow-visible sm:px-0 sm:pb-0 sm:pt-0">
           {/* Big quote mark */}
           <div className="font-serif text-6xl leading-none text-burgundy-primary">“</div>
 
@@ -109,6 +110,7 @@ export default function TestimonyModal({ testimony, onClose }) {
             </span>
           </div>
 
+          </div>
           <TestimonyCommentsSection testimonyId={testimony.id} />
         </div>
       </div>

@@ -5,18 +5,18 @@ import TestimonyModal from "./testimonialsFeatures/TestimonyModal";
 import ShareTestimonyModal from "./testimonialsFeatures/ShareTestimonyModal";
 import { useAuth } from "../../context/AuthContext";
 import TestimonyLikesButton from "./testimonialsFeatures/TestimonyLikesButton";
+import SavedCategorySearch from "./testimonialsFeatures/SavedCategorySearch";
+import DraggableShareButton from "./testimonialsFeatures/DraggableShareButton";
 import {
   getTestimonies,
   getTestimonyStats,
   getUserLikes 
 } from "../../lib/testimoniesService";
 
-const categories = [
-  "All Stories",
-  "Faith",
-  "Healing",
-  "Breakthrough",
-];
+function previewText(text, limit = 150) {
+  if (!text || text.length <= limit) return text || "";
+  return `${text.slice(0, limit).trimEnd()}...`;
+}
 
 // ---- Helpers to shape raw Supabase rows into the shape your UI expects ----
 
@@ -79,7 +79,7 @@ function Testimonials() {
   const [impactStats, setImpactStats] = useState([
     { value: "—", label: "Stories Shared", icon: "users" },
     { value: "—", label: "Lives Inspired", icon: "heart" },
-    { value: "—", label: "Countries Reached", icon: "flame" },
+    { value: "—", label: "Communities Reached", icon: "flame" },
   ]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -137,7 +137,7 @@ function Testimonials() {
     let cancelled = false;
     (async () => {
       const { data } = await getTestimonyStats();
-      if (!cancelled && data) setImpactStats(data);
+      if (!cancelled && data) setImpactStats(data.map((stat) => stat.label === "Countries Reached" ? { ...stat, label: "Communities Reached", value: "—" } : stat));
     })();
     return () => {
       cancelled = true;
@@ -180,8 +180,8 @@ function Testimonials() {
         </div>
 
         {/* Hero */}
-        <div className="mx-auto mt-8 max-w-[1350px] px-6 lg:px-10">
-          <div className="relative min-h-[330px] overflow-hidden rounded-[28px] bg-[#F8F7F5]">
+        <div className="mx-auto mt-8 max-w-[1350px] px-0 lg:px-10">
+          <div className="relative min-h-[330px] overflow-hidden rounded-none bg-[#F8F7F5] lg:rounded-[28px]">
             {/* Image */}
             <div className="absolute inset-y-0 right-0 w-full lg:w-[62%]">
               <img
@@ -191,7 +191,7 @@ function Testimonials() {
               />
 
               {/* Image fade */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#F8F7F5] via-[#F8F7F5]/75 to-transparent lg:from-[#F8F7F5] lg:via-[#F8F7F5]/25" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#F8F7F5]/95 via-[#F8F7F5]/75 to-[#F8F7F5]/30 lg:from-[#F8F7F5] lg:via-[#F8F7F5]/25 lg:to-transparent" />
             </div>
 
             {/* Decorative glow */}
@@ -234,102 +234,40 @@ function Testimonials() {
               LEFT CONTENT
           ====================================================== */}
           <div className="min-w-0">
-          {/* Toolbar */}
-          <div className="mb-5 flex flex-col gap-4 border-b border-[#E5E7EB] pb-5 xl:flex-row xl:items-center xl:justify-between">
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Category pills — unchanged */}
-              {categories.map((category) => {
-                const active = activeCategory === category;
+                     {/* Saved category searches: both desktop and mobile */}
+           <div className="mb-5 border-b border-[#E5E7EB] pb-5">
+             <SavedCategorySearch
+               activeCategory={activeCategory}
+               onCategoryChange={setActiveCategory}
+               categorySearch={categorySearch}
+               onSearchChange={setCategorySearch}
+             />
+             <div className="mt-4 flex min-w-0 items-center justify-between gap-2">
+               <span className="shrink-0 text-[11px] font-semibold text-[#4D5057] sm:text-sm">Testimonies</span>
+               <div className="flex min-w-0 items-center gap-1.5 sm:gap-3">
+                 <label htmlFor="testimony-sort" className="sr-only">Sort by</label>
+                 <select id="testimony-sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}
+                   className="min-w-0 max-w-[116px] rounded-full border border-[#E5E7EB] bg-white px-2 py-2 text-[11px] text-navy-dark outline-none focus:border-burgundy-primary sm:max-w-none sm:px-4 sm:text-sm">
+                   <option value="Latest">Latest</option><option value="Most Liked">Most Liked</option><option value="Most Discussed">Most Discussed</option>
+                 </select>
+                 <label htmlFor="testimony-date-mobile" className="sr-only">Filter by date</label>
+                 <select id="testimony-date-mobile" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}
+                   className="min-w-0 max-w-[125px] rounded-full border border-[#E5E7EB] bg-white px-2 py-2 text-[11px] text-navy-dark outline-none focus:border-burgundy-primary sm:hidden">
+                   <option>All Time</option><option>This Month</option><option>Last 3 Months</option><option>This Year</option>
+                 </select>
+               </div>
+             </div>
+           </div>
 
-                return (
-                  <button
-                    key={category}
-                    type="button"
-                    onClick={() => setActiveCategory(category)}
-                    className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
-                      active
-                        ? "border-burgundy-primary bg-burgundy-primary text-white"
-                        : "border-[#E5E7EB] bg-white text-cool-gray hover:border-burgundy-primary hover:text-burgundy-primary"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                );
-              })}
-
-              {/* NEW: Search by category */}
-              <div className="relative">
-                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]">
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="11" cy="11" r="7" />
-                    <path d="M20 20l-3.5-3.5" />
-                  </svg>
-                </span>
-
-                <input
-                  type="text"
-                  value={categorySearch}
-                  onChange={(e) => setCategorySearch(e.target.value)}
-                  placeholder="Search category..."
-                  className="w-full rounded-full border border-[#E5E7EB] bg-white py-2 pl-9 pr-9 text-xs text-navy-dark placeholder:text-soft-gray outline-none transition-colors focus:border-burgundy-primary sm:w-[190px]"
-                />
-
-                {categorySearch && (
-                  <button
-                    type="button"
-                    onClick={() => setCategorySearch("")}
-                    aria-label="Clear search"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-burgundy-primary"
-                  >
-                    <svg
-                      width="13"
-                      height="13"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                    >
-                      <path d="M6 6l12 12M18 6L6 18" />
-                    </svg>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="flex shrink-0 items-center gap-3 text-sm">
-              <span className="text-[#6B7280]">Sort by:</span>
-
-              <select
-                value={sortBy}
-                onChange={(event) => setSortBy(event.target.value)}
-                className="rounded-full border border-[#E5E7EB] bg-white px-4 py-2 text-sm text-navy-dark outline-none focus:border-burgundy-primary"
-              >
-                <option>Latest</option>
-                <option>Most Liked</option>
-                <option>Most Discussed</option>
-              </select>
-            </div>
-          </div>
-
-            {/* Results */}
+{/* Results */}
             {(() => {
               if (loading) {
                 return (
-                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, i) => (
                       <div
                         key={i}
-                        className="min-h-[340px] animate-pulse rounded-2xl border border-[#E5E7EB] bg-[#F8F7F5]"
+                        className="min-h-[250px] animate-pulse rounded-2xl sm:min-h-[340px] border border-[#E5E7EB] bg-[#F8F7F5]"
                       />
                     ))}
                   </div>
@@ -355,28 +293,28 @@ function Testimonials() {
 
               if (filteredTestimonials.length > 0) {
                 return (
-                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {filteredTestimonials.map((testimonial, index) => (
                       <article
                         key={testimonial.id}
                         onClick={() => setActiveTestimonial(testimonial)}
-                        className="group relative flex min-h-[340px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#D7B4B4] hover:shadow-[0_15px_40px_rgba(16,26,43,0.07)]"                    
+                        className="group relative flex min-w-0 min-h-[250px] cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-[#E5E7EB] bg-white p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#D7B4B4] hover:shadow-[0_15px_40px_rgba(16,26,43,0.07)] sm:min-h-[340px] sm:rounded-2xl sm:p-6"                    
                       >
                         {/* Quote */}
                         <div>
-                          <div className="font-serif text-5xl leading-none text-burgundy-primary">
+                          <div className="font-serif text-4xl leading-none text-burgundy-primary sm:text-5xl">
                             “
                           </div>
 
-                          <p className="mt-2 font-serif text-[16px] leading-7 text-[#202735] line-clamp-6">
-                            {testimonial.content}
+                          <p className="mt-2 break-words font-serif text-[12px] leading-5 text-[#202735] sm:text-[16px] sm:leading-7">
+                            {previewText(testimonial.content)}
                           </p>
                         </div>
 
                         {/* Bottom */}
                         <div className="mt-8">
                           <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-xs font-semibold text-burgundy-primary">
+                          <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#F3E7E7] text-[10px] font-semibold text-burgundy-primary sm:h-10 sm:w-10 sm:text-xs">
                             {testimonial.avatarUrl ? (
                               <img
                                 src={testimonial.avatarUrl}
@@ -393,22 +331,22 @@ function Testimonials() {
                           </div>
 
                             <div>
-                              <p className="text-sm font-semibold text-navy-dark">
+                              <p className="break-words text-[11px] font-semibold text-navy-dark sm:text-sm">
                                 {testimonial.name}
                               </p>
 
-                              <p className="mt-0.5 text-xs text-burgundy-primary">
+                              <p className="mt-0.5 break-words text-[10px] text-burgundy-primary sm:text-xs">
                                 {testimonial.category}
                               </p>
                             </div>
                           </div>
 
-                          <div className="mt-6 flex items-center justify-between border-t border-[#E5E7EB] pt-4">
+                          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[#E5E7EB] pt-3 sm:mt-6 sm:pt-4">
                             <span className="text-xs text-[#6B7280]">
                               {testimonial.date}
                             </span>
 
-                            <div className="flex items-center gap-4 text-xs text-[#6B7280]">
+                            <div className="flex items-center gap-2 text-[10px] text-[#6B7280] sm:gap-4 sm:text-xs">
                               <TestimonyLikesButton
                                 testimonyId={testimonial.id}
                                 liked={userLikes.has(testimonial.id)}
@@ -528,8 +466,8 @@ function Testimonials() {
               SIDEBAR
           ====================================================== */}
           <aside className="space-y-4">
-            {/* Share testimony */}
-            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
+            {/* Share testimony: desktop only */}
+            <div className="hidden lg:block rounded-2xl border border-[#E5E7EB] bg-white p-6">
               <p className="font-serif text-lg text-navy-dark">
                 Share Your Testimony
               </p>
@@ -641,8 +579,8 @@ function Testimonials() {
               </div>
             </div>
 
-            {/* Date filter */}
-            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
+            {/* Date filter: mobile control is next to Sort by */}
+            <div className="hidden sm:block rounded-2xl border border-[#E5E7EB] bg-white p-6">
               <p className="font-serif text-lg text-navy-dark">
                 Filter by Date
               </p>
@@ -684,6 +622,22 @@ function Testimonials() {
       <TestimonyModal
         testimony={activeTestimonial}
         onClose={() => setActiveTestimonial(null)}
+      />
+
+      {/* Mobile-only draggable Share Your Story button */}
+      <div className="lg:hidden">
+        <DraggableShareButton
+          onClick={() => setShareOpen(true)}
+        />
+      </div>
+
+      {/* Share Testimony Modal */}
+      <ShareTestimonyModal
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        onSuccess={() => {
+          fetchTestimonies();
+        }}
       />
 
       {/* Share Testimony Modal */}

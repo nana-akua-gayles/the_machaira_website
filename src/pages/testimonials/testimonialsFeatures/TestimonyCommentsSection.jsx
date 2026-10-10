@@ -90,8 +90,8 @@ export default function TestimonyCommentsSection({ testimonyId }) {
   }
 
   return (
-    <div className="mt-8 border-t border-[#E5E7EB] pt-6">
-      <div className="flex items-center justify-between">
+    <div className="flex min-h-0 flex-1 flex-col border-t border-[#E5E7EB] pt-3 sm:mt-8 sm:block sm:pt-6">
+      <div className="flex shrink-0 items-center justify-between px-5 sm:px-0">
         <h3 className="font-serif text-lg text-navy-dark">
           Comments{" "}
           <span className="text-sm font-normal text-[#6B7280]">
@@ -101,7 +101,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
       </div>
 
       {/* List */}
-      <div className="mt-4 space-y-4">
+      <div className="mt-3 min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain px-5 pb-4 sm:mt-4 sm:overflow-visible sm:px-0 sm:pb-0">
         {loading && (
           <div className="flex items-center gap-2 py-4 text-sm text-[#6B7280]">
             <Loader2 className="h-4 w-4 animate-spin text-burgundy-primary" />
@@ -161,7 +161,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
       </div>
 
       {/* Composer */}
-      <div className="mt-6">
+      <div className="mt-0 shrink-0 border-t border-[#E5E7EB] bg-[#fdfaf7] px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:mt-6 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0">
         {authLoading ? (
           <div className="flex items-center gap-2 text-sm text-[#6B7280]">
             <Loader2 className="h-4 w-4 animate-spin text-burgundy-primary" />
@@ -214,7 +214,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
             {postError && (
               <p className="mt-2 text-xs text-burgundy-primary">{postError}</p>
             )}
-            <p className="mt-2 text-[11px] text-[#6B7280]">
+            <p className="mt-2 hidden text-[11px] text-[#6B7280] sm:block">
               Press Enter to post • Shift + Enter for a new line
             </p>
           </form>
