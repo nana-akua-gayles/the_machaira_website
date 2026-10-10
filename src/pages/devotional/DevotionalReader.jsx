@@ -282,7 +282,7 @@ function DevotionalReader() {
     <main className="bg-white">
       
       <section className="bg-white">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-8 py-14 lg:grid-cols-[120px_1fr_320px] lg:gap-14 lg:px-12 lg:py-16">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[70px_minmax(0,1fr)] gap-x-3 gap-y-7 px-4 py-8 sm:grid-cols-[92px_minmax(0,1fr)] sm:gap-x-5 sm:px-8 lg:grid-cols-[120px_minmax(0,1fr)_320px] lg:gap-14 lg:px-12 lg:py-16">
 
           <DevotionalDateNav
             devotional={devotional}
@@ -292,16 +292,17 @@ function DevotionalReader() {
             topOffsetClassName="pt-0"
           />
 
-          <div>
+          <div className="contents lg:block">
 
             {dateNotice && (
-              <p className="mb-4 text-sm font-medium text-burgundy-primary">
+              <p className="col-span-2 mb-0 text-sm font-medium text-burgundy-primary lg:mb-4">
                 {dateNotice}
               </p>
             )}
 
             {/* Breadcrumb + actions */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="col-start-2 row-start-1 flex min-w-0 flex-col justify-center lg:block">
+              <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3 text-sm">
                 <Link
                   to="/devotional"
@@ -319,20 +320,20 @@ function DevotionalReader() {
             </div>
 
             {/* Category */}
-            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-burgundy-primary sm:text-sm sm:tracking-[0.25em] lg:mt-8">
               {devotional.category || "Daily Devotional"}
             </p>
 
             {/* Title */}
-            <h1 className="mt-4 max-w-[850px] text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-navy-dark md:text-5xl lg:text-6xl">
+            <h1 className="mt-3 max-w-[850px] break-words text-[clamp(1.5rem,6vw,2.25rem)] font-semibold leading-[1.12] tracking-[-0.04em] text-navy-dark md:text-5xl lg:mt-4 lg:text-6xl">
               {formatted.mainTitle}
             </h1>
 
             {/* Accent underline */}
-            <div className="mt-6 h-[3px] w-16 bg-burgundy-primary" />
+            <div className="mt-4 h-[3px] w-12 bg-burgundy-primary lg:mt-6 lg:w-16" />
 
             {/* Meta */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-cool-gray">
+            <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-cool-gray sm:text-sm lg:mt-6 lg:gap-x-5">
               {formatted.episodeLabel && (
                 <span>{formatted.episodeLabel}</span>
               )}
@@ -342,26 +343,29 @@ function DevotionalReader() {
               <span>{formatDate(devotional.created_at)}</span>
             </div>
 
+            </div>
+
             {/* Devotional Content */}
-            <article className="mt-14 text-[17px] leading-[2] text-[#374151]">
+            <article className="col-span-2 mt-2 text-[17px] leading-[2] text-[#374151] lg:mt-14">
               <DevotionalContent
                 parsed={parsed}
                 fallbackContent={devotional.pure_content}
               />
             </article>
 
-            <div ref={readEndRef} aria-hidden="true" />
+            <div ref={readEndRef} aria-hidden="true" className="col-span-2 h-px lg:col-auto" />
 
             {/* Bottom navigation */}
 
-            <DevotionalPrevNext previous={prevFormatted} next={nextFormatted} />
+            <div className="col-span-2 lg:col-auto"><DevotionalPrevNext previous={prevFormatted} next={nextFormatted} /></div>
 
-            <div className="print:hidden">
+            <div className="hidden print:hidden lg:block">
               <DevotionalComments episodeNumber={devotional.episode_number} />
             </div>
 
           </div>
 
+          <div className="col-span-2 lg:col-auto lg:col-start-3 lg:row-start-1">
           <DevotionalSidebar
             deepDiver={parsed?.deepDiver}
             prayer={parsed?.prayer}
@@ -371,6 +375,11 @@ function DevotionalReader() {
             title={formatted.mainTitle}
             episode={formatted.episodeLabel}
           />
+          </div>
+
+          <div className="col-span-2 print:hidden lg:hidden">
+            <DevotionalComments episodeNumber={devotional.episode_number} />
+          </div>
 
         </div>
       </section>

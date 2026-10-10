@@ -59,10 +59,10 @@ function DevotionalDateNav({
     : null;
 
   return (
-    <div className={`relative flex w-[120px] shrink-0 flex-col items-center ${topOffsetClassName}`}>
+    <div className={`relative flex w-[70px] shrink-0 flex-col items-center pt-1 sm:w-[92px] lg:w-[120px] lg:pt-24`}>
 
       {/* Selected date card */}
-      <div className="relative z-10 flex h-[134px] w-[78px] flex-col items-center justify-center rounded-2xl border border-black/10 bg-white/85 shadow-sm backdrop-blur-sm">
+      <div className="relative z-10 flex h-[108px] w-[65px] sm:h-[124px] sm:w-[78px] lg:h-[134px] flex-col items-center justify-center rounded-2xl border border-black/10 bg-white/85 shadow-sm backdrop-blur-sm">
 
         {selectedParts && (
           <>
@@ -70,7 +70,7 @@ function DevotionalDateNav({
               {selectedParts.month}
             </span>
 
-            <span className="mt-1 text-4xl font-semibold leading-none text-charcoal-text">
+            <span className="mt-1 text-3xl sm:text-4xl font-semibold leading-none text-charcoal-text">
               {selectedParts.day}
             </span>
 
@@ -82,7 +82,7 @@ function DevotionalDateNav({
       </div>
 
       {/* Timeline */}
-      <div className="relative mt-6 flex flex-col items-center">
+      <div className="relative mt-4 flex flex-col items-center sm:mt-6">
 
         {/* Vertical line */}
         <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-soft-gray" />
@@ -96,7 +96,7 @@ function DevotionalDateNav({
               type="button"
               disabled={loading}
               onClick={() => onDateSelect(item.date)}
-              className="group relative z-10 flex h-[58px] w-[80px] items-center justify-center gap-4 disabled:cursor-wait"
+              className="group relative z-10 flex h-[48px] w-[65px] sm:h-[58px] sm:w-[80px] items-center justify-center gap-4 disabled:cursor-wait"
             >
               {/* Date dot */}
               <span

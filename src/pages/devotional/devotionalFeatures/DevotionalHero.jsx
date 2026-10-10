@@ -55,7 +55,7 @@ function DevotionalHero({
       <div className="absolute inset-0 bg-white/60 sm:bg-white/45 lg:bg-white/30" />
 
       {/* Main hero content */}
-      <div className="relative z-10 mx-auto flex max-w-360 flex-col gap-8 px-5 py-8 sm:px-8 sm:py-12 lg:min-h-127.5 lg:flex-row lg:gap-0 lg:px-12 lg:py-0">
+      <div className="relative z-10 mx-auto flex max-w-360 flex-row items-start gap-3 px-3 py-8 sm:gap-6 sm:px-8 sm:py-12 lg:min-h-127.5 lg:items-stretch lg:gap-0 lg:px-12 lg:py-0">
 
         {/* Date navigation */}
         <DevotionalDateNav
@@ -66,9 +66,9 @@ function DevotionalHero({
         />
 
         {/* Main devotional content */}
-        <div className="flex flex-1 items-center">
+        <div className="flex min-w-0 flex-1 items-center">
 
-          <div className="w-full max-w-140 lg:pt-8">
+          <div className="min-w-0 w-full max-w-140 lg:pt-8">
 
             {loading ? (
               <>
@@ -106,7 +106,7 @@ function DevotionalHero({
                 </p>
 
                 {/* Title */}
-                <h1 className="max-w-140 text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-navy-dark sm:text-4xl lg:text-5xl">
+                <h1 className="max-w-140 text-[clamp(1.4rem,6vw,1.875rem)] font-semibold leading-[1.12] break-words tracking-[-0.04em] text-navy-dark sm:text-4xl lg:text-5xl">
                   {formatted.mainTitle}
                 </h1>
 
@@ -149,7 +149,7 @@ function DevotionalHero({
                 </p>
 
                 {/* Actions */}
-                <div className="mt-7 flex flex-wrap items-center gap-4 sm:mt-9">
+                <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4 sm:mt-9">
 
                 <button
                   type="button"
@@ -174,7 +174,7 @@ function DevotionalHero({
                   Your Journey Continues
                 </p>
 
-                <h1 className="max-w-140 text-3xl font-semibold leading-none tracking-[-0.04em] text-navy-dark lg:text-3xl">
+                <h1 className="max-w-140 text-[clamp(1.4rem,6vw,1.875rem)] font-semibold leading-tight tracking-[-0.04em] text-navy-dark lg:text-3xl">
                   Recap Your
                   <br />
                   Learning Experience
@@ -204,39 +204,6 @@ function DevotionalHero({
 
           </div>
         </div>
-
-        {/* Scripture */}
-        {hasDevotional && (
-          <>
-            {/* Mobile scripture */}
-            <div className="rounded-2xl border border-[#9CA3AF]/40 bg-white/70 p-5 backdrop-blur-sm lg:hidden">
-              <p className="text-base italic leading-7 text-charcoal-text">
-                "The Lord is my strength and my shield; my heart trusts in Him."
-              </p>
-
-              <p className="mt-3 text-sm font-semibold text-burgundy-primary">
-                — Psalm 28:7
-              </p>
-            </div>
-
-            {/* Desktop scripture */}
-            <div className="hidden w-75 -translate-x-8 items-center justify-center lg:flex">
-              <div className="relative flex h-60 w-60 items-center justify-center rounded-full border border-[#9CA3AF]/50">
-
-                <div className="max-w-45">
-                  <p className="text-base italic leading-7 text-charcoal-text">
-                    "The Lord is my strength and my shield; my heart trusts in Him."
-                  </p>
-
-                  <p className="mt-3 text-sm font-semibold text-burgundy-primary">
-                    — Psalm 28:7
-                  </p>
-                </div>
-
-              </div>
-            </div>
-          </>
-        )}
 
       </div>
     </section>
