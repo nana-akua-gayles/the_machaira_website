@@ -124,17 +124,21 @@ function PreviousDevotional() {
       <PreviousDevotionalHero />
 
       <PreviousDevotionalToolbar
-        search={search}
+        search={searchInput}
         onSearchChange={handleSearchChange}
         sortBy={sortBy}
         onSortChange={handleSortChange}
         pageSize={pageSize}
         onPageSizeChange={handlePageSizeChange}
+        dateFrom={dateFrom}
+        onDateFromChange={handleDateFromChange}
+        dateTo={dateTo}
+        onDateToChange={handleDateToChange}
       />
 
-      <section className="mx-auto max-w-[1350px] px-6 pb-20 pt-20 lg:px-10">
+      <section className="mx-auto max-w-[1350px] px-4 pb-16 pt-16 sm:px-6 lg:px-10 lg:pb-20 lg:pt-20">
 
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-start">
+        <div className="flex flex-col gap-8 lg:gap-12 lg:flex-row lg:items-start">
 
           <PreviousDevotionalFilters
             category={category}

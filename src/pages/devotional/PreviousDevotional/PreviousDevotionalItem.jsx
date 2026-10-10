@@ -30,10 +30,10 @@ function PreviousDevotionalItem({ devotional }) {
     <article className="group relative">
       <Link
         to={`/devotional/${id}`}
-        className="flex flex-col gap-6 py-7 transition-all duration-300 md:flex-row md:items-center md:gap-8"
+        className="flex items-start gap-3 py-5 transition-all duration-300 sm:gap-5 md:items-center md:gap-8 md:py-7"
       >
         {/* Episode number */}
-        <div className="relative hidden h-[125px] w-[105px] shrink-0 overflow-hidden rounded-xl md:block">
+        <div className="relative h-[112px] w-[92px] shrink-0 overflow-hidden rounded-xl sm:h-[125px] sm:w-[105px]">
           {/* Background image */}
           <img
             src={flyer_url || fallbackImage}
@@ -57,7 +57,7 @@ function PreviousDevotionalItem({ devotional }) {
         </div>
 
         {/* Mobile metadata */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="hidden items-center gap-3 md:hidden">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-burgundy-primary">
             Episode {episode_number ?? "—"}
           </span>
@@ -90,11 +90,11 @@ function PreviousDevotionalItem({ devotional }) {
             )}
           </div>
 
-          <h3 className="max-w-[720px] text-xl font-semibold leading-tight tracking-[-0.025em] text-navy-dark transition-colors duration-300 group-hover:text-burgundy-primary md:text-2xl">
+          <h3 className="max-w-[720px] text-base font-semibold sm:text-xl leading-tight tracking-[-0.025em] text-navy-dark transition-colors duration-300 group-hover:text-burgundy-primary md:text-2xl">
             {title}
           </h3>
 
-          <p className="mt-3 max-w-[720px] text-sm leading-6 text-[#6B7280] md:text-[15px]">
+          <p className="mt-2 line-clamp-3 max-w-[720px] text-xs leading-5 sm:mt-3 sm:text-sm sm:leading-6 text-[#6B7280] md:text-[15px]">
             {description}
             {description.length >= 150 ? "..." : ""}
           </p>
@@ -108,7 +108,7 @@ function PreviousDevotionalItem({ devotional }) {
         </div>
 
         {/* Read action */}
-        <div className="flex shrink-0 items-center gap-3 text-sm font-semibold text-burgundy-primary">
+        <div className="hidden shrink-0 items-center gap-3 text-sm font-semibold text-burgundy-primary sm:flex">
           <span className="hidden lg:inline">Read</span>
 
           <span className="flex h-10 w-10 items-center justify-center rounded-full border border-soft-gray transition-all duration-300 group-hover:border-burgundy-primary group-hover:bg-burgundy-primary group-hover:text-white">
