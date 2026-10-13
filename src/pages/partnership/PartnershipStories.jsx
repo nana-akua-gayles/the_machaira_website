@@ -92,11 +92,11 @@ export default function PartnershipStories() {
   const galleryImages = selectedStory ? parseGallery(selectedStory.gallery_images) : [];
 
   return (
-    <section className="px-6 md:px-16 py-12 flex flex-col items-center">
+    <section className="px-5 sm:px-8 md:px-16 py-14 md:py-16 flex flex-col items-center overflow-hidden">
       {/* Header */}
       <div className="flex justify-start items-center w-full mb-6">
         <div>
-          <span className="text-burgundy-primary text-xl font-bold tracking-wider mb-2 block">
+          <span className="text-burgundy-primary text-3xl md:text-xl font-bold tracking-tight md:tracking-wider mb-2 block">
             Why Partner with Us?
           </span>
         </div>
@@ -116,7 +116,7 @@ export default function PartnershipStories() {
         </div>
       ) : (
         /* 3-column grid layout with fixed card height */
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full items-stretch">
+        <div className="partnership-story-rail flex md:grid md:grid-cols-3 gap-4 md:gap-5 w-[calc(100%+20px)] md:w-full items-stretch overflow-x-auto md:overflow-visible pb-5 md:pb-0 pr-5 md:pr-0">
           {stories.map((story) => (
             <div 
               key={story.id} 
@@ -124,7 +124,7 @@ export default function PartnershipStories() {
               tabIndex={0}
               onClick={() => setSelectedStory(story)}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedStory(story); }}
-              className="relative rounded-2xl overflow-hidden shadow-sm h-120 flex flex-col justify-end group cursor-pointer border border-soft-gray/35 hover:shadow-md transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-burgundy-primary"
+              className="relative shrink-0 w-[85%] sm:w-[65%] md:w-auto rounded-2xl overflow-hidden shadow-sm h-[420px] md:h-120 flex flex-col justify-end group cursor-pointer border border-soft-gray/35 hover:shadow-md transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-burgundy-primary"
             >
               {/* Full Background Image */}
               <div className="absolute inset-0 bg-soft-gray/20">
@@ -143,12 +143,12 @@ export default function PartnershipStories() {
               </div>
 
               {/* Edge-to-Edge Glassmorphism Overlay */}
-              <div className="relative z-10 w-full p-6 bg-navy-dark/85 backdrop-blur-md border-t border-parchment/10 text-parchment flex flex-col justify-between h-[52%] transition-colors group-hover:bg-navy-dark/95">
+              <div className="partnership-story-shade relative z-10 w-full p-6 pt-16 md:pt-6 md:bg-navy-dark/85 md:backdrop-blur-md border-t border-parchment/10 text-parchment flex flex-col justify-between h-[48%] md:h-[52%] transition-colors md:group-hover:bg-navy-dark/95">
                 <div className="overflow-hidden flex flex-col h-full">
-                  <h4 className="text-xs font-bold text-parchment leading-tight mb-2 shrink-0">
+                  <h4 className="text-xl md:text-xs font-bold text-parchment leading-tight mb-2 shrink-0">
                     {story.name}
                   </h4>
-                  <p className="text-xs text-soft-gray leading-relaxed overflow-hidden">
+                  <p className="text-xs text-soft-gray leading-relaxed overflow-hidden line-clamp-3 md:line-clamp-none">
                     {story.about}
                   </p>
                 </div>
@@ -160,6 +160,8 @@ export default function PartnershipStories() {
           ))}
         </div>
       )}
+
+      <p className="md:hidden text-[10px] tracking-[.2em] text-cool-gray mt-2 self-start">SWIPE TO DISCOVER MORE STORIES →</p>
 
       {/* Immersive Modal / Expanded Reading View with Drop Caps & Gallery */}
       {selectedStory && (

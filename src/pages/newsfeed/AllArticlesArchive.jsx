@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2, BookOpen } from "lucide-react";
 
 export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
   const [articles, setArticles] = useState([]);
@@ -54,6 +54,7 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
         body: item.body,
         created_at: item.created_at,
         isFeatured: false,
+        image_url: item.image_url,
       }));
 
       if (reset) {
@@ -89,12 +90,13 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
   };
 
   return (
-    <section className="mt-20 pt-12 pb-8 border-t border-gray-300 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <section className="mt-16 sm:mt-24 pt-10 sm:pt-14 pb-12 border-t border-[#B9BEC8]/60">
       
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl text-gray-900">
+          <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#991313] mb-3">03 / Keep exploring</p>
+          <h2 className="text-[clamp(2.4rem,6vw,4.8rem)] tracking-[-0.065em] font-semibold text-[#101A2B]">
             Our Archives
           </h2>
         </div>
@@ -115,14 +117,17 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
             {articles.map((article, index) => (
               <article 
                 key={`${article.id}-${index}`}
-                onClick={() => onSelectStory(article)}
-                className="py-6 sm:py-7 group cursor-pointer hover:bg-gray-50 px-3 rounded transition-colors"
+                onClick={() => onSelectStory?.(article)}
+                onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onSelectStory?.(article); } }}
+                tabIndex={0}
+                role="button"
+                className="py-6 sm:py-8 group cursor-pointer hover:bg-[#F7F7F6] px-3 sm:px-5 rounded-xl transition-colors"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
                   
                   {/* Left Meta */}
                   <div className="lg:col-span-3 flex lg:flex-col justify-between items-center lg:items-start gap-2">
-                    <span className="text-[10px] font-bold tracking-widest uppercase text-red-800">
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-[#991313]">
                       {article.subtitle}
                     </span>
                     <time className="text-xs text-gray-400">
@@ -131,9 +136,9 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
                   </div>
 
                   {/* Right Content */}
-                  <div className="lg:col-span-9 space-y-2">
+                  <div className="lg:col-span-9 space-y-3">
                     <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-base sm:text-lg text-gray-900 group-hover:text-red-800 transition-colors">
+                      <h3 className="text-xl sm:text-2xl font-semibold tracking-[-0.04em] leading-tight text-[#101A2B] group-hover:text-[#991313] transition-colors">
                         {article.title}
                       </h3>
                       <span className="shrink-0 w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-400 group-hover:bg-red-800 group-hover:border-red-800 group-hover:text-white transition-all">
@@ -141,7 +146,7 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
                       </span>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 leading-relaxed">
+                    <p className="text-sm sm:text-base text-[#4D5057] line-clamp-2 leading-relaxed">
                       {article.body || "No preview available."}
                     </p>
                   </div>

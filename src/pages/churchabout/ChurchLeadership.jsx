@@ -27,7 +27,7 @@ export default function ChurchLeadership({ onLearnMore }) {
               <img
                 src={apostleImg}
                 alt="Apostle Bennie"
-                className="h-105 w-full object-cover object-top transition-transform duration-1200 ease-out group-hover:scale-105"
+                className="church-leadership-image h-105 w-full object-cover object-top transition-transform duration-1200 ease-out group-hover:scale-105"
               />
 
               {/* Image overlay */}
@@ -54,7 +54,7 @@ export default function ChurchLeadership({ onLearnMore }) {
             </div>
 
             {/* Heading */}
-            <h2 className="text-[13px] font-normal tracking-[-0.04em] text-navy-dark sm:text-2xl lg:text-[2rem] lg:leading-[1.05]">
+            <h2 className="text-[clamp(1.65rem,6vw,2.25rem)] font-normal tracking-[-0.04em] text-navy-dark sm:text-2xl lg:text-[2rem] lg:leading-[1.05]">
                 Apostle Benjamin Nana Amissah Ansah
             </h2>
 

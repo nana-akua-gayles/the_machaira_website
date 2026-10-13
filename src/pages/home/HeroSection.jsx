@@ -79,28 +79,30 @@ export default function HeroSection() {
   return (
     <div className="relative w-full">
       <section 
-        className="relative w-screen min-h-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] m-0 p-0 flex items-center bg-cover bg-center bg-no-repeat overflow-hidden transition-all duration-1000"
+        className="relative w-screen min-h-[620px] sm:min-h-screen left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] m-0 p-0 flex items-center bg-cover bg-[65%_center] lg:bg-center bg-no-repeat overflow-hidden transition-all duration-1000"
         style={{ backgroundImage: `url(${bannerImage})` }}
       >
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-20">
+        {/* Keep the photo unobstructed on mobile. The copy lives in a slim
+            transparent sliding strip anchored to the bottom of the image. */}
+        <div className="relative z-10 flex min-h-[620px] w-full max-w-7xl mx-auto items-end px-0 pb-0 sm:min-h-screen sm:px-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-12 lg:px-16 lg:py-20">
           
-          <div className="lg:col-span-7 space-y-5">
+          <div className="w-full space-y-3 border-t border-white/20 bg-[#101A2B]/35 px-5 py-5 text-white backdrop-blur-[2px] sm:px-7 lg:col-span-7 lg:space-y-5 lg:border-0 lg:bg-transparent lg:p-0 lg:text-inherit lg:backdrop-blur-none">
             <div className={`space-y-5 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-              textAnimState === 'fade-out' ? 'opacity-0 -translate-y-4 scale-[0.99]' :
-              textAnimState === 'fade-in' ? 'opacity-0 translate-y-4 scale-[0.99]' :
-              'opacity-100 translate-y-0 scale-100'
+              textAnimState === 'fade-out' ? 'opacity-0 -translate-x-8 lg:-translate-x-0 lg:-translate-y-4' :
+              textAnimState === 'fade-in' ? 'opacity-0 translate-x-8 lg:translate-x-0 lg:translate-y-4' :
+              'opacity-100 translate-x-0 lg:translate-y-0'
             }`}>
 
-              <p className="text-[#5A181C] text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">
+              <p className="text-white/85 lg:text-[#5A181C] text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">
                 Highly Sought Episodes
               </p>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold tracking-tight text-[#2B2625] leading-[1.12]">
+              <h1 className="text-[clamp(1.8rem,7vw,2.5rem)] sm:text-3xl lg:text-5xl font-bold tracking-tight text-white lg:text-[#2B2625] leading-[1.12]">
                 {currentSlide.title_first} <br />
-                <span className="italic font-normal text-[#5A181C]">{currentSlide.title_highlight}</span> {currentSlide.title_rest}
+                <span className="italic font-normal text-white lg:text-[#5A181C]">{currentSlide.title_highlight}</span> {currentSlide.title_rest}
               </h1>
 
-              <p className="text-xs sm:text-sm text-[#6E6563] max-w-lg leading-relaxed font-light whitespace-pre-line">
+              <p className="text-xs sm:text-sm text-white/90 lg:text-[#6E6563] max-w-lg leading-relaxed font-light whitespace-pre-line">
                 {currentSlide.description}
               </p>
 
@@ -117,7 +119,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="pt-2 max-w-md">
+            <div className="hidden pt-2 max-w-md lg:block">
               <div className={`space-y-2 transition-all duration-500 ease-out ${animatingQuote ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'}`}>
                 {currentTestimonies.map((item, index) => (
                   <div key={index} className="p-3 bg-white/85 backdrop-blur-md border border-[#5A181C]/10 rounded-xl shadow-sm relative flex flex-col justify-between">

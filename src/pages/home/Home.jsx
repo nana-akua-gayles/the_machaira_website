@@ -171,7 +171,7 @@ export default function Home({ onSaturdayChurchPress }) {
         animatingQuote={animatingQuote} 
       />
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 py-20 space-y-28">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-20 space-y-14 sm:space-y-28">
         
         {/* Recent Devotional Section */}
         <RecentDevotionalSection 
