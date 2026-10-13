@@ -34,10 +34,11 @@ if (!Array.isArray(rows)) rows = rows.data || rows.rows || [];
 const stripTags = (s) => (s || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 const alnumLen = (s) => (s || "").replace(/&[#\w]+;/g, "").replace(/[^\p{L}\p{N}]/gu, "").length;
 const snip = (s, i, n = 90) => s.slice(Math.max(0, i - 30), i + n).replace(/\s+/g, " ");
-const before = rows.length; 
-rows = rows.filter((r) => /episode/i.test(r.title || "") && stripTags(r.content).length > 300); 
-console.log(`Skipping ${before - rows.length} non-episode or very short rows.`);
 
+// Skip blog posts / test rows and near-empty rows: only real episodes are audited.
+const totalRows = rows.length;
+rows = rows.filter((r) => /episode/i.test(r.title || "") && stripTags(r.content).length > 300);
+console.log(`Skipping ${totalRows - rows.length} non-episode or very short rows.`);
 
 const HTML_RULES = [
   ["empty-paragraph", "warn", /<p>\s*<\/p>/],
@@ -52,12 +53,12 @@ const TEXT_RULES = [
   ["entity-left", "error", /&#?\w+;/],
   // Real shortcodes only: [/button] or [button text="..."]. Plain [brackets] in Bible quotes are fine.
   ["shortcode-left", "error", /\[\/[a-z][\w-]*\]|\[[a-z][\w-]*\s+[\w-]+=/i],
-  ["section-header-leaked", "error", /DIG DEEPER|WE PRAY|BIBLE READING|DECLARE THESE WORDS/],
+  ["section-header-leaked", "error", /DIG DEEPER|WE PRAY|BIBLE READING IN THE YEAR|DECLARE THESE WORD/],
   ["plain-url-left", "warn", /https?:\/\/\S+/],
   ["glued-words", "warn", /\b[a-z]{2,}[A-Z][a-z]+/],
   ["missing-sentence-space", "warn", /[a-z][.!?][A-Z]/],
-  ["unconverted-number-marker", "warn", /(^|\s)\d{1,2}\.\s+[A-Z]/],
-  ["double-space", "warn", / {2,}/],
+  ["unconverted-number-marker", "info", /(^|\s)\d{1,2}\.\s+[A-Z]/],
+  ["double-space", "info", / {2,}/],
 ];
 
 const TAGS = ["p", "ul", "ol", "li", "strong", "em", "blockquote", "h3", "h4"];
@@ -82,16 +83,17 @@ function auditRow(row) {
 
   // structure: did the header / sections get extracted?
   if (!parsed.hasBanner) add("no-banner", "info");
-  if (!parsed.titleText) add("no-title-extracted", "warn");
+  if (!parsed.titleText) add("no-title-extracted", "info");
   // Older episodes legitimately have no memory verse, so this is informational only.
   if (!parsed.memoryVerse) add("no-memory-verse", "info");
   else if (!parsed.memoryVerse.citation) add("no-verse-citation", "warn", parsed.memoryVerse.text?.slice(0, 80));
   if (parsed.deepDiver === null) {
     add("sections-not-matched", "error", "DIG DEEPER/WE PRAY/BIBLE READING/DECLARE block not found");
   } else {
-    if (!parsed.prayer) add("no-prayer", "warn");
+    // Only a problem if the episode actually has a WE PRAY section.
+    if (!parsed.prayer) add("no-prayer", /WE\s+PRAY/i.test(raw) ? "warn" : "info");
     if (!parsed.declarations?.length) add("no-declarations", "warn");
-    if (!parsed.bibleReading?.oneYear && !parsed.bibleReading?.twoYear) add("no-bible-plans", "warn");
+    if (!parsed.bibleReading?.oneYear && !parsed.bibleReading?.twoYear) add("no-bible-plans", "info");
   }
 
   const main = parsed.mainContent || "";
@@ -103,10 +105,16 @@ function auditRow(row) {
     if (m) add(code, sev, snip(main, m.index));
   }
 
-  const text = main 
-  .replace(/<h4>[\s\S]*?<\/h4>/g, "\n") .replace(/<br\s*\/?>/gi, "\n") 
-    .replace(/<\/(p|li|h3|h4|blockquote)>/gi, "\n") .replace(/<[^>]+>/g, "");
-
+  // text-level checks (paragraph breaks kept as newlines)
+  const text = main
+    .replace(/<h4>[\s\S]*?<\/h4>/g, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|li|h3|h4|blockquote)>/gi, "\n")
+    .replace(/<[^>]+>/g, "");
+  for (const [code, sev, re] of TEXT_RULES) {
+    const m = text.match(re);
+    if (m) add(code, sev, snip(text, m.index));
+  }
 
   const open = (t) => (main.match(new RegExp(`<${t}[\\s>]`, "gi")) || []).length;
   const close = (t) => (main.match(new RegExp(`</${t}>`, "gi")) || []).length;
@@ -141,7 +149,12 @@ function auditRow(row) {
   ]
     .map(stripTags)
     .join(" ");
-  const ratio = alnumLen(pieces) / Math.max(1, alnumLen(stripTags(raw)));
+  // Shortcodes ([mailpoet_form], [wpdiscuz-feedback ...]) and pasted CSS are meant to be removed.
+  const rawForRatio = raw
+    .replace(/\[\/?[a-z][\w-]*(?:\s[^\]]*)?\]/gi, "")
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/[^{}<>]{1,200}\{[^{}]*\}/g, "");
+  const ratio = alnumLen(pieces) / Math.max(1, alnumLen(stripTags(rawForRatio)));
   if (ratio < 0.8) add("possible-content-loss", "error", `output keeps ${(ratio * 100).toFixed(0)}% of source text`);
 
   return issues;

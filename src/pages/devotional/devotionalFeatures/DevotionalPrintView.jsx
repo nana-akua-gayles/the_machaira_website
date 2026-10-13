@@ -26,7 +26,7 @@ function DevotionalPrintView({ devotional }) {
         {parsed?.hasBanner && (
           <div className="mb-8 flex items-center gap-6 rounded-2xl border border-black/10 bg-[#FBF8F6] p-6">
             <div className="flex flex-1 items-start gap-4">
-              <span className="shrink-0 font-serif text-5xl leading-none text-burgundy-primary">“</span>
+              <span className="shrink-0 text-5xl leading-none text-burgundy-primary">“</span>
               <p className="text-base italic leading-relaxed text-navy-dark">
                 {parsed.authorMessage || "Welcome to Today's Machaira"}
               </p>

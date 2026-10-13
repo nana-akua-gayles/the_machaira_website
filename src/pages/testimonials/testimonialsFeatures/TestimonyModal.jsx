@@ -50,10 +50,10 @@ export default function TestimonyModal({ testimony, onClose }) {
 
           <div className="max-h-[38dvh] shrink-0 overflow-y-auto px-5 pb-4 pt-9 sm:max-h-none sm:overflow-visible sm:px-0 sm:pb-0 sm:pt-0">
           {/* Big quote mark */}
-          <div className="font-serif text-6xl leading-none text-burgundy-primary">“</div>
+          <div className="text-6xl leading-none text-burgundy-primary">“</div>
 
           {/* Full testimony text */}
-          <p className="mt-3 font-serif text-[17px] leading-8 text-[#202735] sm:text-[18px]">
+          <p className="mt-3 text-[17px] leading-8 text-[#202735] sm:text-[18px]">
             {testimony.content}
           </p>
 

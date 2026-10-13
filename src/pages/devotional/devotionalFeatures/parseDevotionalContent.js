@@ -39,7 +39,9 @@ function decodeEntities(str) {
     (acc, [entity, char]) => acc.split(entity).join(char),
     str
   );
-  return decoded.replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, "");
+  return decoded
+    .replace(/[\u200b\u2060]/g, " ") // zero-width spaces were standing in for real spaces
+    .replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, "");
 }
 
 function stripLeadingCss(str) {
@@ -76,6 +78,11 @@ function stripBarePlainTextUrls(html) {
         /https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}(?:&(?:(?!DIG|WE\s+PRAY|BIBLE|DECLARE)[^\s])*)?/g,
         " "
       );
+      // plain-text links to uploaded audio/pdf/image files
+      result = result.replace(
+        /https?:\/\/[^\s<>"]*wp-content\/uploads\/[^\s<>"]*?\.(?:mp3|mp4|m4a|wav|pdf|png|jpe?g|gif|docx?|zip)/gi,
+        " "
+      );
       return result.replace(/[ \t]{2,}/g, " ");
     })
     .join("");
@@ -90,6 +97,11 @@ function fixMissingSentenceSpaces(str) {
     masked = masked.split(abbr).join(`${MASK}${i}${MASK}`);
   });
   let fixed = masked.replace(/([.!?])(["'”’]?)(?=[A-Z“])/g, (m, p, q) => `${p}${q} `);
+  // "prophecy.<a ...>Read" / "well.</strong>Love": the space goes before the tag.
+  fixed = fixed.replace(
+    /([.!?])(["'”’]?)(<\/?(?:strong|em|b|i|u|span|a)\b[^>]*>)(?=[A-Z“])/g,
+    (m, p, q, tag) => `${p}${q} ${tag}`
+  );
   COMMON_ABBREVIATIONS_WITH_SPACE.forEach((abbr, i) => {
     fixed = fixed.split(`${MASK}${i}${MASK}`).join(abbr);
   });
@@ -131,9 +143,15 @@ function stripShortcodes(str) {
     .trim();
 }
 
+// Some CMS links have a stray space inside the URL ("org/ commonwealthlive").
+function fixHrefWhitespace(html) {
+  return html.replace(/href=(["'])([^"']*)\1/gi, (m, q, url) => `href=${q}${url.replace(/\s+/g, "")}${q}`);
+}
+
 function cleanupContentText(html) {
   let result = html;
   result = stripLeadingCss(result);
+  result = fixHrefWhitespace(result);
   result = stripBarePlainTextUrls(result);
   result = decodeEntities(result);
   result = fixMisdirectedClosingQuote(result);
@@ -163,14 +181,19 @@ function stripTags(str) {
   return (str || "").replace(/<[^>]+>/g, "");
 }
 
+// Finds the title in the text while ignoring differences in quotes,
+// punctuation and capitals ('The "Commandments" of Jesus' matches
+// 'THE COMMANDMENTS OF JESUS').
 function fuzzyFind(haystack, needle) {
   if (!needle) return null;
-  const pattern = escapeRegExp(needle.trim())
-    .replace(/\s+/g, "\\s+")
-    .replace(/['\u2018\u2019]/g, "['\u2018\u2019]")
-    .replace(/["\u201c\u201d]/g, '["\u201c\u201d]');
+  const words = needle.match(/[A-Za-z0-9\u00C0-\u024F]+/g);
+  if (!words || !words.length) return null;
+  const pattern = words.map(escapeRegExp).join("[^A-Za-z0-9\\u00C0-\\u024F]+");
   const match = haystack.match(new RegExp(pattern, "i"));
-  return match ? { index: match.index, length: match[0].length } : null;
+  if (!match) return null;
+  // A title ending in "(... 8)" leaves its closing bracket behind - take it too.
+  const trailing = haystack.slice(match.index + match[0].length).match(/^[)\]]+/);
+  return { index: match.index, length: match[0].length + (trailing ? trailing[0].length : 0) };
 }
 
 function isStructured(content) {
@@ -621,7 +644,7 @@ const FOOTER_LABELS = [
   { key: "dig", re: "DIG\\s+DEEPER" },
   { key: "pray", re: "WE\\s+PRAY" },
   { key: "bible", re: "BIBLE\\s+READING(?:\\s+IN\\s+THE\\s+YEAR)?" },
-  { key: "declare", re: "DECLARE\\s+THESE\\s+WORDS" },
+  { key: "declare", re: "DECLARE\\s+THESE\\s+WORDS?" },
 ];
 
 // Exact-case match first (avoids "we pray" inside a sentence), then any case.
@@ -636,8 +659,9 @@ function splitFooter(content) {
   const dig = content.search(new RegExp(FOOTER_LABELS[0].re));
   let idx = dig;
   if (idx === -1) {
+    // "BIBLE READING" alone can appear in ordinary prose, so here it must be the full label.
     const hits = FOOTER_LABELS.slice(1)
-      .map((l) => content.search(new RegExp(l.re)))
+      .map((l) => content.search(new RegExp(l.key === "bible" ? "BIBLE\\s+READING\\s+IN\\s+THE\\s+YEAR" : l.re)))
       .filter((i) => i !== -1);
     if (!hits.length) return { body: content, footerRaw: null };
     idx = Math.min(...hits);
@@ -650,11 +674,24 @@ function splitFooter(content) {
 const flat = (s) => (s || "").replace(/\s+/g, " ").trim();
 
 function splitDashPoints(text) {
-  const parts = text
-    .split(/\s*[\u2013\u2014-]\s+(?=[A-Z])/)
-    .map((s) => s.replace(/^[\u2013\u2014-]\s*/, "").trim())
-    .filter(Boolean);
+  const parts = text.split(DECLARATION_DASH_RE).map(flat).filter(Boolean);
   return parts.length < 2 ? null : parts;
+}
+
+// "John 1:12; 8:11; 12:36; John 15:4;7" -> each piece gets its book name back.
+function expandScriptureList(items) {
+  const out = [];
+  items.forEach((item) => {
+    const prev = out[out.length - 1];
+    if (prev && /^\d{1,3}(?::\d[\d,\-–]*)?$/.test(item)) {
+      const book = prev.replace(/\s+\d+(?::.*)?$/, "");
+      const chapter = prev.match(/\s(\d+):/)?.[1];
+      out.push(item.includes(":") || !chapter ? `${book} ${item}` : `${book} ${chapter}:${item}`);
+    } else {
+      out.push(item);
+    }
+  });
+  return out;
 }
 
 function parseBibleReading(raw) {
@@ -669,27 +706,21 @@ function parseBibleReading(raw) {
 }
 
 const CLOSING_PHRASE_RE = /((?:OH\s+)?Hallelujah[\s\S]*|Thank\s+you\s+Heavenly\s+Father[\s\S]*)$/i;
-const DASH_MARKER_RE = /^[\u2013\u2014-]\s*/;
+
+// A dash separates declarations unless it sits inside a word ("Christ-centered").
+const DECLARATION_DASH_RE = /(?<![A-Za-z])[\u2013\u2014-]\s*(?=[A-Z])|(?<=[A-Za-z])[\u2013\u2014-]\s+(?=[A-Z])/;
 
 function parseDeclarations(declareRaw) {
   const raw = stripShortcodes(declareRaw);
-  const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
-
+  const joined = raw.replace(/\s*\n\s*/g, " "); // hard-wrapped lines are one sentence
   let items;
-  if (lines.some((l) => DASH_MARKER_RE.test(l))) {
-    // Lines without a dash are hard-wrapped continuations of the item above.
-    items = [];
-    lines.forEach((line) => {
-      if (DASH_MARKER_RE.test(line) || items.length === 0) items.push(line.replace(DASH_MARKER_RE, ""));
-      else items[items.length - 1] += " " + line;
-    });
+  if (DECLARATION_DASH_RE.test(joined)) {
+    items = joined.split(DECLARATION_DASH_RE);
   } else {
-    items = lines;
+    items = raw.split("\n");
   }
-  // Inline "- a - b" runs (a dash needs spaces around it, so "Christ-centered" is safe).
   items = items
-    .flatMap((i) => i.split(/(?<=[.!?])\s*[\u2013\u2014-]\s+(?=[A-Z])|\s+[\u2013\u2014-]\s+(?=[A-Z])/))
-    .map(flat)
+    .map((i) => flat(i).replace(/^Iam\b/, "I am").replace(/\s+([.,!?;])/g, "$1"))
     .filter(Boolean);
 
   let closing = null;
@@ -750,11 +781,12 @@ function parseFooter(footerRaw) {
   const bibleReadingRaw = sliceFor("bible");
   const declareRaw = sliceFor("declare");
   const { declarations, closing } = parseDeclarations(declareRaw);
+  const prayerPoints = splitDashPoints(wePray.replace(/\s*\n\s*/g, " "));
 
   return {
-    deepDiver: digDeeper ? digDeeper.split(";").map(flat).filter(Boolean) : [],
-    prayer: flat(wePray),
-    prayerPoints: splitDashPoints(wePray)?.map(flat) || null,
+    deepDiver: digDeeper ? expandScriptureList(digDeeper.split(";").map(flat).filter(Boolean)) : [],
+    prayer: prayerPoints ? prayerPoints.join(" ") : flat(wePray),
+    prayerPoints,
     bibleReading: parseBibleReading(bibleReadingRaw),
     declarations,
     closing,
@@ -826,8 +858,11 @@ function convertMarkerRun(text, markerRe, matchOffset, stripMarker, tag, maxGap 
       const win = text.slice(windowStart, idx);
       return !!win.match(new RegExp(`${SCRIPTURE_REF.source}$`, "i"));
     };
+    // A colon inside a tag (href="https://...") or a URL is never a list intro.
+    const isTagOrUrlColon = (idx) =>
+      before.lastIndexOf("<", idx) > before.lastIndexOf(">", idx) || before.slice(idx, idx + 3) === "://";
     let colonIdx = before.lastIndexOf(":");
-    while (colonIdx !== -1 && isScriptureColon(colonIdx)) {
+    while (colonIdx !== -1 && (isScriptureColon(colonIdx) || isTagOrUrlColon(colonIdx))) {
       colonIdx = before.lastIndexOf(":", colonIdx - 1);
     }
     const previousRunEnd = runIndex > 0 ? runLastItemEnds[runIndex - 1] : -1;
@@ -850,6 +885,15 @@ function convertMarkerRun(text, markerRe, matchOffset, stripMarker, tag, maxGap 
     while ((am = anchorRe.exec(listBlock))) {
       anchorSpans.push({ start: am.index, end: am.index + am[0].length });
     }
+    // Text between the intro colon and the first marker must never vanish:
+    // for dash runs ("a- b- c") it is the first item; otherwise it stays in
+    // front of the list.
+    const preText = text.slice(introEnd, firstMarker);
+    const preHasText = preText.replace(/<[^>]+>/g, "").trim().length > 0;
+    const preIsFirstItem = preHasText && run[0].num === null;
+    if (preIsFirstItem) localMarkers.unshift(0);
+    const prefixHtml = preHasText && !preIsFirstItem ? preText : "";
+
     const wouldTearAnchor = localMarkers.some((idx) => anchorSpans.some((span) => idx > span.start && idx < span.end));
     if (wouldTearAnchor) return;
 
@@ -898,13 +942,13 @@ function convertMarkerRun(text, markerRe, matchOffset, stripMarker, tag, maxGap 
     const listHtmlOf = (items) => `<${tag}>${items.map((i) => `<li>${i}</li>`).join("")}</${tag}>`;
 
     if (segments.length === 1 && segments[0].type === "list") {
-      replacements.push({ start: introEnd, end: lastItemEnd, html: listHtmlOf(segments[0].items) });
+      replacements.push({ start: introEnd, end: lastItemEnd, html: prefixHtml + listHtmlOf(segments[0].items) });
       return;
     }
     if (!segments.some((s) => s.type === "list")) return;
 
     const combinedHtml = segments.map((s) => (s.type === "list" ? listHtmlOf(s.items) : s.html)).join("");
-    replacements.push({ start: introEnd, end: lastItemEnd, html: combinedHtml });
+    replacements.push({ start: introEnd, end: lastItemEnd, html: prefixHtml + combinedHtml });
   });
 
   if (replacements.length === 0) return text;
@@ -1104,8 +1148,22 @@ function splitAdjacentAnchorChunks(chunks) {
   return result;
 }
 
+function mergeTinyChunks(chunks) {
+  const plainLen = (c) => c.replace(/<[^>]+>/g, "").trim().length;
+  const out = [];
+  chunks.forEach((c) => {
+    if (plainLen(c) < 4 && out.length) out[out.length - 1] += " " + c;
+    else out.push(c);
+  });
+  if (out.length > 1 && plainLen(out[0]) < 4) {
+    out[1] = out[0] + " " + out[1];
+    out.shift();
+  }
+  return out;
+}
+
 function paragraphizeText(text) {
-  return splitAdjacentAnchorChunks(groupSentenceChunks(text)).map((chunk) => `<p>${chunk}</p>`);
+  return splitAdjacentAnchorChunks(mergeTinyChunks(groupSentenceChunks(text))).map((chunk) => `<p>${chunk}</p>`);
 }
 
 function breakLongListItems(listHtml) {
@@ -1167,6 +1225,8 @@ export function parseDevotionalContent(rawContent, { title } = {}) {
 
   let content = stripEmptyTags(pre.content);
   content = stripNonEpisodeLinks(convertLinkLists(content));
+  // Unwrapping links can glue words together ("prophecy.<a>Read</a>"), so tidy once more.
+  content = fixWordGluedToQuote(fixGluedWords(fixMissingSentenceSpaces(content)));
 
   // 2. Footer sections first, so a short episode's DIG DEEPER references
   //    can never be mistaken for its memory verse.

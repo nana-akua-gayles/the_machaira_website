@@ -92,7 +92,7 @@ export default function TestimonyCommentsSection({ testimonyId }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col border-t border-[#E5E7EB] pt-3 sm:mt-8 sm:block sm:pt-6">
       <div className="flex shrink-0 items-center justify-between px-5 sm:px-0">
-        <h3 className="font-serif text-lg text-navy-dark">
+        <h3 className="text-lg text-navy-dark">
           Comments{" "}
           <span className="text-sm font-normal text-[#6B7280]">
             ({comments.length})

@@ -279,7 +279,7 @@ export default function BooksGrid() {
                   <div className="space-y-8">
                     {activeStory.body && (
                       <div className="text-base sm:text-lg text-[#332f2e] leading-relaxed whitespace-pre-line font-light tracking-wide">
-                        <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none font-serif">
+                        <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none">
                           {articleTextParts.part1Letter}
                         </span> 
                         {articleTextParts.part1Rest}
@@ -289,7 +289,7 @@ export default function BooksGrid() {
                     {articleTextParts.part2Letter && (
                       <div className="pt-6 border-t border-[#f4f0eb]">
                         <div className="text-base sm:text-lg text-[#332f2e] leading-relaxed whitespace-pre-line font-light tracking-wide">
-                          <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none font-serif">
+                          <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none">
                             {articleTextParts.part2Letter}
                           </span>
                           {articleTextParts.part2Rest}

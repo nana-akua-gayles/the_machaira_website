@@ -13,7 +13,7 @@ function PreviousDevotionalList({ devotionals = [], viewMode = "list" }) {
           </h2>
         </div>
         <p className="hidden text-sm text-[#6B7280] sm:block">
-          {devotionals.length} devotionals
+          {devotionals.length} {devotionals.length === 1 ? "devotional" : "devotionals"}
         </p>
       </div>
 
@@ -22,7 +22,7 @@ function PreviousDevotionalList({ devotionals = [], viewMode = "list" }) {
           className={
             viewMode === "grid"
               ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-              : "divide-y divide-[#E5E7EB]"
+              : undefined
           }
         >
           {devotionals.map((devotional) => (

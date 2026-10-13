@@ -63,29 +63,19 @@
     "id": 20864,
     "title": "EPISODE 17 - THE COMMANDMENTS OF JESUS (God’s Love Language 8) ",
     "date": "2023-02-08",
-    "issues": [
-      {
-        "code": "no-title-extracted",
-        "severity": "warn",
-        "sample": ""
-      },
-      {
-        "code": "no-memory-verse",
-        "severity": "info",
-        "sample": ""
-      },
-      {
-        "code": "tiny-paragraph",
-        "severity": "warn",
-        "sample": "The"
-      }
-    ]
+    "issues": []
   },
   {
     "id": 18875,
     "title": "EPISODE 18 - THE INTIMACY OF JESUS’ LOVE (God’s Love Language 9)",
     "date": "2023-02-09",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "t 5 times in only John chapter 14. John 14:12, He said \"Verily, Verily, I say to you, he who believes in Me...\" The expr"
+      }
+    ]
   },
   {
     "id": 18907,
@@ -109,7 +99,13 @@
     "id": 18968,
     "title": "Episode 22 - A New Commandment",
     "date": "2023-02-13",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "d this by comparing these two: 1. The second great commandments of the law says: \"Thou shalt love thy neighbour as thyse"
+      }
+    ]
   },
   {
     "id": 19031,
@@ -139,37 +135,73 @@
     "id": 19100,
     "title": "EPISODE 27 - THE PRACTICE OF LOVE 2",
     "date": "2023-02-18",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "gs the Apostle Paul mentioned. 3. Love does not envy. To envy means to zealously burn or boil with a desire of jealousy."
+      }
+    ]
   },
   {
     "id": 19108,
     "title": "EPISODE 28 - THE PRACTICE OF LOVE 3",
     "date": "2023-02-19",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": " items Apostle Paul mentioned. 5. Love is not puffed up. To be puffed up, is to be proud. The Greek word is \"phusio\", wh"
+      }
+    ]
   },
   {
     "id": 19123,
     "title": "EPISODE 29 - THE PRACTICE OF LOVE 4",
     "date": "2023-02-20",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "ed at seven (7) points so far. 8. Love is not provoked It means to not exasperate or not easily stirred with or aroused "
+      }
+    ]
   },
   {
     "id": 19144,
     "title": "EPISODE 30 - THE PRACTICE OF LOVE 5",
     "date": "2023-02-21",
-    "issues": []
+    "issues": [
+      {
+        "code": "missing-sentence-space",
+        "severity": "warn",
+        "sample": "t makes it more intense as well.Love does not rejoice in iniquity, but rejoices in truth. Just as love keeps no record o"
+      }
+    ]
   },
   {
     "id": 19198,
     "title": "EPISODE 31 - THE PRACTICE OF LOVE 6",
     "date": "2023-02-22",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "oned in the opening scripture. 14. Love endures all things Have you ever been in a place and felt or thought to yourself"
+      }
+    ]
   },
   {
     "id": 20865,
     "title": "EPISODE 32 - REMAIN STEADFAST IN LOVE 1",
     "date": "2023-02-23",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "od, from Episode 10 to Episode 31. We have seen God's Love Language, how you are loved by Jesus, how to love Jesus, Jesu"
+      }
+    ]
   },
   {
     "id": 19256,
@@ -205,13 +237,25 @@
     "id": 19367,
     "title": "EPISODE 38 - BEARING THE RIGHT FRUITS 1 (ABUNDANT FRUIT-BEARERS 5)",
     "date": "2023-03-01",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "im in the same chapter of John 15. See verse 9:\" As the Father loved Me, I also have loved you; abide in My love \" To ab"
+      }
+    ]
   },
   {
     "id": 19387,
     "title": "Episode 39 -BEARING THE RIGHT FRUITS 2 (ABUNDANT FRUIT-BEARERS 6)",
     "date": "2023-03-02",
-    "issues": []
+    "issues": [
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "tter - God's Love Language 1 - God's Love Language 12 ) The more you focus and delight in the Lord, the more you are pr"
+      }
+    ]
   },
   {
     "id": 19422,
@@ -229,7 +273,13 @@
     "id": 19472,
     "title": "EPISODE 42 - HOW TO GET A SOUL SAVED 1 (ABUNDANT FRUIT-BEARERS 9)",
     "date": "2023-03-05",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": ". Let's start with the second. 1. Share Your Experience with the People You know. After Jesus got the Samaritan to belie"
+      }
+    ]
   },
   {
     "id": 19487,
@@ -240,11 +290,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "tiny-paragraph",
-        "severity": "warn",
-        "sample": "B."
       }
     ]
   },
@@ -397,7 +442,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -414,7 +459,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -515,7 +560,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -532,7 +577,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       },
       {
@@ -554,7 +599,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -708,7 +753,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -734,6 +779,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "sus is the crux of the gospel; 3. The evidence and demonstration and the release of the Power of God. Preaching the gosp"
       }
     ]
   },
@@ -746,6 +796,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "sus. Now we can go on further: 4. The Resurrection of Jesus Authenticated the Word of GodIt was evidential that, whateve"
       },
       {
         "code": "very-long-paragraph",
@@ -775,6 +830,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "reatness of God's power in us. 4. The Word of God is Authenticated. These four items we have looked at are enough evide"
       }
     ]
   },
@@ -862,7 +922,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -1001,11 +1061,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "href-has-space",
-        "severity": "error",
-        "sample": "n the Faith</a> —Episode 98<a href=\"https:</p><ul><li>Episode 99<a href=\"https://christcommonwealth.org/commonwealthlive"
       }
     ]
   },
@@ -1345,6 +1400,16 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "plain-url-left",
+        "severity": "warn",
+        "sample": "over 8 Billion. According to: https://www.worldometers.info/world-population/ As I am typing now the numbers are increas"
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": " Evangelizing and Discipleship is the way forward. Each person must be involved. According to Bible.org: Ninety-five pe"
       }
     ]
   },
@@ -1357,6 +1422,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "stingly, I started with Isaiah 49. I don't think it was coincidence: See what I found: \" The LORD said to me, \"I have a "
       }
     ]
   },
@@ -1405,6 +1475,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "ingdom. From the previous with in this month of June 2023, we looked at: You being part of God's great move. He desire"
       }
     ]
   },
@@ -1494,6 +1569,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": " the verse 7, before the verse 8. In the verse 7, Paul gave an instruction to the brethren in Corinth: \" Let each one [g"
       }
     ]
   },
@@ -1506,6 +1586,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "ts is not in vain. Your giving is not in vain. For every giving, there is a blessing or a harvest you will reap. I don'"
       }
     ]
   },
@@ -1785,6 +1870,11 @@
         "sample": ""
       },
       {
+        "code": "glued-words",
+        "severity": "warn",
+        "sample": "have to invest prayer without excusesWhen you fail to pray, don't make the excuse that, \"oh though I have failed to pray"
+      },
+      {
         "code": "very-long-paragraph",
         "severity": "warn",
         "sample": "2774 chars: \"Don't try too hard to complete the task you are expected to do, after…"
@@ -2019,7 +2109,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -2050,6 +2140,11 @@
         "code": "no-memory-verse",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "aking his audience understand: 1. The state of the rulers and the religious leaders in their day. They acted as though t"
       }
     ]
   },
@@ -2439,6 +2534,16 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "s to give it the valued time. 2. Incline your ear to MY Sayings. As you pause to attend to the Word, you don't only lis"
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "from the Word. The WORD of God is LIFE to those who find them and MEDICINE to their flesh or body; however there are th"
       }
     ]
   },
@@ -2619,11 +2724,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "possible-content-loss",
-        "severity": "error",
-        "sample": "output keeps 80% of source text"
       }
     ]
   },
@@ -2636,11 +2736,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "possible-content-loss",
-        "severity": "error",
-        "sample": "output keeps 80% of source text"
       }
     ]
   },
@@ -2985,7 +3080,7 @@
       },
       {
         "code": "no-prayer",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -3047,6 +3142,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "are with me...\" verse 4, Psalm 23. And then points out the bravest act of feasting, even when he has his enemies before "
       }
     ]
   },
@@ -3179,6 +3279,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "e of the Psalm 23 is the verse 6. Mostly (not sure of the early days of the Church, but from the past few centuries ago)"
       }
     ]
   },
@@ -3424,6 +3529,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "er, you honor and glorify Him. 3. YOU CAN ALSO HONOR THE LORD WITH YOUR LIFE AND LOVE FOR OTHERS. It is not everyone who"
       }
     ]
   },
@@ -3448,6 +3558,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "o the counsel of God's wisdom: 1. Honor God \"the twenty-four Elders fell down before him and worshiped him, the Eternal "
       }
     ]
   },
@@ -3796,6 +3911,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "xperience continuous miracles. 1. She first turned to Jesus to make intercession. (John 2:3) She didn't deny the challen"
       }
     ]
   },
@@ -4327,6 +4447,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "nd myself meditating on Romans 8. And when I got to verse 34, I imagined Paul the Apostle standing in the middle of a hu"
       }
     ]
   },
@@ -4723,6 +4848,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "indeed, He searched it out.\" v 27. Now after Job brings his readers to the realization of God as the source of Wisdom, h"
       }
     ]
   },
@@ -4819,11 +4949,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "tiny-paragraph",
-        "severity": "warn",
-        "sample": ")."
       }
     ]
   },
@@ -4872,11 +4997,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "href-has-space",
-        "severity": "error",
-        "sample": "e concerning Jesus, who is <a href=\"https:</p><ol><li>Unlike the law of Moses which condemns, <a href=\"https://christcom"
       }
     ]
   },
@@ -5606,6 +5726,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "stingly, I started with Isaiah 49. I don’t think it was a coincidence: See what I found: ”The LORD said to me, “I have a"
       }
     ]
   },
@@ -6017,7 +6142,7 @@
       },
       {
         "code": "no-title-extracted",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -6151,6 +6276,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "t 5 times in only John chapter 14. John 14:12, He said, “Verily, Verily, I say to you, he who believes in Me…”The expres"
       }
     ]
   },
@@ -6331,6 +6461,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "o the counsel of God’s wisdom: 1. Honor God “the twenty-four Elders fell down before him and worshiped him, the Eternal "
       }
     ]
   },
@@ -6559,6 +6694,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "ou receive more grace through: 1. Faith2. Your humility of heart3. Prayer Another core item which causes you to enjoy mo"
       }
     ]
   },
@@ -6667,6 +6807,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "ntion to verse 7, before verse 8. In verse 7, Paul instructed the brethren in Corinth: ”Let each one [give] as he has ma"
       }
     ]
   },
@@ -7231,6 +7376,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "missing-sentence-space",
+        "severity": "warn",
+        "sample": "at God said. Taking bold action.Your persistence in prayer is not faithlessness. To persist in prayer is to enforce the "
       }
     ]
   },
@@ -7267,6 +7417,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "ts continually on all that is: - authentic and real- honorable and admirable beautiful and respectful pure and holy mer"
       }
     ]
   },
@@ -7531,11 +7686,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "href-has-space",
-        "severity": "error",
-        "sample": "e Lord is also warning you.<a href=\"https:</p><ol><li>DON'T DISREGARD THE WORD OF CHRIST TO YOU.</a></li><li>Second warn"
       }
     ]
   },
@@ -7564,7 +7714,7 @@
       {
         "code": "very-long-paragraph",
         "severity": "warn",
-        "sample": "2344 chars: The Consequence Of Doubting The WORD OF GOD! As I mentioned in yesterd…"
+        "sample": "2299 chars: As I mentioned in yesterday's episode , warnings are cautions to keep …"
       }
     ]
   },
@@ -7733,6 +7883,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "the speaking of God in Genesis 1. When God spoke, creation took place and the cosmic universe became orderly. At a point"
       }
     ]
   },
@@ -7757,6 +7912,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "sion so far:1. Does God speak? 2. Does He speak to everyone? 3. What are the intentions of God's speaking? If God speaks"
       }
     ]
   },
@@ -7805,6 +7965,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "n interesting scene in 2 Kings 18. In the ninth year of Hoshea king of Israel, Samaria was taken and then the king of As"
       }
     ]
   },
@@ -7963,9 +8128,9 @@
         "sample": ""
       },
       {
-        "code": "possible-content-loss",
-        "severity": "error",
-        "sample": "output keeps 75% of source text"
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "d in the Psalm. Which is Psalm 90. And the third song was recorded at the end of Moses' life. (Deuteronomy 32) It's not "
       }
     ]
   },
@@ -8144,11 +8309,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "href-has-space",
-        "severity": "error",
-        "sample": "tainty of the Lord's voice.<a href=\"https:</p><ul><li>The voice of the Lord is precise and peaceful.</li><li>The voice o"
       }
     ]
   },
@@ -8293,6 +8453,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": " two things:1. Disappointment 2. Discouragement Today we take a look into the third item:3. Despair! This is the peak o"
       }
     ]
   },
@@ -8430,11 +8595,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "tiny-paragraph",
-        "severity": "warn",
-        "sample": ")."
       }
     ]
   },
@@ -8817,6 +8977,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "odes: Part 1, Part 2, and Part 3. Enjoy and rejoice in the Lord's provision for you.\" For the Lord takes care of all His"
       }
     ]
   },
@@ -9045,6 +9210,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "missing-sentence-space",
+        "severity": "warn",
+        "sample": "truth in the face of corruption?Virtue, Aretē, means To be Purposeful. To the Greek philosophers, Virtue meant, the fulf"
       }
     ]
   },
@@ -9398,6 +9568,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": " admonition in 1 Thessalonians 5. He said, \"But you, beloved brothers and sisters, are not living in the dark, allowing "
       }
     ]
   },
@@ -9578,6 +9753,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "plain-url-left",
+        "severity": "warn",
+        "sample": "). Scourging. Retrieved from (https://read-scripture.com/scourging/) The soldiers scourge the victim from the upper tors"
       }
     ]
   },
@@ -9758,6 +9938,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "al ways to demonstrate honour: 1. Highly Esteem Your Leaders in Love. Sometimes people make assertions that members (or "
       }
     ]
   },
@@ -10075,6 +10260,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "take) as used in Genesis 1:26, 28. The word dominion used in Genesis 27:40 is from the Hebrew word \"rûd\", which means \"t"
       }
     ]
   },
@@ -10315,6 +10505,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "plain-url-left",
+        "severity": "warn",
+        "sample": "he scriptures. Register here; https://forms.gle/upo8i3b55kyNEiur7 Become a partner of this massive kingdom agenda today."
       }
     ]
   },
@@ -10327,6 +10522,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "plain-url-left",
+        "severity": "warn",
+        "sample": "pians 3:5-13). Register here; https://forms.gle/upo8i3b55kyNEiur7Become a partner of this massive kingdom agenda today. "
       }
     ]
   },
@@ -10351,6 +10551,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "plain-url-left",
+        "severity": "warn",
+        "sample": " over 8 billion according to: https://www.worldometers.info/world-population/. As you are reading this now, the numbers "
       }
     ]
   },
@@ -10363,6 +10568,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "plain-url-left",
+        "severity": "warn",
+        "sample": "ppening today! Register here; https://forms.gle/upo8i3b55kyNEiur7Become a partner of this massive kingdom agenda today. "
       }
     ]
   },
@@ -10578,11 +10788,6 @@
       {
         "code": "no-banner",
         "severity": "info",
-        "sample": ""
-      },
-      {
-        "code": "no-declarations",
-        "severity": "warn",
         "sample": ""
       }
     ]
@@ -10944,6 +11149,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "ification, read the following: - Justification 1 – 3 Justified by Faith Christ’s won freedom wasn’t partial The Case is"
       }
     ]
   },
@@ -11477,11 +11687,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "no-declarations",
-        "severity": "warn",
-        "sample": ""
       }
     ]
   },
@@ -11545,7 +11750,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -11831,7 +12036,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -12141,7 +12346,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -12311,6 +12516,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "o the counsel of God’s wisdom: 1. Honor God “the twenty-four Elders fell down before him and worshiped him, the Eternal "
       }
     ]
   },
@@ -12580,11 +12790,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "href-has-space",
-        "severity": "error",
-        "sample": "the act of the poor.</p><p><a href=\"https://withapostlebennie.org/ commonwealthlive/episode-179-dealing-with-laziness/\" "
       }
     ]
   },
@@ -12907,6 +13112,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "missing-sentence-space",
+        "severity": "warn",
+        "sample": "truth in the face of corruption?Virtue, Aretē, means To be Purposeful. To the Greek philosophers, Virtue meant, the fulf"
       }
     ]
   },
@@ -12931,6 +13141,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "missing-sentence-space",
+        "severity": "warn",
+        "sample": " of change without making noise.Love believes all things Greek word for believe is, pisteuō, which means to trust in som"
       }
     ]
   },
@@ -13159,6 +13374,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "indeed, He searched it out.” v 27. Now after Job brings his readers to the realization of God as the source of Wisdom, h"
       }
     ]
   },
@@ -13366,7 +13586,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -13383,7 +13603,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -13397,6 +13617,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "ification, read the following: – Justification 1 – 3 Justified by Faith Christ’s won freedom wasn’t partial The Case is"
       }
     ]
   },
@@ -13640,7 +13865,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -13738,6 +13963,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "stingly, I started with Isaiah 49. I don’t think it was a coincidence: See what I found: ”The LORD said to me, “I have a"
       }
     ]
   },
@@ -14039,7 +14269,7 @@
       },
       {
         "code": "no-bible-plans",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       }
     ]
@@ -14065,11 +14295,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "href-has-space",
-        "severity": "error",
-        "sample": "the act of the poor.</p><p><a href=\"https://withapostlebennie.org/ commonwealthlive/episode-179-dealing-with-laziness/\" "
       }
     ]
   },
@@ -14130,6 +14355,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "double-space",
+        "severity": "info",
+        "sample": "ification, read the following: – Justification 1 – 3 Justified by Faith Christ’s won freedom wasn’t partial The Case is"
       }
     ]
   },
@@ -14193,7 +14423,7 @@
       },
       {
         "code": "no-title-extracted",
-        "severity": "warn",
+        "severity": "info",
         "sample": ""
       },
       {
@@ -14236,11 +14466,6 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
-      },
-      {
-        "code": "tiny-paragraph",
-        "severity": "warn",
-        "sample": "The"
       },
       {
         "code": "very-long-paragraph",
@@ -14318,6 +14543,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "stingly, I started with Isaiah 49. I don’t think it was a coincidence: See what I found: ”The LORD said to me, “I have a"
       }
     ]
   },
@@ -14330,6 +14560,11 @@
         "code": "no-banner",
         "severity": "info",
         "sample": ""
+      },
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "ntion to verse 7, before verse 8. In verse 7, Paul instructed the brethren in Corinth: ”Let each one [give] as he has ma"
       }
     ]
   },
@@ -14457,7 +14692,13 @@
     "id": 48423,
     "title": "EPISODE 1330 - LIVE ABOVE ALL LIMITATIONS",
     "date": "2026-09-13",
-    "issues": []
+    "issues": [
+      {
+        "code": "unconverted-number-marker",
+        "severity": "info",
+        "sample": "take) as used in Genesis 1:26, 28. The word dominion used in Genesis 27:40 is from the Hebrew word “rûd”, which means “"
+      }
+    ]
   },
   {
     "id": 48412,

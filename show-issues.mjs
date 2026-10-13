@@ -20,9 +20,13 @@ const show = (title, codes, limit) => {
   if (n === 0) log("(none)");
 };
 
-show("Errors: broken links / lost content", ["href-has-space", "possible-content-loss"], 9);
-show("Footer problems (prayer / bible plans / declarations)", ["no-prayer", "no-bible-plans", "no-declarations"], 10);
-show("Tiny paragraphs", ["tiny-paragraph"], 5);
+show("Section headers leaked into the body (error)", ["section-header-leaked"], 5);
+show("Missing space after a full stop", ["missing-sentence-space"], 6);
+show("Numbered items never turned into a list", ["unconverted-number-marker"], 5);
+show("Plain URLs left in the text", ["plain-url-left"], 4);
+show("Double spaces", ["double-space"], 4);
+show("No Bible reading found", ["no-bible-plans"], 7);
+show("Title not found", ["no-title-extracted"], 3);
 
 const text = out.join("\n");
 fs.writeFileSync("audit-output/issues.txt", text);

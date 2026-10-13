@@ -225,7 +225,7 @@ const DiscussionThread = () => {
 
 
   return (
-    <main className="bg-white text-[#111827] font-['Montserrat',sans-serif] lg:px-6 lg:py-7">
+    <main className="bg-white text-[#111827] font-['Montserrat'] lg:px-6 lg:py-7">
       {/* Mobile scrolls with the document; desktop uses a bounded split panel. */}
       <div className="mx-auto flex min-h-[calc(100dvh-5rem)] max-w-[1400px] flex-col bg-white lg:h-[calc(100dvh-8rem)] lg:min-h-[480px] lg:overflow-hidden lg:min-h-[480px] lg:flex-row lg:rounded-[24px] lg:border lg:border-[#B9BEC8]/40 lg:shadow-[0_15px_50px_rgba(16,26,43,0.08)]">
         {/* Desktop: discussion context remains visible independently of reply scroll. */}

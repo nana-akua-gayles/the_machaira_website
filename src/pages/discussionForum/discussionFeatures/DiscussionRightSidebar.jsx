@@ -44,7 +44,7 @@ const DiscussionRightSidebar = () => {
     <aside className="min-w-0 space-y-3 lg:space-y-6">
       {/* Trending Topics Widget */}
       <div className="bg-white border border-[#B9BEC8]/30 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
-        <div className="flex items-center gap-2 text-stone-900 font-serif font-bold text-base">
+        <div className="flex items-center gap-2 text-stone-900 font-bold text-base">
           <TrendingUp className="w-4 h-4 text-red-800" />
           <h3>Trending Discussions</h3>
         </div>
@@ -89,7 +89,7 @@ const DiscussionRightSidebar = () => {
 
       {/* Community Spotlight Widget */}
       <div className="bg-white border border-[#B9BEC8]/30 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
-        <div className="flex items-center gap-2 text-stone-900 font-serif font-bold text-base">
+        <div className="flex items-center gap-2 text-stone-900 font-bold text-base">
           <Star className="w-4 h-4 text-[#991313]" />
           <h3>Community Spotlight</h3>
         </div>

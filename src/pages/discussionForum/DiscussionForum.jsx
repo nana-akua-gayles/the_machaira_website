@@ -12,7 +12,7 @@ const DiscussionForum = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Discussions');
 
   return (
-    <div className="min-h-screen min-w-0 overflow-x-clip bg-[#F8F8F8] font-[Montserrat,sans-serif] text-[#111827] antialiased selection:bg-red-100 selection:text-red-900">
+    <div className="min-h-screen min-w-0 overflow-x-clip bg-[#F8F8F8] font-[Montserrat] text-[#111827] antialiased selection:bg-red-100 selection:text-red-900">
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto min-w-0 px-3 sm:px-6 lg:px-8 pb-16">
