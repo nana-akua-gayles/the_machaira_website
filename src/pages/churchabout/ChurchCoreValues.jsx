@@ -37,20 +37,16 @@ export default function ChurchCoreValues() {
 
           {/* INTRO */}
           <div className="lg:col-span-4">
-            <span className="mb-5 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[#8d1515]">
-              What We Grow From
-            </span>
 
-            <h2 className="max-w-md text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#241516] sm:text-5xl lg:text-6xl">
-              Rooted in faith.
+            <h2 className="max-w-md text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#241516] sm:text-3xl lg:text-4xl">
+              Revealing Christ
               <br />
-              <span className="text-[#8d1515]">Growing with purpose.</span>
+              <span className="text-[#8d1515]">To the World.</span>
             </h2>
 
             <p className="mt-7 max-w-md text-sm leading-7 text-[#6d6260] sm:text-base">
-              Everything we are and everything we do grows from a foundation
-              of Scripture, love, community, and a desire to make an impact
-              beyond ourselves.
+              In the unfolding of His Word, light shines; in the shining of that light, we are established. These are the truths we 
+              stand upon and the life we walk in: the convictions that make us one family, and that send us out to reign.
             </p>
 
             <div className="mt-9 h-px w-16 bg-[#8d1515]/40" />
