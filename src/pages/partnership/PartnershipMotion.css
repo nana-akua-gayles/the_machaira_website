@@ -1,0 +1,33 @@
+/* Partnership interactions — existing project fonts and color tokens remain inherited. */
+.partnership-orbit{width:100%;max-width:540px;margin:0 auto;color:#101a2b;overflow:hidden}
+.partnership-orbit-stage{height:320px;position:relative;isolation:isolate;touch-action:pan-y}
+.partnership-orbit-ring{position:absolute;width:228px;height:228px;left:50%;top:48%;border:1px dashed rgba(153,19,19,.45);border-radius:50%;transform:translate(-50%,-50%) rotate(var(--orbit-angle));transition:transform .85s cubic-bezier(.2,.8,.2,1)}
+.partnership-orbit-ring:before,.partnership-orbit-ring:after{content:'';position:absolute;inset:20px;border:1px solid rgba(153,19,19,.1);border-radius:50%}
+.partnership-orbit-ring:after{inset:-16px;border-color:rgba(16,26,43,.08)}
+.partnership-orbit-node{position:absolute;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:94px;height:94px;border-radius:50%;background:#fff;border:1px solid rgba(16,26,43,.13);color:#101a2b;box-shadow:0 14px 35px rgba(16,26,43,.09);font-size:11px;font-weight:700;transition:transform .4s,background .4s,color .4s,border-color .4s}
+.partnership-orbit-node.is-active{background:#991313;color:white;border-color:#991313;transform:scale(1.13);box-shadow:0 16px 36px rgba(153,19,19,.24)}
+.partnership-orbit-node-0{left:50%;top:4px;translate:-50% 0}
+.partnership-orbit-node-1{right:4%;bottom:30px}
+.partnership-orbit-node-2{left:4%;bottom:30px}
+.partnership-orbit-center{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:122px;height:122px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;border-radius:50%;background:#101a2b;color:#fff;text-align:center;box-shadow:0 16px 40px rgba(16,26,43,.18);font-size:9px;letter-spacing:.2em}
+.partnership-orbit-center strong{font-size:13px;letter-spacing:.07em}
+.partnership-orbit-detail{padding:25px 24px 22px;background:#fff;border:1px solid rgba(16,26,43,.1);border-radius:20px;box-shadow:0 16px 35px rgba(16,26,43,.06);animation:partnership-enter .45s ease both}
+.partnership-orbit-kicker{font-size:10px;font-weight:800;letter-spacing:.22em;color:#991313}
+.partnership-orbit-detail h3{font-size:clamp(30px,9vw,44px);font-weight:800;letter-spacing:-.05em;margin:5px 0 8px}
+.partnership-orbit-detail p{font-size:14px;line-height:1.75;color:#55606d}
+.partnership-orbit-action{display:flex;align-items:center;gap:9px;margin-top:18px;color:#991313;font-weight:800;font-size:12px}
+.partnership-orbit-controls{display:flex;justify-content:center;align-items:center;gap:24px;margin-top:20px;font-size:12px;font-weight:800;letter-spacing:.1em}
+.partnership-orbit-controls button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(16,26,43,.2);display:grid;place-items:center;transition:background .2s,color .2s}
+.partnership-orbit-controls button:active{background:#101a2b;color:white}
+.partnership-orbit-hint{text-align:center;font-size:9px;letter-spacing:.2em;color:#64748b;margin-top:14px}
+.partnership-hero-image{animation:partnership-kenburns 12s ease-in-out infinite alternate}
+.partnership-hero-progress{height:2px;background:#991313;transform-origin:left;animation:partnership-progress 4.5s linear both}
+.partnership-story-rail{scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.partnership-story-rail::-webkit-scrollbar{display:none}
+.partnership-story-rail>*{scroll-snap-align:center}
+.partnership-story-shade{background:linear-gradient(to top,rgba(16,26,43,.97),rgba(16,26,43,.58) 48%,transparent)}
+.partnership-cta-glow{position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.06);filter:blur(12px);right:-90px;top:-130px;pointer-events:none}
+@keyframes partnership-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes partnership-kenburns{from{transform:scale(1)}to{transform:scale(1.07)}}
+@keyframes partnership-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){.partnership-orbit-ring,.partnership-orbit-node{transition:none}.partnership-orbit-detail,.partnership-hero-image,.partnership-hero-progress{animation:none}}

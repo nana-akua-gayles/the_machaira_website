@@ -1,3 +1,4 @@
+import MobileJourneyWindmill from "./MobileJourneyWindmill";
 import React from 'react';
 import blogImage from "../../assets/images/blog.jpg";
 import discussionImage from "../../assets/images/discussion.jpg";
@@ -15,7 +16,8 @@ export default function ExploreCardsSection() {
       </div>
 
       {/* Grid for 3 Cards - Evenly spread */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+      <MobileJourneyWindmill />
+      <div className="hidden md:grid md:grid-cols-3 gap-6 items-stretch">
 
         {/* Card 1: Discussion Forum */}
         <a 

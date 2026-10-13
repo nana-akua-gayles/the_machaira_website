@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ArrowUpRight, ArrowLeft, BookOpen, X } from "lucide-react";
 import MainFeedSection from "./MainFeedSection";
 import AllArticlesArchive from "./AllArticlesArchive";
 import { supabase } from "../../lib/supabaseClient";
@@ -90,156 +91,76 @@ export default function NewsfeedPage() {
   const articleTextParts = activeStory ? formatDualDropCapText(activeStory.body) : { part1Letter: "", part1Rest: "", part2Letter: "", part2Rest: "" };
 
   return (
-    <main className="min-h-screen bg-[#FBF9F4] px-4 py-6 sm:px-6 lg:px-8 relative">
-      <div className="mx-auto max-w-7xl space-y-8">
-
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
-
-          <section
-            className="
-              lg:col-span-5
-              overflow-hidden
-              rounded-[22px]
-              border
-              border-black/5
-              shadow-sm
-              relative
-            "
-          >
+    <main className="min-h-screen bg-white text-[#111827] font-[Montserrat]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-10 py-8 sm:py-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10 lg:items-start">
+          <section className="lg:col-span-5 min-w-0" aria-label="Featured story">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#991313]">01 / Editor's Pick</span>
+              <span className="h-px flex-1 bg-[#B9BEC8]/60 ml-5" />
+            </div>
             {loadingHero ? (
-              <div className="h-72 flex items-center justify-center text-xs text-stone-400 bg-white">
-                Loading reading area...
-              </div>
+              <div className="aspect-[4/5] animate-pulse bg-[#F0F0F0] rounded-2xl flex items-center justify-center text-sm text-[#4D5057]">Preparing the featured story...</div>
             ) : featuredStory ? (
-              <div className="relative w-full max-h-115 sm:max-h-130 overflow-hidden bg-black">
-                
-                <img
-                  src={featuredStory.image_url}
-                  alt={featuredStory.title}
-                  className="w-full h-full object-cover object-top"
-                />
-
-                <div className="absolute inset-x-0 bottom-0 top-1/2 bg-black/85 backdrop-blur-xl border-t border-white/25 p-4 sm:p-5 flex flex-col justify-between shadow-2xl text-white overflow-hidden">
-                  <div className="space-y-1.5 overflow-hidden flex-1 flex flex-col">
-                    <span className="text-[8px] font-semibold uppercase tracking-[0.15em] text-burgundy-primary shrink-0 block">
-                      {featuredStory.subtitle}
-                    </span>
-
-                    <h1 className="text-xs sm:text-sm leading-tight shrink-0">
-                      {featuredStory.title}
-                    </h1>
-
-                    {featuredStory.body && (
-                      <div className="text-[10px] text-white/90 leading-relaxed whitespace-pre-line overflow-hidden flex-1">
-                        {featuredStory.body.replace(/\\n/g, '\n')}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="pt-2 shrink-0 border-t border-white/15 mt-2">
-                    <button
-                      onClick={() => handleSelectStory(featuredStory)}
-                      className="text-[10px] font-medium text-burgundy-primary hover:text-white transition inline-flex items-center gap-1 group"
-                    >
-                      Read Full Article <span className="transition-transform group-hover:translate-x-0.5">→</span>
-                    </button>
+              <button type="button" onClick={() => handleSelectStory(featuredStory)} className="group relative block w-full overflow-hidden rounded-2xl text-left bg-[#101A2B] aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5] shadow-[0_22px_60px_-30px_rgba(16,26,43,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#991313]">
+                <img src={featuredStory.image_url} alt={featuredStory.title} className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#101A2B] via-[#101A2B]/30 to-transparent" />
+                <div className="absolute top-5 left-5 flex items-center gap-2 rounded-full border border-white/30 bg-[#101A2B]/40 backdrop-blur-md px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white" /> Featured story
+                </div>
+                <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 text-white">
+                  <span className="text-[10px] uppercase tracking-[0.24em] text-[#F2D6D8] font-semibold">{featuredStory.subtitle}</span>
+                  <h2 className="mt-3 text-[clamp(1.6rem,5.5vw,2.8rem)] leading-[1.08] tracking-[-0.045em] font-semibold line-clamp-3">{featuredStory.title}</h2>
+                  <p className="mt-3 text-sm text-white/75 line-clamp-2 leading-relaxed">{featuredStory.body?.replace(/\\n/g, " ")}</p>
+                  <div className="mt-5 flex items-center justify-between border-t border-white/25 pt-4 text-xs font-semibold uppercase tracking-[0.14em]">
+                    Read the story <span className="grid place-items-center rounded-full bg-white text-[#101A2B] w-10 h-10 transition-transform group-hover:translate-x-1"><ArrowUpRight size={18} /></span>
                   </div>
                 </div>
-
-              </div>
+              </button>
             ) : (
-              <div className="h-72 flex items-center justify-center text-xs text-stone-400 bg-white">
-                No featured article available.
-              </div>
+              <div className="aspect-[4/5] bg-[#F6F6F6] rounded-2xl grid place-items-center text-[#4D5057]">No featured article available.</div>
             )}
           </section>
-
-          <section className="lg:col-span-7">
+          <section className="lg:col-span-7 min-w-0" aria-label="Latest updates">
             <MainFeedSection onSelectStory={handleSelectStory} />
           </section>
-
         </div>
-
         <AllArticlesArchive onSelectStory={handleSelectStory} />
-
       </div>
 
       {isExpanded && activeStory && (
-        <div className="fixed inset-0 z-9999 bg-[#0c0a09]/95 backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in duration-300">
-          
-          <header className="w-full px-6 sm:px-12 py-5 border-b border-white/10 flex items-center justify-between bg-black/40 backdrop-blur-md shrink-0">
-            <div className="flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-burgundy-primary animate-pulse"></span>
-              <span className="text-[10px] font-semibold tracking-[0.25em] text-white/70 uppercase">
-                {activeStory.subtitle}
-              </span>
+        <div className="fixed inset-0 z-[9999] bg-[#F9F9F7] flex flex-col" role="dialog" aria-modal="true" aria-label={activeStory.title}>
+          <header className="shrink-0 border-b border-[#B9BEC8]/40 bg-white/95 backdrop-blur-lg px-4 sm:px-8 py-3 sm:py-4">
+            <div className="mx-auto max-w-6xl flex items-center justify-between gap-4">
+              <span className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] text-[#991313]"><BookOpen size={16} /> The Commonwealth Journal</span>
+              <button type="button" onClick={() => setIsExpanded(false)} className="inline-flex items-center gap-2 rounded-full border border-[#B9BEC8] px-4 py-2 text-xs font-semibold text-[#101A2B] hover:bg-[#101A2B] hover:text-white transition" aria-label="Close article"><X size={16} /> Close</button>
             </div>
-
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center text-xs transition-all group"
-              aria-label="Close reading"
-            >
-              <span className="group-hover:rotate-90 transition-transform">✕</span>
-            </button>
           </header>
-
-          <div className="flex-1 overflow-y-auto px-4 py-8 sm:py-12">
-            <div className="mx-auto max-w-4xl space-y-8">
-              
-              <div className="space-y-3 text-center lg:text-left border-b border-white/10 pb-6">
-                <h1 className="text-3xl sm:text-5xl text-white tracking-tight leading-[1.15]">
-                  {activeStory.title}
-                </h1>
-                <div>
-                  <span className="uppercase tracking-widest text-burgundy-primary font-semibold text-xs">
-                    {activeStory.isFeatured ? "Featured Article of the Week" : "Newsfeed Update"}
-                  </span>
-                </div>
+          <div className="flex-1 overflow-y-auto overscroll-contain" onKeyDown={(event) => { if (event.key === "Escape") setIsExpanded(false); }}>
+            <article className="mx-auto max-w-4xl px-5 sm:px-8 pt-10 sm:pt-16 pb-24">
+              <div className="text-center max-w-3xl mx-auto">
+                <p className="text-[#991313] uppercase tracking-[0.25em] text-[10px] sm:text-xs font-bold">{activeStory.subtitle}</p>
+                <h1 className="mt-5 text-[clamp(2.1rem,6vw,4.6rem)] font-semibold leading-[1.1] tracking-[-0.055em] text-[#101A2B]">{activeStory.title}</h1>
+                <div className="mt-7 mx-auto h-px w-16 bg-[#991313]" />
               </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
-                
-                <div className="lg:col-span-5 w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black relative group">
-                  <img
-                    src={activeStory.image_url}
-                    alt={activeStory.title}
-                    className="w-full h-75 sm:h-95 object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
-                </div>
-
-                <div className="lg:col-span-7">
-                  {activeStory.body && (
-                    <div className="text-base sm:text-lg text-white/90 leading-relaxed whitespace-pre-line font-light tracking-wide">
-                      <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none">
-                        {articleTextParts.part1Letter}
-                      </span> 
-                      {articleTextParts.part1Rest}
-                    </div>
-                  )}
-                </div>
-
+              <div className="mt-9 sm:mt-12 overflow-hidden rounded-xl sm:rounded-2xl bg-[#101A2B]">
+                <img src={activeStory.image_url} alt={activeStory.title} className="w-full max-h-[480px] object-cover object-top" />
               </div>
-
-              {articleTextParts.part2Letter && (
-                <div className="pt-6 border-t border-white/10">
-                  <div className="text-base sm:text-lg text-white/90 leading-relaxed whitespace-pre-line font-light tracking-wide">
-                    <span className="float-left text-5xl sm:text-6xl text-burgundy-primary leading-none mr-3 mt-1 uppercase select-none">
-                      {articleTextParts.part2Letter}
-                    </span>
-                    {articleTextParts.part2Rest}
+              <div className="mx-auto max-w-[680px] mt-10 sm:mt-14 text-[#222C3B]">
+                {activeStory.body ? (
+                  <div className="text-[16px] sm:text-[18px] leading-[1.95] whitespace-pre-line break-words">
+                    <span className="float-left text-[4.5rem] sm:text-[5.5rem] leading-[0.85] mr-3 mt-2 font-semibold text-[#991313]">{articleTextParts.part1Letter}</span>
+                    {articleTextParts.part1Rest}
+                    {articleTextParts.part2Letter && <p className="mt-7"><span className="float-left text-[4.5rem] leading-[0.85] mr-3 mt-2 font-semibold text-[#991313]">{articleTextParts.part2Letter}</span>{articleTextParts.part2Rest}</p>}
                   </div>
+                ) : <p>Article content is not available.</p>}
+                <div className="mt-14 border-t border-[#B9BEC8]/60 pt-6 flex justify-between items-center">
+                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#4D5057]">End of article</span>
+                  <button type="button" onClick={() => setIsExpanded(false)} className="flex items-center gap-2 text-xs font-bold text-[#991313]"><ArrowLeft size={16} /> Back to newsfeed</button>
                 </div>
-              )}
-
-            </div>
+              </div>
+            </article>
           </div>
-
-          <footer className="w-full py-4 px-6 border-t border-white/10 bg-black/80 text-center text-xs text-white/40 tracking-widest uppercase shrink-0">
-            End of Article • Press Close to Return
-          </footer>
-
         </div>
       )}
     </main>

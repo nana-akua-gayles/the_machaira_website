@@ -151,7 +151,7 @@ export default function NewsfeedSection({ onSelectStory }) {
   }
 
   return (
-    <section className="pt-0 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 overflow-hidden">
+    <section className="pt-0 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-7 sm:space-y-12 overflow-hidden">
       
       <style>{`
         @keyframes marquee {
@@ -161,7 +161,7 @@ export default function NewsfeedSection({ onSelectStory }) {
         .animate-marquee {
           display: flex;
           width: max-content;
-          animation: marquee 35s linear infinite;
+          animation: marquee 48s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
@@ -178,8 +178,8 @@ export default function NewsfeedSection({ onSelectStory }) {
           className="relative overflow-hidden rounded-2xl bg-white/75 backdrop-blur-2xl border border-white/85 shadow-[0_8px_30px_rgb(0,0,0,0.04)] py-3.5"
         >
           <div className="flex items-center">
-            <div className="flex items-center gap-2.5 px-6 z-20 bg-transparent shrink-0 border-r border-[#5A181C]/10">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#5A181C]">Headline</span>
+            <div className="flex items-center gap-2.5 px-3 sm:px-6 z-20 bg-transparent shrink-0 border-r border-[#5A181C]/10">
+              <span className="text-xs sm:text-[11px] font-bold uppercase tracking-wider text-[#5A181C]">Headlines</span>
             </div>
 
             <div className="overflow-hidden whitespace-nowrap w-full relative">
@@ -188,7 +188,7 @@ export default function NewsfeedSection({ onSelectStory }) {
                   <div 
                     key={idx} 
                     onClick={() => handleStoryClick(item, "LIVE TICKER")}
-                    className="flex items-center gap-2 text-xs font-medium text-[#2B2625] hover:text-[#5A181C] transition-colors"
+                    className="flex items-center gap-3 text-sm sm:text-xs font-medium text-[#2B2625] hover:text-[#5A181C] transition-colors"
                   >
                     {item.image_url && (
                       <img 
@@ -207,9 +207,9 @@ export default function NewsfeedSection({ onSelectStory }) {
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
         
-        <motion.div style={{ y: smoothYLeft }} className="lg:col-span-8 space-y-10">
+        <motion.div style={{ y: smoothYLeft }} className="lg:col-span-8 space-y-6 sm:space-y-10">
           
           {topStory && (
             <motion.div 
@@ -227,10 +227,10 @@ export default function NewsfeedSection({ onSelectStory }) {
 
               <div 
                 onClick={() => handleStoryClick({ ...topStory, image_url: topStory.hero_image_url || topStory.image_url }, "TOP STORY")}
-                className="group cursor-pointer bg-[#FBF9F5] backdrop-blur-2xl rounded-3xl p-6 shadow-sm transition-all duration-500"
+                className="group cursor-pointer bg-[#FBF9F5] backdrop-blur-2xl rounded-3xl p-3 sm:p-6 shadow-sm transition-all duration-500"
               >
                 {topStory.hero_image_url && (
-                  <div className="overflow-hidden rounded-2xl relative mb-4 h-72 sm:h-96 w-full">
+                  <div className="overflow-hidden rounded-2xl relative mb-4 h-52 sm:h-96 w-full">
                     <img 
                       src={topStory.hero_image_url} 
                       alt={topStory.title} 
@@ -243,7 +243,7 @@ export default function NewsfeedSection({ onSelectStory }) {
                   <span className="inline-block px-3 py-1 rounded-full bg-[#5A181C]/5 text-[10px] font-semibold tracking-wider uppercase text-[#5A181C]">
                     {topStory.date || "Featured"}
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-bold leading-snug text-[#2B2625] group-hover:text-[#5A181C] transition-colors">
+                  <h2 className="text-xl sm:text-3xl font-bold leading-snug text-[#2B2625] group-hover:text-[#5A181C] transition-colors">
                     {topStory.title}
                   </h2>
                   <p className="text-xs sm:text-sm text-[#6E6563] font-normal leading-relaxed">
@@ -266,14 +266,14 @@ export default function NewsfeedSection({ onSelectStory }) {
                     variants={fadeInUp}
                     custom={index * 0.3}
                     onClick={() => handleStoryClick(story, "UPDATE")}
-                    className="py-5 first:pt-0 last:pb-0 flex flex-col sm:flex-row items-center gap-5 group cursor-pointer bg-white/40 backdrop-blur-md p-4 rounded-2xl hover:bg-white/80 transition-all duration-300"
+                    className="py-5 first:pt-0 last:pb-0 flex flex-row items-start sm:items-center gap-3 sm:gap-5 group cursor-pointer bg-white/40 backdrop-blur-md p-3 sm:p-4 rounded-2xl hover:bg-white/80 transition-all duration-300"
                   >
                     {story.image_url && (
-                      <div className="w-full sm:w-36 shrink-0 overflow-hidden rounded-xl">
+                      <div className="w-24 sm:w-36 shrink-0 overflow-hidden rounded-xl">
                         <img 
                           src={story.image_url} 
                           alt={story.title} 
-                          className="w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:scale-110" 
+                          className="w-full h-24 sm:h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                         />
                       </div>
                     )}
@@ -325,7 +325,7 @@ export default function NewsfeedSection({ onSelectStory }) {
                       <img 
                         src={news.image_url} 
                         alt={news.title} 
-                        className="w-full h-auto object-contain transition-transform duration-700 ease-out group-hover/item:scale-105" 
+                        className="w-full h-24 sm:h-auto object-cover transition-transform duration-700 ease-out group-hover/item:scale-105" 
                       />
                     </div>
                   )}

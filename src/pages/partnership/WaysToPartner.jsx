@@ -1,21 +1,23 @@
 import React from 'react';
+import PartnershipOrbit from './PartnershipOrbit';
 import { HandCoins, HeartHandshake, Sprout, ArrowRight } from 'lucide-react';
 
 export default function WaysToPartner() {
   return (
     <div>
       {/* WAYS TO PARTNER SECTION */}
-      <section className="px-15 py-12 flex flex-col items-center">
-        <span className="text-burgundy-primary text-xl font-bold tracking-wider mb-1.5 text-center">
+      <section id="ways-to-partner" className="px-5 sm:px-8 md:px-15 py-14 md:py-16 flex flex-col items-center overflow-hidden">
+        <span className="text-burgundy-primary text-2xl md:text-xl font-bold tracking-tight md:tracking-wider mb-4 text-center max-w-3xl leading-tight">
           WE ARE MORE THAN A DEVOTIONAL, WE ARE A TRANSFORMATIONAL MOVEMENT.
         </span>
-        <p className="text-cool-gray text-sm text-center max-w-125 mb-8">
+        <p className="text-cool-gray text-sm md:text-base text-center max-w-2xl mb-7 md:mb-10 leading-relaxed">
           We are on a mission to storm and flood cities with Christ. When you partner with us,
           you are helping to raise a generation of leaders who 
           will impact their communities and the world for Christ.
         </p>
 
-        <div className="flex flex-col md:flex-row justify-between w-full gap-5">
+        <PartnershipOrbit />
+        <div className="hidden md:flex flex-col md:flex-row justify-between w-full gap-5">
           {/* Give Card */}
           <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start gap-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
             <div className="w-12 h-12 rounded-xl bg-burgundy-primary flex justify-center items-center shrink-0 shadow-sm transition-transform duration-300 hover:scale-105">

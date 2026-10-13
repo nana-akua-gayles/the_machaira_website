@@ -64,11 +64,19 @@ export default function RecentDevotionalSection({ recentDevotional, formattedDat
           </p>
         </div>
 
+        <style>{`
+          @keyframes machairaReadBounce {
+            0%, 75%, 100% { transform: translateY(0); }
+            82% { transform: translateY(-7px); }
+            90% { transform: translateY(0); }
+            95% { transform: translateY(-3px); }
+          }
+        `}</style>
         {/* Burgundy Button */}
         <div className="pt-2">
           <a 
             href={`/devotional/${recentDevotional.id}`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-burgundy-primary text-white hover:opacity-90 text-xs font-bold tracking-widest uppercase transition-opacity rounded-xl shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-burgundy-primary text-white hover:opacity-90 text-xs font-bold tracking-widest uppercase transition-opacity rounded-xl shadow-md motion-safe:animate-[machairaReadBounce_2.8s_ease-in-out_infinite]"
           >
             <span>Read More</span>
             <span>→</span>

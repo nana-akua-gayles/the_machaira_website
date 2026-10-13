@@ -1,4 +1,5 @@
 import React from "react";
+import ChurchOrbit from "./ChurchOrbit";
 import { Target, Eye, ArrowDown } from "lucide-react";
 
 export default function ChurchMissionVision() {
@@ -22,8 +23,10 @@ export default function ChurchMissionVision() {
           </p>
         </div>
 
+        <div className="mt-9 lg:hidden"><ChurchOrbit variant="purpose" /></div>
+
         {/* Main Content */}
-        <div className="relative mx-auto mt-12 max-w-5xl">
+        <div className="relative mx-auto mt-12 hidden max-w-5xl lg:block">
 
           {/* Center Line */}
           <div className="absolute left-1/2 top-6 hidden h-[calc(100%-12px)] w-px -translate-x-1/2 bg-[#8d1515]/15 md:block" />
