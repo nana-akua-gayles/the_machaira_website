@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getDevotionals } from "../../lib/devotionalService";
@@ -19,6 +20,7 @@ function PreviousDevotional() {
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [viewMode, setViewMode] = useState("list");
 
   const [category, setCategory] = useState(
     () => searchParams.get("category") || "all"
@@ -57,18 +59,19 @@ function PreviousDevotional() {
         setLoading(false);
       }
     }
+
     loadDevotionals();
   }, [
-      pageSize,
-      search,
-      sortBy,
-      category,
-      dateFrom,
-      dateTo,
-      episodeFrom,
-      episodeTo,
-      page,
-    ]);
+    page,
+    pageSize,
+    search,
+    sortBy,
+    category,
+    dateFrom,
+    dateTo,
+    episodeFrom,
+    episodeTo,
+  ]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -89,7 +92,7 @@ function PreviousDevotional() {
   };
 
   const handlePageSizeChange = (value) => {
-    setPageSize(value);
+    setPageSize(Number(value));
     setPage(1);
   };
 
@@ -120,7 +123,6 @@ function PreviousDevotional() {
 
   return (
     <main className="previous-devotional-page min-h-screen bg-white">
-
       <PreviousDevotionalHero />
 
       <PreviousDevotionalToolbar
@@ -134,12 +136,12 @@ function PreviousDevotional() {
         onDateFromChange={handleDateFromChange}
         dateTo={dateTo}
         onDateToChange={handleDateToChange}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
       />
 
       <section className="mx-auto max-w-[1350px] px-4 pb-16 pt-16 sm:px-6 lg:px-10 lg:pb-20 lg:pt-20">
-
-        <div className="flex flex-col gap-8 lg:gap-12 lg:flex-row lg:items-start">
-
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
           <PreviousDevotionalFilters
             category={category}
             onCategoryChange={handleCategoryChange}
@@ -151,17 +153,8 @@ function PreviousDevotional() {
             onEpisodeFromChange={handleEpisodeFromChange}
             episodeTo={episodeTo}
             onEpisodeToChange={handleEpisodeToChange}
-            onClear={() => {
-              setCategory("all");
-              setDateFrom("");
-              setDateTo("");
-              setEpisodeFrom("");
-              setEpisodeTo("");
-              setPage(1);
-            }}
           />
 
-          {/* Devotional results will go here */}
           <div className="min-w-0 flex-1">
             {loading ? (
               <div className="flex min-h-[280px] items-center justify-center">
@@ -175,24 +168,20 @@ function PreviousDevotional() {
                   <p className="text-lg font-semibold text-navy-dark">
                     Something went wrong
                   </p>
-
-                  <p className="mt-2 text-sm text-[#6B7280]">
-                    {error}
-                  </p>
+                  <p className="mt-2 text-sm text-[#6B7280]">{error}</p>
                 </div>
               </div>
             ) : (
-              <PreviousDevotionalList devotionals={devotionals} />
+              <PreviousDevotionalList
+                devotionals={devotionals}
+                viewMode={viewMode}
+              />
             )}
-            {/* Coming next */}
           </div>
-
         </div>
-
       </section>
 
-      {/* Pagination will be built later */}
-      {totalPages > 1 && (
+      {!loading && !error && totalPages > 1 && (
         <section className="mx-auto max-w-[1350px] px-6 pb-6 lg:px-10">
           <PreviousDevotionalPagination
             currentPage={page}
@@ -201,9 +190,6 @@ function PreviousDevotional() {
           />
         </section>
       )}
-
-      {/* CTA will be built later */}
-
     </main>
   );
 }

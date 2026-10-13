@@ -83,7 +83,7 @@ function DevotionalRecentList({ devotionals }) {
                     />
                   ) : (
                     <div className="absolute inset-0 bg-[#101A2B]">
-                      <span className="pointer-events-none absolute -right-3 -top-6 font-serif text-[160px] leading-none text-white/5">
+                      <span className="pointer-events-none absolute -right-3 -top-6 text-[160px] leading-none text-white/5">
                         “
                       </span>
                     </div>

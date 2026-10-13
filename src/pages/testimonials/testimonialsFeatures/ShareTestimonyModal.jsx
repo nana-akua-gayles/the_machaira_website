@@ -179,11 +179,11 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-burgundy-primary">
               Testimonies
             </span>
-            <h2 className="mt-1 font-serif text-[1.5rem] leading-tight tracking-[-0.02em] text-navy-dark sm:text-[1.75rem]">
+            <h2 className="mt-1 text-[1.5rem] leading-tight tracking-[-0.02em] text-navy-dark sm:text-[1.75rem]">
               Share your <span className="italic text-burgundy-primary">story</span>
             </h2>
             <p className="mt-1 text-[13px] leading-6 text-cool-gray">
-              What has God done in your life? Someone needs to hear it.
+              We would like to hear your testimony and join you in celebrating what God has done. 
             </p>
           </div>
 
@@ -227,7 +227,7 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
                 </svg>
               </div>
 
-              <p className="mt-5 font-serif text-xl text-navy-dark">
+              <p className="mt-5 text-xl text-navy-dark">
                 Please sign in to share
               </p>
               <p className="mt-2 max-w-[320px] text-sm leading-6 text-cool-gray">

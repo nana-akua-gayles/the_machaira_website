@@ -1,100 +1,86 @@
 import { useState } from "react";
-
-import churchLogo from "../../../assets/images/MLogo.png";
-import { signInWithOAuth } from "../../../lib/authService";
-import { FacebookIcon, AppleIcon } from "./authIcons";
+import { signInWithMagicLink } from "../../../lib/authService";
+import { MailIcon } from "./authIcons";
 import GoogleSignInButton from "./GoogleSignInButton";
 
 function LoginForm() {
-  const [authError, setAuthError] = useState(null);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+  const sending = status === "sending";
 
-  async function handleSocialLogin(provider) {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const value = email.trim();
+    if (!/^\S+@\S+\.\S+$/.test(value)) return setError("Please enter a valid email address.");
+    setError("");
+    setStatus("sending");
     try {
-      await signInWithOAuth(provider);
+      await signInWithMagicLink(value);
+      setStatus("sent");
     } catch (err) {
-      setAuthError(
-        err?.message || `We couldn't start ${provider} sign-in. Please try again.`
-      );
+      setError(err?.message || "We couldn't send the link. Please try again.");
+      setStatus("idle");
     }
   }
 
-  return (
-    <div className="w-full max-w-[420px]">
-
-      <img
-        src={churchLogo}
-        alt="Church logo"
-        className="mx-auto -mb-24 block h-80 w-80 object-contain"
-      />
-
-      <h2 className="text-center text-2xl font-semibold text-navy-dark">
-        Welcome to Machaira
-      </h2>
-
-      <p className="mt-1 text-center text-sm text-cool-gray">
-        Sign in to continue your journey with us.
-      </p>
-
-      {authError && (
-        <p className="mt-6 rounded-lg bg-[#FBEAEA] px-4 py-3 text-sm text-burgundy-primary">
-          {authError}
+  if (status === "sent") {
+    return (
+      <div className="auth-pop rounded-2xl border border-slate-200 bg-white/70 p-5 text-center shadow-lg">
+        <div className="relative mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-burgundy-primary/10 text-burgundy-primary">
+          <span className="auth-ring absolute inset-0 rounded-full border border-burgundy-primary/40" />
+          <MailIcon />
+        </div>
+        <h2 className="text-base font-semibold text-slate-900">Check your inbox</h2>
+        <p className="mt-1 text-sm text-slate-600">
+          We sent a sign-in link to <span className="font-medium text-slate-900">{email.trim()}</span>. Tap it to continue.
         </p>
-      )}
+        <button type="button" onClick={() => { setStatus("idle"); setEmail(""); }} className="mt-4 text-xs font-medium text-burgundy-primary hover:underline">
+          Use a different email
+        </button>
+      </div>
+    );
+  }
 
-      <div className="mt-8">
-        <GoogleSignInButton onError={setAuthError} />
+  return (
+    <div className="space-y-4">
+      <GoogleSignInButton onError={setError} />
+
+      <div className="auth-rise flex items-center gap-3 text-[11px] font-medium uppercase tracking-wider text-slate-400" style={{ "--d": ".8s" }}>
+        <span className="h-px flex-1 bg-slate-300/70" />
+        or
+        <span className="h-px flex-1 bg-slate-300/70" />
       </div>
 
+      <form onSubmit={handleSubmit} className="auth-rise space-y-3" style={{ "--d": ".9s" }}>
+        <div>
+          <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-slate-600">Email address</label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            disabled={sending}
+            className="w-full rounded-full border border-slate-300 bg-white/70 px-5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-burgundy-primary focus:bg-white focus:ring-4 focus:ring-burgundy-primary/15 disabled:opacity-60"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={sending || !email.trim()}
+          className="relative w-full overflow-hidden rounded-full bg-burgundy-primary px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-burgundy-primary/40 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-burgundy-primary/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <span className="auth-sweep pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-white/30" />
+          <span className="relative">{sending ? "Sending link..." : "Email me a magic link"}</span>
+        </button>
+      </form>
 
-    <div className="mt-3 grid grid-cols-2 gap-3">
-      {/* Facebook */}
-      <button
-        type="button"
-        onClick={() => handleSocialLogin("facebook")}
-        className="
-          group flex items-center justify-center gap-2
-          rounded-full border border-black/10
-          bg-white py-2.5 text-sm font-medium
-          text-navy-dark
-          transition-all duration-300 ease-in-out
-          hover:border-[#1877F2]
-          hover:bg-[#1877F2]
-          hover:text-white
-          hover:shadow-[0_6px_20px_rgba(24,119,242,0.20)]
-          active:scale-[0.98]
-        "
-      >
-        <FacebookIcon />
-        <span className="transition-colors duration-300">
-          Facebook
-        </span>
-      </button>
+      {error && <p role="alert" className="auth-pop rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-center text-xs text-red-600">{error}</p>}
 
-      {/* Apple */}
-      <button
-        type="button"
-        onClick={() => handleSocialLogin("apple")}
-        className="
-          group flex items-center justify-center gap-2
-          rounded-full border border-black/10
-          bg-white py-2.5 text-sm font-medium
-          text-navy-dark
-          transition-all duration-300 ease-in-out
-          hover:border-black
-          hover:bg-black
-          hover:text-white
-          hover:shadow-[0_6px_20px_rgba(0,0,0,0.18)]
-          active:scale-[0.98]
-        "
-      >
-        <AppleIcon />
-        <span className="transition-colors duration-300">
-          Apple
-        </span>
-      </button>
-    </div>
-
-
+      <p className="auth-rise text-center text-[11px] leading-relaxed text-slate-400" style={{ "--d": "1s" }}>
+        No password needed. New here? Signing in creates your account automatically.
+      </p>
     </div>
   );
 }

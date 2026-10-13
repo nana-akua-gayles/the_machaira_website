@@ -73,7 +73,7 @@ const DiscussionHero = () => {
         {/* Scripture quote — same editorial treatment as the devotional blockquote */}
         <div className="hidden lg:block lg:col-span-5">
           <div className="relative rounded-2xl border border-black/8 bg-[#FBF8F6] p-7">
-            <span className="font-[Georgia,serif] text-5xl leading-none text-burgundy-primary">
+            <span className="text-5xl leading-none text-burgundy-primary">
               &ldquo;
             </span>
             <p className="mt-2 text-[17px] italic leading-relaxed text-navy-dark">

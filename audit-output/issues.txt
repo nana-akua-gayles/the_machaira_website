@@ -1,0 +1,116 @@
+
+=== Section headers leaked into the body (error) ===
+
+21206  EPISODE 109 - ESTEEM THE WORD IN YOUR LIFE
+   section-header-leaked: e Lord, I included A ONE YEAR BIBLE READING PLAN. You are provided with two or three chapters of the Bible to read. And 
+
+21592   EPISODE 125 - THE WORD ENDURES FOREVER 
+   section-header-leaked:  Are you part of the ONE YEAR BIBLE READING PLAN? Do you know we are now in 2 Kings? ARE YOU PROCRASTINATING? OR You hav
+
+23639  EPISODE 215 - ESTEEM THE REVELATION-LIGHT
+   section-header-leaked: e Lord, I included A ONE YEAR BIBLE READING PLAN. You are provided with two or three chapters of the Bible to read. And 
+
+30937  EPISODE 490 - THE SWORD OF THE SPIRIT 3
+   section-header-leaked: g Deeper scriptures" and the "BIBLE READING PLAN". Don’t keep quiet! Declare the RHĒMA OF GOD IN THAT SITUATION!! THE WO
+
+47025  EPISODE 1191 - IS THE SPIRIT-WORD IN YOUR MOUTH?
+   section-header-leaked: g Deeper scriptures” and the “BIBLE READING PLAN”. Don’t keep quiet! Declare the RHĒMA OF GOD IN THAT SITUATION!! THE WO
+
+=== Missing space after a full stop ===
+
+19144  EPISODE 30 - THE PRACTICE OF LOVE 5
+   missing-sentence-space: t makes it more intense as well.Love does not rejoice in iniquity, but rejoices in truth. Just as love keeps no record o
+
+19831  EPISODE 52 - SELF-CONTROL IS ESSENTIAL - ABOUND IN THESE THINGS 6 (ABUNDANT FRUI
+   missing-sentence-space:  element in your fruits bearing.Today we look further into the next item for fruit-bearing, SELF-CONTROL. SUPPLY SELF-CO
+
+19936   EPISODE 56 - THE VERTEX - ABOUND IN THESE THINGS 9 (ABUNDANT FRUIT-BEARERS 22)
+   missing-sentence-space: y be supplied to you by Himself.This love doesn’t work just by utterance. It works by life. And you cannot wake up one d
+
+20277  EPISODE 74 - PRAISE JESUS; THE KING AND THE LORD WHO IS GOD 2
+   missing-sentence-space: salm 118:26; it was by prophecy.Read more here to understand how Jesus fulfilled the scripture.And as they praised Jesus
+
+20870  EPISODE 90 - THE PERFECT PICTURE OF LOVE
+   missing-sentence-space:  how He loves to relate with us.And even now there are people who lack the understanding of who God truly is. You don't 
+
+20983  EPISODE 102 - THE RULE AND GARRISON OF PEACE
+   missing-sentence-space: -Continue Steadfastly In Prayer.From Episode 100 -Rejoice in the Lord. When you take hold of these things I have shared 
+
+=== Numbered items never turned into a list ===
+
+18875  EPISODE 18 - THE INTIMACY OF JESUS’ LOVE (God’s Love Language 9)
+   unconverted-number-marker: t 5 times in only John chapter 14. John 14:12, He said "Verily, Verily, I say to you, he who believes in Me..." The expr
+
+18968  Episode 22 - A New Commandment
+   unconverted-number-marker: d this by comparing these two: 1. The second great commandments of the law says: "Thou shalt love thy neighbour as thyse
+
+19100  EPISODE 27 - THE PRACTICE OF LOVE 2
+   unconverted-number-marker: gs the Apostle Paul mentioned. 3. Love does not envy. To envy means to zealously burn or boil with a desire of jealousy.
+
+19108  EPISODE 28 - THE PRACTICE OF LOVE 3
+   unconverted-number-marker:  items Apostle Paul mentioned. 5. Love is not puffed up. To be puffed up, is to be proud. The Greek word is "phusio", wh
+
+19123  EPISODE 29 - THE PRACTICE OF LOVE 4
+   unconverted-number-marker: ed at seven (7) points so far. 8. Love is not provoked It means to not exasperate or not easily stirred with or aroused 
+
+=== Plain URLs left in the text ===
+
+21662  EPISODE 130 - BE PART OF GOD'S MOVE, GREAT QUANTITY WITH HIGH QUALITY 
+   plain-url-left: over 8 Billion. According to: https://www.worldometers.info/world-population/ As I am typing now the numbers are increas
+
+28881  EPISODE 411 - PORTRAIT OF GRACE 4
+   plain-url-left: s 16:23) Enjoy His rest. Amen.https://withapostlebennie.org/wp-content/uploads/2024/02/The-Experience--with-Apostle-Benn
+
+29169  EPISODE 423 - DEALING WITH UNSEEN INFLUENCES 1 — The Spiritual Rules the Physica
+   plain-url-left: ved, LIFE IS SPIRITUAL! Selah.https://withapostlebennie.org/wp-content/uploads/2024/03/The-Experience--with-Apostle-Benn
+
+29189  EPISODE 424 - DEALING WITH UNSEEN INFLUENCES 2
+   plain-url-left: ht which is not of God. Selah!https://withapostlebennie.org/wp-content/uploads/2024/03/The-Experience--with-Apostle-Benn
+
+=== Double spaces ===
+
+19387  Episode 39 -BEARING THE RIGHT FRUITS 2 (ABUNDANT FRUIT-BEARERS 6)
+   double-space: tter - God's Love Language 1 - God's Love Language 12 ) The more you focus and delight in the Lord, the more you are pr
+
+21662  EPISODE 130 - BE PART OF GOD'S MOVE, GREAT QUANTITY WITH HIGH QUALITY 
+   double-space:  Evangelizing and Discipleship is the way forward. Each person must be involved. According to Bible.org: Ninety-five pe
+
+21774  EPISODE 135 - DOING GREAT THINGS (GOD IS WITH YOU) 4
+   double-space: ingdom. From the previous with in this month of June 2023, we looked at: You being part of God's great move. He desire
+
+21971  EPISODE 143 - THE BLESSINGS OF GIVING 1 
+   double-space: nts is not in vain.Your giving is not in vain. For every giving, there is a blessing or a harvest you will reap. I don'
+
+=== No Bible reading found ===
+
+42786  EPISODE 956 - DON'T DELAY
+   no-bible-plans: 
+
+43310  EPISODE 995 - DON'T ENTERTAIN DISCOURAGEMENT
+   no-bible-plans: 
+
+44796  EPISODE 1020 - DESIRE TO KNOW THE LORD
+   no-bible-plans: 
+
+46484  EPISODE 1137 - CONCERNING DIVINE HELP
+   no-bible-plans: 
+
+46499  EPISODE 1142 - …HE HIMSELF CARES FOR YOU
+   no-bible-plans: 
+
+46895  EPISODE 1171 - DON’T FALL FOR IT
+   no-bible-plans: 
+
+47425  EPISODE 1226- PRAY FOR OTHERS
+   no-bible-plans: 
+
+=== Title not found ===
+
+20864  EPISODE 17 - THE COMMANDMENTS OF JESUS (God’s Love Language 8) 
+   no-title-extracted: 
+
+31144  EPISODE 500 - THE FATHER'S LOVE 1
+   no-title-extracted: 
+
+47555  EPISODE 1255 - THE BLOOD OF THE PASSOVER LAMB
+   no-title-extracted: 

@@ -54,7 +54,7 @@ function AuthHeroPanel({ heading, subtitle }) {
 
         <div className="mt-10">
           <div className="max-w-[320px] rounded-2xl bg-white/85 p-5 shadow-[0_8px_30px_rgba(16,26,43,0.08)] backdrop-blur-sm">
-            <span className="font-serif text-3xl leading-none text-burgundy-primary">"</span>
+            <span className="text-3xl leading-none text-burgundy-primary">"</span>
             <p className="mt-1 text-sm italic leading-relaxed text-navy-dark">
               Where two or three gather in my name, there am I with them.
             </p>

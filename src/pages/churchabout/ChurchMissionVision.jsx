@@ -13,11 +13,11 @@ export default function ChurchMissionVision() {
         <div className="mx-auto max-w-2xl text-center">
 
           <h2 className="mt-3 text-4xl font-normal tracking-[-0.04em] text-navy-dark sm:text-5xl">
-            Faith with a <span className="text-burgundy-primary">purpose.</span>
+            Conviction with <span className="text-burgundy-primary">Direction</span>
           </h2>
 
           <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-cool-gray">
-            Everything we do flows from one desire — to know Christ deeply,
+            Everything we do flows from one desire - to know Christ deeply,
             make Him known boldly, and raise people who live with divine
             purpose.
           </p>
@@ -44,9 +44,10 @@ export default function ChurchMissionVision() {
               </h3>
 
               <p className="ml-auto mt-3 max-w-md text-xs leading-6 text-cool-gray sm:text-sm">
-                To know Christ and make Him known by teaching the truth of
-                God's Word, equipping believers, and demonstrating Christ's
-                love in our community and to the ends of the earth.
+                To build a global family of passionate lovers of Jesus by cultivating the reigning life in Christ 
+                in every member. Through dynamic live services, rich digital resources, structured discipleship, 
+                and pastoral care, we equip believers 
+                to walk in the certainty of their calling and to influence their spheres with His divine purpose and intent.
               </p>
             </div>
 
@@ -85,9 +86,10 @@ export default function ChurchMissionVision() {
               </h3>
 
               <p className="mt-3 max-w-md text-xs leading-6 text-cool-gray sm:text-sm">
-                To raise a vibrant generation of spirit-filled believers who
-                walk in authentic faith, transform their spheres of influence,
-                and reflect the glory of God in character and purpose.
+                A Commonwealth who shine with the divine light, living in the certainty of their calling,
+                 unlimited by time or distance, 
+                who influence their spheres with the love of Christ, His purpose and intent 
+                by the power of the Holy Spirit.
               </p>
             </div>
           </div>
