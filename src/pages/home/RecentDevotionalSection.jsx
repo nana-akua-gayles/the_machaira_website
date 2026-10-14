@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function RecentDevotionalSection({ recentDevotional, formattedDate }) {
-  if (!recentDevotional) return null;
-
-  const [charCount, setCharCount] = useState(0);
-  const fullText = recentDevotional.excerpt || '';
+  const fullText = recentDevotional?.excerpt || '';
+  const [progress, setProgress] = useState({ text: '', count: 0 });
+  const charCount = progress.text === fullText ? progress.count : 0;
 
   useEffect(() => {
-    setCharCount(0);
     if (!fullText) return;
 
     let startTime = null;
@@ -16,10 +14,9 @@ export default function RecentDevotionalSection({ recentDevotional, formattedDat
 
     const animate = (timestamp) => {
       if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const nextCount = Math.min(Math.floor(elapsed / speedMsPerChar), fullText.length);
-      
-      setCharCount(nextCount);
+      const nextCount = Math.min(Math.floor((timestamp - startTime) / speedMsPerChar), fullText.length);
+
+      setProgress({ text: fullText, count: nextCount });
 
       if (nextCount < fullText.length) {
         animationFrameId = requestAnimationFrame(animate);
@@ -30,6 +27,8 @@ export default function RecentDevotionalSection({ recentDevotional, formattedDat
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [fullText]);
+
+  if (!recentDevotional) return null;
 
   const displayedText = fullText.slice(0, charCount);
 

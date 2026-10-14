@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   LayoutGrid, Sparkles, HeartHandshake, BookOpen,
   Smile, Users, GraduationCap, Building2, Megaphone, Calendar

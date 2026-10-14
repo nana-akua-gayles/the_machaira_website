@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 
 
@@ -6,7 +6,7 @@ const VALUES = [
 
   {
 
-    title: "Biblical Truth",
+    title: "Truth",
 
     description:
 
@@ -18,7 +18,7 @@ const VALUES = [
 
   {
 
-    title: "Love in Action",
+    title: "Love",
 
     description:
 
@@ -30,7 +30,7 @@ const VALUES = [
 
   {
 
-    title: "Faith in Community",
+    title: "Faith",
 
     description:
 
@@ -42,7 +42,7 @@ const VALUES = [
 
   {
 
-    title: "Impact Beyond",
+    title: "Impact",
 
     description:
 
@@ -72,11 +72,8 @@ export default function ChurchCoreValues() {
 
                   {/* Mobile: the original desktop tree composition, adapted to fit the viewport. */}
           <div className="lg:hidden">
-            <span className="mb-4 block text-[10px] font-semibold uppercase tracking-[0.28em] text-[#8d1515]">
-              What We Grow From
-            </span>
             <h2 className="max-w-md text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-[#241516]">
-              Rooted in faith. <span className="text-[#8d1515]">Growing with purpose.</span>
+              Revealing Christ <span className="text-[#8d1515]">To the world</span>
             </h2>
             <p className="mt-5 max-w-lg text-sm leading-7 text-[#6d6260]">
               Everything we are and everything we do grows from a foundation of

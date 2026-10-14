@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import { ArrowUpRight, Loader2, BookOpen } from "lucide-react";
+import { ArrowUpRight, Loader2} from "lucide-react";
 
 export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
   const [articles, setArticles] = useState([]);
@@ -95,8 +95,7 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
         <div>
-          <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#991313] mb-3">03 / Keep exploring</p>
-          <h2 className="text-[clamp(2.4rem,6vw,4.8rem)] tracking-[-0.065em] font-semibold text-[#101A2B]">
+          <h2 className="text-[clamp(2.2rem,5vw,4.5rem)] tracking-[-0.065em] text-[#101A2B]">
             Our Archives
           </h2>
         </div>

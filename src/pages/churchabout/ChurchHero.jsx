@@ -1,4 +1,3 @@
-import React from "react";
 import { ArrowRight } from "lucide-react";
 import churchBuildingImg from "../../../src/assets/images/book1.png";
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient'; 
 import WaysToPartner from './WaysToPartner';
@@ -90,11 +90,6 @@ export default function Partnership() {
             ))}
 
             <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-[#101A2B]/80 via-transparent to-[#101A2B]/10" />
-            <div className="pointer-events-none absolute bottom-16 left-6 right-6 z-20 md:bottom-14 md:left-16">
-              <p className="text-white/70 text-[10px] md:text-xs tracking-[.28em] uppercase mb-3">Machaira / Partnership</p>
-              <h1 className="text-white text-[clamp(2.8rem,10vw,6rem)] font-bold tracking-[-.055em] leading-[.95] max-w-3xl">Together, we<br /><span className="text-white/80">carry the Word.</span></h1>
-              <p className="text-white/80 text-xs md:text-sm mt-4 max-w-md leading-relaxed">One mission. Many hands. Generations transformed.</p>
-            </div>
             <div className="absolute left-0 bottom-0 right-0 z-30 bg-white/15 h-[2px]">
               {!isPaused && <div key={currentIndex} className="partnership-hero-progress" />}
             </div>

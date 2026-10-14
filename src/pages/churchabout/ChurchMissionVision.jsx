@@ -1,4 +1,3 @@
-import React from "react";
 import ChurchOrbit from "./ChurchOrbit";
 import { Target, Eye, ArrowDown } from "lucide-react";
 

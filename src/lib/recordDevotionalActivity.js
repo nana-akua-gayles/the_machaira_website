@@ -18,6 +18,7 @@ export function getReadDays(userId) {
     const parsed = JSON.parse(localStorage.getItem(storageKey(userId)) || "[]");
     return Array.isArray(parsed) ? parsed : [];
   } catch {
+    // Silently handle JSON parse failures or missing storage access
     return [];
   }
 }
@@ -27,7 +28,9 @@ function saveReadDay(userId, dateStr) {
     const days = getReadDays(userId);
     if (days.includes(dateStr)) return;
     localStorage.setItem(storageKey(userId), JSON.stringify([...days, dateStr].sort().slice(-MAX_DAYS)));
-  } catch {}
+  } catch {
+    // Silently handle storage write failures (e.g., quota exceeded or disabled storage)
+  }
 }
 
 export async function recordDevotionalActivity(publishedAt) {

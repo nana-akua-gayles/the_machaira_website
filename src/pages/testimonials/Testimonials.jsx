@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
 import TestimonyModal from "./testimonialsFeatures/TestimonyModal";
@@ -14,6 +14,7 @@ import {
 } from "../../lib/testimoniesService";
 
 const PAGE_SIZE = 12;
+const NO_LIKES = new Set();
 
 function previewText(text, limit = 120) {
   if (!text || text.length <= limit) return text || "";
@@ -63,6 +64,7 @@ function shapeTestimony(row) {
 
 function Testimonials() {
   const { user } = useAuth();
+  const userId = user?.id;
 
   const [activeCategory, setActiveCategory] = useState("All Stories");
   const [sortBy, setSortBy] = useState("Latest");
@@ -70,7 +72,7 @@ function Testimonials() {
   const [categorySearch, setCategorySearch] = useState("");
   const [activeTestimonial, setActiveTestimonial] = useState(null);
   const [shareOpen, setShareOpen] = useState(false);
-  const [userLikes, setUserLikes] = useState(new Set());
+  const [likesState, setLikesState] = useState({ userId: null, ids: NO_LIKES });
   const [requireAuthPrompt, setRequireAuthPrompt] = useState(false);
 
   const [testimonials, setTestimonials] = useState([]);
@@ -79,22 +81,26 @@ function Testimonials() {
     { value: "—", label: "Lives Inspired", icon: "heart" },
   ]);
 
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  const [reloadTick, setReloadTick] = useState(0);
+  const [loadedKey, setLoadedKey] = useState(null);
 
-  // Prevent older requests from overwriting newer results.
-  const requestIdRef = useRef(0);
+  const userLikes = likesState.userId === userId ? likesState.ids : NO_LIKES;
+  const queryKey = JSON.stringify([activeCategory, categorySearch, sortBy, dateFilter, page, reloadTick]);
+  const loading = loadedKey !== queryKey;
 
-  // Fetch testimonies for the selected page and filters.
-  const fetchTestimonies = useCallback(
-    async (requestedPage = page) => {
-      const requestId = ++requestIdRef.current;
+  const changeCategory = (value) => { setActiveCategory(value); setPage(0); };
+  const changeSearch = (value) => { setCategorySearch(value); setPage(0); };
+  const changeSort = (value) => { setSortBy(value); setPage(0); };
+  const changeDate = (value) => { setDateFilter(value); setPage(0); };
+  const retry = () => setReloadTick((n) => n + 1);
 
-      setLoading(true);
-      setError(null);
+  useEffect(() => {
+    let cancelled = false;
 
+    async function load() {
       try {
         const {
           data,
@@ -106,30 +112,24 @@ function Testimonials() {
           sortBy,
           dateFilter,
           limit: PAGE_SIZE,
-          offset: requestedPage * PAGE_SIZE,
+          offset: page * PAGE_SIZE,
         });
 
-        // Ignore a response if a newer request has started.
-        if (requestId !== requestIdRef.current) return;
+        if (cancelled) return;
 
         if (fetchError) {
           setError("We couldn't load testimonies right now.");
-
-          if (requestedPage === 0) {
-            setTestimonials([]);
-          }
-
+          if (page === 0) setTestimonials([]);
           return;
         }
 
-        const rows = Array.isArray(data) ? data : [];
-        const shapedData = rows.map(shapeTestimony);
+        const shapedData = (Array.isArray(data) ? data : []).map(shapeTestimony);
 
-        if (requestedPage === 0) {
-          // Replace results when loading the first page.
+        setError(null);
+
+        if (page === 0) {
           setTestimonials(shapedData);
         } else {
-          // Append the next page without duplicating existing cards.
           setTestimonials((previous) => {
             const existingIds = new Set(previous.map((item) => item.id));
 
@@ -140,52 +140,35 @@ function Testimonials() {
           });
         }
 
-        setTotalCount(
-          count ?? requestedPage * PAGE_SIZE + shapedData.length
-        );
+        setTotalCount(count ?? page * PAGE_SIZE + shapedData.length);
       } catch (err) {
-        if (requestId !== requestIdRef.current) return;
+        if (cancelled) return;
 
         console.error("Error loading testimonies:", err);
         setError("We couldn't load testimonies right now.");
-
-        if (requestedPage === 0) {
-          setTestimonials([]);
-        }
+        if (page === 0) setTestimonials([]);
       } finally {
-        if (requestId === requestIdRef.current) {
-          setLoading(false);
-        }
+        if (!cancelled) setLoadedKey(queryKey);
       }
-    },
-    [activeCategory, categorySearch, sortBy, dateFilter, page]
-  );
-
-  // Fetch whenever the selected page or filters change.
-  useEffect(() => {
-    fetchTestimonies();
-  }, [fetchTestimonies]);
-
-  // Reset pagination whenever a filter changes.
-  useEffect(() => {
-    setPage(0);
-  }, [activeCategory, sortBy, dateFilter, categorySearch]);
-
-  // Fetch the current user's likes for the displayed testimonies.
-  useEffect(() => {
-    let cancelled = false;
-
-    if (!user || testimonials.length === 0) {
-      setUserLikes(new Set());
-      return;
     }
 
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeCategory, categorySearch, sortBy, dateFilter, page, queryKey]);
+
+  useEffect(() => {
+    if (!userId || testimonials.length === 0) return;
+
+    let cancelled = false;
     const ids = testimonials.map((testimony) => testimony.id);
 
-    getUserLikes(user.id, ids)
+    getUserLikes(userId, ids)
       .then(({ data, error: likesError }) => {
         if (!cancelled && !likesError) {
-          setUserLikes(data ?? new Set());
+          setLikesState({ userId, ids: data ?? new Set() });
         }
       })
       .catch((err) => {
@@ -195,7 +178,7 @@ function Testimonials() {
     return () => {
       cancelled = true;
     };
-  }, [user, testimonials]);
+  }, [userId, testimonials]);
 
   // Fetch impact statistics, excluding community- and country-related items.
   useEffect(() => {
@@ -232,11 +215,8 @@ function Testimonials() {
 
   // Refresh the first page after a testimony is submitted.
   const refreshTestimonials = () => {
-    if (page !== 0) {
-      setPage(0);
-    } else {
-      fetchTestimonies(0);
-    }
+    setPage(0);
+    setReloadTick((n) => n + 1);
   };
 
   return (
@@ -294,9 +274,9 @@ function Testimonials() {
             <div className="mb-5 border-b border-[#E5E7EB] pb-5">
               <SavedCategorySearch
                 activeCategory={activeCategory}
-                onCategoryChange={setActiveCategory}
+                onCategoryChange={changeCategory}
                 categorySearch={categorySearch}
-                onSearchChange={setCategorySearch}
+                onSearchChange={changeSearch}
               />
 
               <div className="mt-4 flex min-w-0 items-center justify-between gap-2">
@@ -312,7 +292,7 @@ function Testimonials() {
                   <select
                     id="testimony-sort"
                     value={sortBy}
-                    onChange={(event) => setSortBy(event.target.value)}
+                    onChange={(event) => changeSort(event.target.value)}
                     className="min-w-0 max-w-[116px] rounded-full border border-[#E5E7EB] bg-white px-2 py-2 text-[11px] text-navy-dark outline-none focus:border-burgundy-primary sm:max-w-none sm:px-4 sm:text-sm"
                   >
                     <option value="Latest">Latest</option>
@@ -327,7 +307,7 @@ function Testimonials() {
                   <select
                     id="testimony-date-mobile"
                     value={dateFilter}
-                    onChange={(event) => setDateFilter(event.target.value)}
+                    onChange={(event) => changeDate(event.target.value)}
                     className="min-w-0 max-w-[125px] rounded-full border border-[#E5E7EB] bg-white px-2 py-2 text-[11px] text-navy-dark outline-none focus:border-burgundy-primary sm:hidden"
                   >
                     <option>All Time</option>
@@ -356,7 +336,7 @@ function Testimonials() {
 
                   <button
                     type="button"
-                    onClick={() => fetchTestimonies()}
+                    onClick={retry}
                     className="mt-3 text-sm font-medium text-burgundy-primary underline"
                   >
                     Try again
@@ -438,8 +418,8 @@ function Testimonials() {
                                   )
                                 );
 
-                                setUserLikes((previous) => {
-                                  const next = new Set(previous);
+                                setLikesState((previous) => {
+                                  const next = new Set(previous.userId === userId ? previous.ids : []);
 
                                   if (liked) {
                                     next.add(testimonial.id);
@@ -447,7 +427,7 @@ function Testimonials() {
                                     next.delete(testimonial.id);
                                   }
 
-                                  return next;
+                                  return { userId, ids: next };
                                 });
                               }}
                             />
@@ -547,7 +527,7 @@ function Testimonials() {
                   <p className="text-base text-navy-dark">{error}</p>
                   <button
                     type="button"
-                    onClick={() => fetchTestimonies()}
+                    onClick={retry}
                     className="mt-3 text-sm font-medium text-burgundy-primary underline"
                   >
                     Try again
@@ -668,7 +648,7 @@ function Testimonials() {
               <div className="relative mt-5">
                 <select
                   value={dateFilter}
-                  onChange={(event) => setDateFilter(event.target.value)}
+                  onChange={(event) => changeDate(event.target.value)}
                   className="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 pr-10 text-sm text-cool-gray outline-none focus:border-burgundy-primary"
                 >
                   <option>All Time</option>

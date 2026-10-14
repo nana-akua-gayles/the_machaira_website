@@ -1,4 +1,3 @@
-import React from "react";
 import "./ChurchMotion.css";
 import ChurchHero from "./ChurchHero";
 import ChurchMissionVision from "./ChurchMissionVision";

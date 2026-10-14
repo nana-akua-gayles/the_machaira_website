@@ -6,7 +6,6 @@ function PreviousDevotionalItem({ devotional, viewMode = "list" }) {
     id,
     title,
     category,
-    episode_number,
     created_at,
     excerpt,
     flyer_url,

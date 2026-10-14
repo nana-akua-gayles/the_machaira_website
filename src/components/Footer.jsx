@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import logoImage from "../assets/images/Mlogo.png";
 import { supabase } from "../lib/supabaseClient";
@@ -80,19 +80,19 @@ function Footer() {
       <div className="mx-auto grid max-w-350 grid-cols-2 gap-x-5 gap-y-9 px-5 sm:px-8 md:grid-cols-2 md:gap-x-10 lg:grid-cols-[1.4fr_1fr_1fr_1.5fr] lg:gap-17.5 lg:px-15">
         {/* Brand */}
         <div className="col-span-2 flex min-w-0 flex-col items-start lg:col-span-1">
-          <div className="mb-3 flex h-20 w-full items-center sm:h-24 lg:relative lg:mb-3 lg:h-9">
+          <div className="mb-3 flex h-16 w-full items-center sm:h-20 lg:relative lg:mb-3 lg:h-9">
             <img
               src={logoImage}
               alt="Machaira Logo"
-              className="h-full max-w-[220px] object-contain object-left lg:pointer-events-none lg:absolute lg:left-0 lg:top-0 lg:h-56 lg:max-w-none lg:w-auto lg:-translate-y-1/2"
+              className="h-full w-auto max-w-[180px] object-contain object-left sm:max-w-[220px] lg:pointer-events-none lg:absolute lg:left-0 lg:top-0 lg:h-56 lg:max-w-none lg:w-auto lg:-translate-y-1/2"
             />
           </div>
-          <p className="max-w-sm text-[13px] leading-6 text-soft-gray sm:text-[14px] lg:max-w-none lg:leading-relaxed">
+
+          <p className="max-w-sm pl-0 text-[12px] leading-5 text-soft-gray sm:text-[13px] sm:leading-6 lg:max-w-none lg:pl-4 lg:text-[14px] lg:leading-relaxed">
             Every word is written like a love letter from God to you.
           </p>
         </div>
-
-        {/* Explore and Community are two adjacent columns on phones */}
+                {/* Explore and Community are two adjacent columns on phones */}
         <nav aria-label="Explore" className="flex min-w-0 flex-col items-start gap-3 lg:gap-3.5">
           <h3 className="mb-1 text-[14px] font-bold text-white sm:text-[15px] lg:mb-2">Explore</h3>
           <NavLink to="/devotional" className={linkClass}>Devotionals</NavLink>

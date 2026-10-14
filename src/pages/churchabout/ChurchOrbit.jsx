@@ -1,17 +1,17 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, Heart, Users, Globe2, Target, Eye } from "lucide-react";
 import "./ChurchMotion.css";
 
 const valueItems = [
-  { title: "Biblical Truth", subtitle: "Our compass", icon: BookOpen, description: "We are firmly rooted in Scripture as the absolute guide for faith, doctrine, and daily living." },
-  { title: "Love in Action", subtitle: "Our expression", icon: Heart, description: "We demonstrate God's grace through genuine compassion, intentional service, and warm hospitality." },
-  { title: "Faith in Community", subtitle: "Our family", icon: Users, description: "We believe we grow stronger together as a family, supporting, uplifting, and sharpening one another." },
-  { title: "Impact Beyond", subtitle: "Our calling", icon: Globe2, description: "We are commissioned to take the gospel outside the four walls, reaching cities and nations with hope." },
+  { title: "Truth", subtitle: "Our compass", icon: BookOpen, description: "We are firmly rooted in Scripture as the absolute guide for faith, doctrine, and daily living." },
+  { title: "Love", subtitle: "Our expression", icon: Heart, description: "We demonstrate God's grace through genuine compassion, intentional service, and warm hospitality." },
+  { title: "Faith", subtitle: "Our family", icon: Users, description: "We believe we grow stronger together as a family, supporting, uplifting, and sharpening one another." },
+  { title: "Impact", subtitle: "Our calling", icon: Globe2, description: "We are commissioned to take the gospel outside the four walls, reaching cities and nations with hope." },
 ];
 
 const purposeItems = [
-  { title: "Our Mission", subtitle: "Know Christ. Make Him known.", icon: Target, description: "To know Christ and make Him known by teaching the truth of God's Word, equipping believers, and demonstrating Christ's love in our community and to the ends of the earth." },
-  { title: "Our Vision", subtitle: "A generation transformed", icon: Eye, description: "To raise a vibrant generation of spirit-filled believers who walk in authentic faith, transform their spheres of influence, and reflect the glory of God in character and purpose." },
+  { title: "Our Mission", icon: Target, description: "To build a global family of passionate lovers of Jesus by cultivating the reigning life in Christ in every member. Through dynamic live services, rich digital resources, structured discipleship,  and pastoral care, we equip believers to walk in the certainty of their calling and to influence their spheres with His divine purpose and intent." },
+  { title: "Our Vision", icon: Eye, description: "A Commonwealth who shine with the divine light, living in the certainty of their calling, unlimited by time or distance, who influence their spheres with the love of Christ, His purpose and intent by the power of the Holy Spirit." },
 ];
 
 export default function ChurchOrbit({ variant = "values" }) {
@@ -25,7 +25,7 @@ export default function ChurchOrbit({ variant = "values" }) {
   return (
     <div className="church-orbit-shell lg:hidden" aria-label={`${variant === "purpose" ? "Mission and vision" : "Church values"} interactive orbit`}>
       <div className="church-orbit-topline">
-        <span>{variant === "purpose" ? "THE PURPOSE WE CARRY" : "FOUR VALUES · ONE FOUNDATION"}</span>
+        <span>{variant === "purpose" ? "" : "FOUR VALUES · ONE FOCUS"}</span>
         <span>0{active + 1} / 0{items.length}</span>
       </div>
       <div
@@ -44,7 +44,7 @@ export default function ChurchOrbit({ variant = "values" }) {
         <div className="church-orbit-trails" aria-hidden="true" />
         <div className="church-orbit-center" key={`center-${variant}-${active}`}>
           <span className="church-orbit-center-icon"><Icon size={27} strokeWidth={1.5} /></span>
-          <span className="church-orbit-center-caption">{variant === "purpose" ? "OUR CALLING" : "ROOTED IN CHRIST"}</span>
+          <span className="church-orbit-center-caption">{variant === "CHRIST JESUS" ? "CHRIST JESUS" : "CHRIST JESUS"}</span>
         </div>
         {items.map((item, index) => {
           const ItemIcon = item.icon;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, MessageSquare, Users, MessageCircle } from 'lucide-react';
 import { getForumStats } from '../../../lib/forumService';

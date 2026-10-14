@@ -57,25 +57,25 @@ function useAuthUser() {
 function useStreak(userId) {
   const [streak, setStreak] = useState({ currentStreak: 0, lastActiveDate: null });
 
-  const reload = useCallback(async () => {
-    if (!userId) return;
+  const fetchStreak = useCallback(async () => {
     try {
       const { data: rows, error } = await supabase.rpc("enforce_streak_resets_and_get_leaderboard");
       if (error) throw error;
       const me = (rows || []).find((r) => r.id === userId);
-      setStreak({ currentStreak: me?.current_streak ?? 0, lastActiveDate: me?.last_devotional_date ?? null });
+      return { currentStreak: me?.current_streak ?? 0, lastActiveDate: me?.last_devotional_date ?? null };
     } catch (err) {
       console.error("Error fetching streak data:", err);
+      return null;
     }
   }, [userId]);
 
+  const reload = useCallback(() => fetchStreak().then((next) => { if (next) setStreak(next); }), [fetchStreak]);
+
   useEffect(() => {
-    if (!userId) {
-      setStreak({ currentStreak: 0, lastActiveDate: null });
-      return;
-    }
-    reload();
-  }, [userId, reload]);
+    let active = true;
+    fetchStreak().then((next) => { if (active && next) setStreak(next); });
+    return () => { active = false; };
+  }, [fetchStreak]);
 
   const weekDays = useMemo(() => {
     const today = new Date();
@@ -97,25 +97,35 @@ function useStreak(userId) {
   return { currentStreak: streak.currentStreak, weekDays, reload };
 }
 
-function useTodayDevotional(enabled) {
+function useTodayDevotional() {
   const [state, setState] = useState({ devotional: null, status: "loading" });
 
-  const load = useCallback(async () => {
-    setState((s) => (s.devotional ? s : { ...s, status: "loading" }));
+  const fetchToday = useCallback(async () => {
     try {
       const data = await getDevotionalByDate(todayString());
-      setState({ devotional: data || null, status: data ? "ready" : "none" });
+      return { devotional: data || null, status: data ? "ready" : "none" };
     } catch (err) {
       console.error("TODAY DEVOTIONAL LOAD FAILED:", err);
-      setState((s) => (s.devotional ? s : { devotional: null, status: "error" }));
+      return null;
     }
   }, []);
 
-  useEffect(() => {
-    if (enabled) load();
-  }, [enabled, load]);
+  const settle = useCallback((next) => setState((s) => next || (s.devotional ? s : { devotional: null, status: "error" })), []);
 
-  return { ...state, reload: load };
+  const reload = useCallback(() => fetchToday().then(settle), [fetchToday, settle]);
+
+  const retry = useCallback(() => {
+    setState((s) => (s.devotional ? s : { ...s, status: "loading" }));
+    reload();
+  }, [reload]);
+
+  useEffect(() => {
+    let active = true;
+    fetchToday().then((next) => { if (active) settle(next); });
+    return () => { active = false; };
+  }, [fetchToday, settle]);
+
+  return { ...state, reload, retry };
 }
 
 const STATUS_TEXT = {
@@ -230,7 +240,7 @@ function FloatingToggle({ position, onPositionChange, onOpen, currentStreak }) {
     if (dragState.current) {
       try {
         event.currentTarget.releasePointerCapture(dragState.current.pointerId);
-      } catch {}
+      } catch { /* Pointer may already be released */ }
     }
     dragState.current = null;
   }
@@ -261,8 +271,7 @@ function FloatingToggle({ position, onPositionChange, onOpen, currentStreak }) {
   );
 }
 
-function DevotionalExperience() {
-  const user = useAuthUser();
+function ExperienceContainer({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(getDefaultPosition);
   const updatePosition = useCallback((next) => {
@@ -270,10 +279,10 @@ function DevotionalExperience() {
     try { window.localStorage.setItem(POSITION_KEY, JSON.stringify(next)); } catch { /* Storage may be unavailable */ }
   }, []);
   const [shareCopied, setShareCopied] = useState(false);
-  const [printJob, setPrintJob] = useState(0);
+  const [printJob, setPrintJob] = useState(null);
   const [preparing, setPreparing] = useState(false);
-  const { currentStreak, weekDays, reload } = useStreak(user?.id);
-  const today = useTodayDevotional(Boolean(user));
+  const { currentStreak, weekDays, reload: reloadStreak } = useStreak(user.id);
+  const { devotional, status, reload: reloadToday, retry } = useTodayDevotional();
 
   useEffect(() => {
     function handleResize() {
@@ -285,17 +294,13 @@ function DevotionalExperience() {
 
   useEffect(() => {
     if (isOpen) {
-      reload();
-      today.reload();
+      reloadStreak();
+      reloadToday();
     }
-  }, [isOpen]);
+  }, [isOpen, reloadStreak, reloadToday]);
 
   useEffect(() => {
-    if (!user) setIsOpen(false);
-  }, [user]);
-
-  useEffect(() => {
-    if (printJob === 0 || !today.devotional) return;
+    if (!printJob) return;
 
     const previousTitle = document.title;
     let cancelled = false;
@@ -316,7 +321,7 @@ function DevotionalExperience() {
       ]);
       if (cancelled) return;
 
-      const { mainTitle } = formatDevotionalTitle(today.devotional.title);
+      const { mainTitle } = formatDevotionalTitle(printJob.devotional.title);
       document.title = `${mainTitle} - Machaira`;
       document.body.classList.add("printing-devotional");
       window.addEventListener("afterprint", finish);
@@ -332,20 +337,20 @@ function DevotionalExperience() {
   }, [printJob]);
 
   function handleDownload() {
-    if (today.status === "error") return today.reload();
-    if (!today.devotional || preparing) return;
+    if (status === "error") return retry();
+    if (!devotional || preparing) return;
     setPreparing(true);
-    setPrintJob((n) => n + 1);
+    setPrintJob({ devotional, at: Date.now() });
   }
 
   async function handleShare() {
-    if (today.status === "error") return today.reload();
-    if (!today.devotional) return;
+    if (status === "error") return retry();
+    if (!devotional) return;
 
-    const { mainTitle, episodeLabel } = formatDevotionalTitle(today.devotional.title);
+    const { mainTitle, episodeLabel } = formatDevotionalTitle(devotional.title);
     const title = episodeLabel ? `${mainTitle} (${episodeLabel})` : mainTitle;
     const text = `Today's Machaira devotional: ${title}`;
-    const url = `${window.location.origin}/devotional/${today.devotional.id}`;
+    const url = `${window.location.origin}/devotional/${devotional.id}`;
 
     try {
       if (navigator.share) {
@@ -360,9 +365,7 @@ function DevotionalExperience() {
     }
   }
 
-  if (!user) return null;
-
-  const panelProps = { currentStreak, weekDays, todayStatus: today.status, preparing, shareCopied, onDownload: handleDownload, onShare: handleShare };
+  const panelProps = { currentStreak, weekDays, todayStatus: status, preparing, shareCopied, onDownload: handleDownload, onShare: handleShare };
 
   return (
     <>
@@ -395,9 +398,15 @@ function DevotionalExperience() {
         )}
       </div>
 
-      {printJob > 0 && today.devotional && createPortal(<DevotionalPrintView devotional={today.devotional} />, document.body)}
+      {printJob && createPortal(<DevotionalPrintView devotional={printJob.devotional} />, document.body)}
     </>
   );
+}
+
+function DevotionalExperience() {
+  const user = useAuthUser();
+  if (!user) return null;
+  return <ExperienceContainer key={user.id} user={user} />;
 }
 
 export default DevotionalExperience;

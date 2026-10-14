@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 
 const STORAGE_KEY = "previousDevotionalCategories";
@@ -10,6 +9,7 @@ function readSaved() {
       ? parsed.filter((item) => typeof item === "string")
       : [];
   } catch {
+    // Fallback gracefully if localStorage is restricted, missing, or fails to parse
     return [];
   }
 }
@@ -35,7 +35,9 @@ function PreviousDevotionalFilters({
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-    } catch {}
+    } catch {
+      // Ignore write errors (e.g. storage quota exceeded or disabled storage)
+    }
   }, [saved]);
 
   useEffect(() => () => clearTimeout(hold.current), []);

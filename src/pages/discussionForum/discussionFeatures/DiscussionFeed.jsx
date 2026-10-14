@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SlidersHorizontal, MessageCircle, Pin, ChevronDown } from 'lucide-react';
 import { getPosts } from '../../../lib/forumService';
@@ -20,10 +20,8 @@ const DiscussionFeed = ({ selectedCategory }) => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // Reload from the top whenever the category or the active tab changes.
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
 
     async function loadPosts() {
       try {
@@ -33,25 +31,40 @@ const DiscussionFeed = ({ selectedCategory }) => {
           limit: PAGE_SIZE,
           offset: 0,
         });
+
         if (!cancelled) {
           setPosts(data);
           setHasMore(data.length === PAGE_SIZE);
         }
       } catch (err) {
-        console.error('FORUM FEED LOAD FAILED:', err);
+        if (!cancelled) {
+          console.error('FORUM FEED LOAD FAILED:', err);
+          setPosts([]);
+          setHasMore(false);
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
 
     loadPosts();
+
     return () => {
       cancelled = true;
     };
   }, [selectedCategory, activeTab]);
 
+  const handleTabChange = (tabKey) => {
+    if (tabKey === activeTab) return;
+    setLoading(true);
+    setPosts([]);
+    setHasMore(true);
+    setActiveTab(tabKey);
+  };
+
   async function handleLoadMore() {
     setLoadingMore(true);
+
     try {
       const more = await getPosts({
         category: selectedCategory,
@@ -59,6 +72,7 @@ const DiscussionFeed = ({ selectedCategory }) => {
         limit: PAGE_SIZE,
         offset: posts.length,
       });
+
       setPosts((prev) => [...prev, ...more]);
       setHasMore(more.length === PAGE_SIZE);
     } catch (err) {
@@ -70,14 +84,13 @@ const DiscussionFeed = ({ selectedCategory }) => {
 
   return (
     <div className="min-w-0 bg-white border border-[#B9BEC8]/30 rounded-2xl px-3 py-4 sm:p-5 shadow-sm space-y-4 sm:space-y-5">
-      {/* Feed Filters Header */}
       <div className="flex min-w-0 items-center gap-2 border-b border-[#B9BEC8]/25 pb-3 sm:pb-4">
         <div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {TABS.map((tab) => (
             <button
               key={tab.key}
               type="button"
-              onClick={() => setActiveTab(tab.key)}
+              onClick={() => handleTabChange(tab.key)}
               className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all ${
                 activeTab === tab.key
                   ? 'bg-[#FBF0F0] text-[#991313]'
@@ -88,14 +101,19 @@ const DiscussionFeed = ({ selectedCategory }) => {
             </button>
           ))}
         </div>
-        <button className="hidden items-center gap-2 border border-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-medium hover:bg-stone-50 transition-colors">
+
+        <button
+          type="button"
+          className="hidden items-center gap-2 border border-stone-200 text-stone-700 px-3 py-1.5 rounded-xl text-xs font-medium hover:bg-stone-50 transition-colors"
+        >
           <SlidersHorizontal className="w-3.5 h-3.5" /> Filter
         </button>
       </div>
 
-      {/* Discussion Item List */}
       {loading ? (
-        <p className="text-sm text-stone-400 py-8 text-center">Loading discussions...</p>
+        <p className="text-sm text-stone-400 py-8 text-center">
+          Loading discussions...
+        </p>
       ) : posts.length === 0 ? (
         <p className="text-sm text-stone-400 py-8 text-center">
           No discussions here yet. Be the first to start one!
@@ -127,10 +145,15 @@ const DiscussionFeed = ({ selectedCategory }) => {
                       <h4 className="font-semibold text-[13px] leading-5 sm:text-sm text-[#101A2B] hover:text-red-900 transition-colors">
                         {post.title}
                       </h4>
-                      {post.pinned && <Pin className="w-3.5 h-3.5 text-red-800 fill-current" />}
+                      {post.pinned && (
+                        <Pin className="w-3.5 h-3.5 text-red-800 fill-current" />
+                      )}
                     </div>
+
                     <div className="flex min-w-0 items-center gap-x-1.5 gap-y-1 text-[10px] sm:text-[11px] text-[#4D5057] flex-wrap">
-                      <span className="font-medium text-stone-700">{post.category}</span>
+                      <span className="font-medium text-stone-700">
+                        {post.category}
+                      </span>
                       <span>•</span>
                       <span>Started by {post.author?.name || 'A member'}</span>
                       <span>•</span>
@@ -148,7 +171,6 @@ const DiscussionFeed = ({ selectedCategory }) => {
         </div>
       )}
 
-      {/* Pagination Action */}
       {!loading && hasMore && posts.length > 0 && (
         <div className="pt-2 text-center">
           <button
@@ -157,7 +179,8 @@ const DiscussionFeed = ({ selectedCategory }) => {
             disabled={loadingMore}
             className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 px-6 py-2.5 rounded-full transition-colors disabled:opacity-60"
           >
-            {loadingMore ? 'Loading...' : 'Load More Discussions'} <ChevronDown className="w-3.5 h-3.5" />
+            {loadingMore ? 'Loading...' : 'Load More Discussions'}
+            <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
       )}

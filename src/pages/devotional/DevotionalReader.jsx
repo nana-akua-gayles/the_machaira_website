@@ -39,7 +39,7 @@ function DevotionalReader() {
   const [prevDevotional, setPrevDevotional] = useState(null);
   const [nextDevotional, setNextDevotional] = useState(null);
 
-  const [printJob, setPrintJob] = useState(0);
+  const [printJob, setPrintJob] = useState(null);
   const [preparing, setPreparing] = useState(false);
 
   useEffect(() => {
@@ -91,13 +91,7 @@ function DevotionalReader() {
 
   const recordedRef = useRef(false);
   const readEndRef = useRef(null);
-  const readStartRef = useRef(Date.now());
-
-  function recordOnce() {
-    if (recordedRef.current) return;
-    recordedRef.current = true;
-    recordDevotionalActivity(devotional?.created_at);
-  }
+  const readStartRef = useRef(0);
 
   useEffect(() => {
     recordedRef.current = false;
@@ -112,7 +106,11 @@ function DevotionalReader() {
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting || timer) return;
       const wait = Math.max(0, MIN_READ_MS - (Date.now() - readStartRef.current));
-      timer = setTimeout(recordOnce, wait);
+      timer = setTimeout(() => {
+        if (recordedRef.current) return;
+        recordedRef.current = true;
+        recordDevotionalActivity(devotional.created_at);
+      }, wait);
     });
 
     observer.observe(node);
@@ -123,7 +121,7 @@ function DevotionalReader() {
   }, [devotional]);
 
   useEffect(() => {
-    if (printJob === 0 || !devotional) return;
+    if (!printJob) return;
 
     const previousTitle = document.title;
     let cancelled = false;
@@ -144,7 +142,7 @@ function DevotionalReader() {
       ]);
       if (cancelled) return;
 
-      const { mainTitle } = formatDevotionalTitle(devotional.title);
+      const { mainTitle } = formatDevotionalTitle(printJob.devotional.title);
       document.title = `${mainTitle} - Machaira`;
       document.body.classList.add("printing-devotional");
       window.addEventListener("afterprint", finish);
@@ -163,7 +161,8 @@ function DevotionalReader() {
     if (searchParams.get("print") !== "1" || loading || !devotional) return;
 
     const timer = setTimeout(() => {
-      handlePrint();
+      setPreparing(true);
+      setPrintJob({ devotional, at: Date.now() });
       setSearchParams({}, { replace: true });
     }, 800);
 
@@ -173,7 +172,7 @@ function DevotionalReader() {
   function handlePrint() {
     if (preparing || !devotional) return;
     setPreparing(true);
-    setPrintJob((n) => n + 1);
+    setPrintJob({ devotional, at: Date.now() });
   }
 
   async function handleDateSelect(date) {
@@ -442,7 +441,7 @@ function DevotionalReader() {
 
       </main>
 
-      {printJob > 0 && createPortal(<DevotionalPrintView devotional={devotional} />, document.body)}
+      {printJob && createPortal(<DevotionalPrintView devotional={printJob.devotional} />, document.body)}
     </>
   );
 }

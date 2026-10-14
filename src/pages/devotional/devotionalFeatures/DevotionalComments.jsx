@@ -6,6 +6,8 @@ import { useAuth } from "../../../context/AuthContext";
 import { supabase } from "../../../lib/supabaseClient";
 import { getCommentsForEpisode, addComment, getLikedCommentIds, likeComment, unlikeComment, editComment, deleteComment } from "../../../lib/commentService";
 
+const NO_LIKES = new Set();
+
 function authorName(author) {
   return author?.name?.trim() || "Anonymous";
 }
@@ -134,12 +136,14 @@ function CommentText({ content, names, selfNames }) {
 
 function DevotionalComments({ episodeNumber }) {
   const { user } = useAuth();
+  const userId = user?.id;
   const navigate = useNavigate();
 
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [myProfile, setMyProfile] = useState(undefined);
+  const [profileState, setProfileState] = useState({ userId: null, data: undefined });
+  const myProfile = profileState.userId === userId ? profileState.data : undefined;
 
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -161,7 +165,8 @@ function DevotionalComments({ episodeNumber }) {
   const formRef = useRef(null);
   const pendingLikesRef = useRef(new Set());
 
-  const [likedCommentIds, setLikedCommentIds] = useState(() => new Set());
+  const [likes, setLikes] = useState({ userId: null, ids: NO_LIKES });
+  const likedCommentIds = likes.userId === userId ? likes.ids : NO_LIKES;
 
   useEffect(() => {
     if (!episodeNumber) return;
@@ -184,41 +189,35 @@ function DevotionalComments({ episodeNumber }) {
   }, [episodeNumber]);
 
   useEffect(() => {
-    if (!user) {
-      setLikedCommentIds(new Set());
-      return;
-    }
-    if (loading || !episodeNumber) return;
+    if (!userId || loading || !episodeNumber) return;
 
     let active = true;
-    getLikedCommentIds(user.id, episodeNumber)
+    getLikedCommentIds(userId, episodeNumber)
       .then((ids) => {
-        if (active) setLikedCommentIds(new Set(ids));
+        if (active) setLikes({ userId, ids: new Set(ids) });
       })
       .catch((err) => console.error("Failed to load your likes:", err));
     return () => {
       active = false;
     };
-  }, [user?.id, loading, episodeNumber]);
+  }, [userId, loading, episodeNumber]);
 
   useEffect(() => {
-    if (!user) {
-      setMyProfile(undefined);
-      return;
-    }
+    if (!userId) return;
+
     let active = true;
     supabase
       .from("profiles")
       .select("name, avatar_url")
-      .eq("id", user.id)
+      .eq("id", userId)
       .maybeSingle()
       .then(({ data }) => {
-        if (active) setMyProfile(data || { name: null, avatar_url: null });
+        if (active) setProfileState({ userId, data: data || { name: null, avatar_url: null } });
       });
     return () => {
       active = false;
     };
-  }, [user]);
+  }, [userId]);
 
   const people = useMemo(() => {
     const seen = new Map();
@@ -407,11 +406,11 @@ function DevotionalComments({ episodeNumber }) {
   }
 
   function applyLike(commentId, liked) {
-    setLikedCommentIds((prev) => {
-      const next = new Set(prev);
+    setLikes((prev) => {
+      const next = new Set(prev.userId === userId ? prev.ids : []);
       if (liked) next.add(commentId);
       else next.delete(commentId);
-      return next;
+      return { userId, ids: next };
     });
     setComments((prev) =>
       prev.map((c) => (c.id === commentId ? { ...c, likes_count: Math.max(0, (c.likes_count || 0) + (liked ? 1 : -1)) } : c))

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ArrowUpRight, ArrowLeft, BookOpen, X } from "lucide-react";
 import MainFeedSection from "./MainFeedSection";
 import AllArticlesArchive from "./AllArticlesArchive";
@@ -96,7 +96,6 @@ export default function NewsfeedPage() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10 lg:items-start">
           <section className="lg:col-span-5 min-w-0" aria-label="Featured story">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#991313]">01 / Editor's Pick</span>
               <span className="h-px flex-1 bg-[#B9BEC8]/60 ml-5" />
             </div>
             {loadingHero ? (
@@ -105,11 +104,8 @@ export default function NewsfeedPage() {
               <button type="button" onClick={() => handleSelectStory(featuredStory)} className="group relative block w-full overflow-hidden rounded-2xl text-left bg-[#101A2B] aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5] shadow-[0_22px_60px_-30px_rgba(16,26,43,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#991313]">
                 <img src={featuredStory.image_url} alt={featuredStory.title} className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#101A2B] via-[#101A2B]/30 to-transparent" />
-                <div className="absolute top-5 left-5 flex items-center gap-2 rounded-full border border-white/30 bg-[#101A2B]/40 backdrop-blur-md px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white" /> Featured story
-                </div>
                 <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 text-white">
-                  <span className="text-[10px] uppercase tracking-[0.24em] text-[#F2D6D8] font-semibold">{featuredStory.subtitle}</span>
+                  <span className="text-[10px] uppercase tracking-[0.24em] text-burgundy-primary font-semibold">{featuredStory.subtitle}</span>
                   <h2 className="mt-3 text-[clamp(1.6rem,5.5vw,2.8rem)] leading-[1.08] tracking-[-0.045em] font-semibold line-clamp-3">{featuredStory.title}</h2>
                   <p className="mt-3 text-sm text-white/75 line-clamp-2 leading-relaxed">{featuredStory.body?.replace(/\\n/g, " ")}</p>
                   <div className="mt-5 flex items-center justify-between border-t border-white/25 pt-4 text-xs font-semibold uppercase tracking-[0.14em]">

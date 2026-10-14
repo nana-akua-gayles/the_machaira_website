@@ -1,5 +1,4 @@
 import MobileJourneyWindmill from "./MobileJourneyWindmill";
-import React from 'react';
 import blogImage from "../../assets/images/blog.jpg";
 import discussionImage from "../../assets/images/discussion.jpg";
 import testimonyImage from "../../assets/images/testimony.jpg";

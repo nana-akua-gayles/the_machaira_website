@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import blogImage from "../../assets/images/blog.jpg";
 import discussionImage from "../../assets/images/discussion.jpg";
@@ -44,7 +44,7 @@ export default function MobileJourneyWindmill() {
               <img src={card.image} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               <div className="absolute inset-x-5 bottom-6 flex items-center justify-between gap-3 text-white">
-                <h3 className="font-serif text-[22px] font-semibold">{card.title}</h3>
+                <h3 className="text-[22px] font-semibold">{card.title}</h3>
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/60 bg-white/15 text-xl">↗</span>
               </div>
             </Link>

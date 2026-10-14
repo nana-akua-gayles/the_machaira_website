@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { User, ArrowRight } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -143,17 +143,20 @@ export default function PartnershipStories() {
               </div>
 
               {/* Edge-to-Edge Glassmorphism Overlay */}
-              <div className="partnership-story-shade relative z-10 w-full p-6 pt-16 md:pt-6 md:bg-navy-dark/85 md:backdrop-blur-md border-t border-parchment/10 text-parchment flex flex-col justify-between h-[48%] md:h-[52%] transition-colors md:group-hover:bg-navy-dark/95">
-                <div className="overflow-hidden flex flex-col h-full">
-                  <h4 className="text-xl md:text-xs font-bold text-parchment leading-tight mb-2 shrink-0">
+                <div className="partnership-story-shade relative z-10 flex h-[48%] w-full flex-col justify-between bg-[#100D0D]/90 p-6 pt-16 text-white backdrop-blur-xl md:h-[52%] md:pt-6 md:bg-[#100D0D]/90 md:group-hover:bg-[#100D0D]/95">                
+                <div className="flex h-full flex-col overflow-hidden">
+                  <h4 className="mb-2 shrink-0 text-xl font-bold leading-tight text-white md:text-lg">
                     {story.name}
                   </h4>
-                  <p className="text-xs text-soft-gray leading-relaxed overflow-hidden line-clamp-3 md:line-clamp-none">
+
+                  <p className="line-clamp-3 overflow-hidden text-sm leading-relaxed text-white/90 md:line-clamp-none">
                     {story.about}
                   </p>
                 </div>
-                <div className="pt-2 shrink-0 flex items-center gap-1 text-[11px] font-semibold text-burgundy-primary group-hover:underline">
-                  Read more <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
+
+                <div className="flex shrink-0 items-center gap-1 pt-2 text-xs font-semibold text-white transition-colors group-hover/btn:underline group-hover:text-white">
+                  Read more
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
               </div>
             </div>
@@ -172,7 +175,7 @@ export default function PartnershipStories() {
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-burgundy-primary animate-pulse"></span>
               <span className="text-[10px] font-semibold tracking-[0.25em] text-white/70 uppercase">
-                Impact Story & Testimony
+                Impact Story
               </span>
             </div>
 

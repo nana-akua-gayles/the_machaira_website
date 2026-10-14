@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DiscussionCategory from './discussionFeatures/DiscussionCategory';
 import DiscussionHero from './discussionFeatures/DiscussionHero';
 import DiscussionFeed from './discussionFeatures/DiscussionFeed';

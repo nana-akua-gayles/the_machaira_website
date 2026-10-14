@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import WelcomeModal from "./WelcomeModal"; 
-import DevotionalOverlay from "./DevotionalOverlay"; // Import the overlay
+import DevotionalOverlay from "./DevotionalOverlay";
 import { supabase } from "../lib/supabaseClient";
 import "./componentStylesheet/MainLayout.css";
 
 function MainLayout() {
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
-  const [allDevotionals, setAllDevotionals] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 1. Fetch devotionals in the background when layout mounts
+  // 1. Control modal visibility based on route and session storage (Initialized directly to avoid setState-in-effect)
+  const [showWelcomeModal] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const isHomePage = location.pathname === "/" || location.pathname === "";
+    const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcomeModal");
+
+    if (isHomePage && !hasSeenWelcome) {
+      sessionStorage.setItem("hasSeenWelcomeModal", "true");
+      return true;
+    }
+    return false;
+  });
+
+  const [allDevotionals, setAllDevotionals] = useState([]);
+
+  // 2. Fetch devotionals in the background when layout mounts
   useEffect(() => {
     async function fetchDevotionals() {
       const { data, error } = await supabase
@@ -30,19 +43,8 @@ function MainLayout() {
     fetchDevotionals();
   }, []);
 
-  // 2. Control modal visibility based on route and session storage
-  useEffect(() => {
-    const isHomePage = location.pathname === "/" || location.pathname === "";
-    const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcomeModal");
-
-    if (isHomePage && !hasSeenWelcome) {
-      setShowWelcomeModal(true);
-      sessionStorage.setItem("hasSeenWelcomeModal", "true");
-    }
-  }, [location.pathname]);
-
   // 3. Handle Mood / Category Selection
-  const handleSelectEpisode = (episode, categoryKey) => {
+  const handleSelectEpisode = (episode) => {
     navigate(`/devotional/${episode.id}`);
   };
 
@@ -62,6 +64,11 @@ function MainLayout() {
         .order("created_at", { ascending: false })
         .limit(1)
         .single();
+
+      if (error) {
+        console.error("Error fetching latest devotional on click:", error.message);
+        return;
+      }
 
       if (data && data.id) {
         navigate(`/devotional/${data.id}`);
@@ -96,5 +103,7 @@ function MainLayout() {
     </div>
   );
 }
+
+MainLayout.displayName = "MainLayout";
 
 export default MainLayout;

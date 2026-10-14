@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BooksGrid() {
@@ -6,26 +6,25 @@ export default function BooksGrid() {
     {
       slug: 'photizo',
       title: 'Photizo',
-      subtitle: 'Life-Transforming Teachings',
-      price: '$35.00',
+      subtitle: 'Alpha Edition',
+      price: '$25.00',
       image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=700&auto=format&fit=crop',
       body: 'Where divine light shatters ignorance and ignites the human spirit. Dive deep into foundational revelations designed to renew your mind and anchor your daily walk in absolute truth.\n\nTrue transformation begins the moment the Word shifts from a mere concept into a living reality within your spirit. As you walk through these pages, let the light of God dismantle every stronghold and rebuild your perspective according to His eternal architecture.',
     },
     {
       slug: 'machaira-edition-1',
       title: 'Machaira with Apostle Bennie',
-      subtitle: "Walking in God's Power",
-      price: '$40.00',
+      subtitle: "Refulgence Edition 1",
+      price: '$3.00',
       image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=700&auto=format&fit=crop',
       body: 'Equipping believers to wield the sword of the Spirit with absolute dominion. This edition unlocks the practical dynamics of spiritual authority, prayer, and supernatural living.\n\nThe sword (Machaira) given to the believer is not fashioned of earthly steel, but of living breath and absolute authority. Learn how to align your tongue, your prayers, and your posture with the prevailing power of heaven.',
     },
     {
       slug: 'machaira-edition-2',
       title: 'Machaira with Apostle Bennie',
-      subtitle: 'Discovering Your Divine Assignment',
-      price: '$45.00',
+      subtitle: 'Refulgence Edition 2',
+      price: '$3.00',
       image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=700&auto=format&fit=crop',
-      description: 'Unlocking the blueprint of eternity encoded in your unique calling. Learn how to align your gifts, recognize divine seasons, and fulfill your God-given assignment with clarity.',
       body: 'Unlocking the blueprint of eternity encoded in your unique calling. Learn how to align your gifts, recognize divine seasons, and fulfill your God-given assignment with clarity.\n\nYour existence is not a cosmic accident. Before the foundations of the world were laid, an explicit assignment was prepared for your hands. Step into the revelation of your purpose and run your race with precision.',
     },
   ];
@@ -34,7 +33,7 @@ export default function BooksGrid() {
   const [activeStory, setActiveStory] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [orderState, setOrderState] = useState('idle'); // 'idle' | 'processing' | 'success'
+  const [orderState, setOrderState] = useState('idle');
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -94,12 +93,13 @@ export default function BooksGrid() {
 
         {/* Intro */}
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-navy-dark sm:text-4xl lg:text-5xl">
-            A library where <span className="italic text-burgundy-primary">men are made.</span>
+          <h2 className="text-2xl font-bold tracking-tight text-navy-dark sm:text-3xl lg:text-4xl">
+            A library where <span className="text-burgundy-primary">men are made.</span>
           </h2>
 
           <p className="mx-auto mt-4 max-w-xl text-xs leading-relaxed text-[#6d6260] sm:text-sm">
-            Unveil eternity stitched into words, the extraordinary, soul-reforming manuscripts by Apostle Bennie.
+            Unveil eternity stitched into words, the extraordinary, soul-reforming manuscripts by Apostle 
+            Benjamin Nana Amissah Ansah.
           </p>
         </div>
 
@@ -129,10 +129,6 @@ export default function BooksGrid() {
                     alt={book.title}
                     className="aspect-3/4 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest text-navy-dark shadow-xs">
-                    {book.price}
-                  </div>
                 </div>
 
                 {/* Details */}
@@ -266,9 +262,6 @@ export default function BooksGrid() {
                 <div className="max-w-2xl mx-auto w-full space-y-10 pb-12">
                   
                   <div className="border-b border-[#e6e2de] pb-6">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-burgundy-primary">
-                      Manuscript Preview
-                    </span>
                     <h3 className="text-3xl font-bold tracking-tight text-navy-dark mt-1">
                       {activeStory.title}
                     </h3>

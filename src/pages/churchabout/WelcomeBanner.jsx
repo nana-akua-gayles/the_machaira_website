@@ -1,7 +1,6 @@
-import React from "react";
 import { ArrowUpRight } from "lucide-react";
 
-export default function WelcomeBanner({ onVisitSunday }) {
+export default function WelcomeBanner() {
   return (
     <section className="bg-[#fdfaf7] py-14 sm:py-16">
       <div className="mx-auto max-w-360 px-6 lg:px-12">
@@ -27,36 +26,39 @@ export default function WelcomeBanner({ onVisitSunday }) {
               <div className="flex items-center gap-3">
                 <span className="h-px w-7 bg-white/50" />
                 <span className="text-[9px] font-bold uppercase tracking-[0.28em] text-white/65">
-                  You're Welcome Here
+                  You will find no locked doors here, only open arms.
                 </span>
               </div>
 
               <h2 className="mt-4 max-w-3xl text-[2.35rem] font-normal leading-none tracking-[-0.04em] sm:text-4xl lg:text-[3.6rem]">
-                There is a place
+                God has 
                 <br />
-                <span className="text-white/55">for you here.</span>
+                <span className="text-white/55">you in mind.</span>
               </h2>
 
               <p className="mt-5 max-w-lg text-[11px] leading-[1.8] text-white/65 sm:text-xs">
-                Whether you're discovering faith, returning to church, or
-                searching for a family to call your own — come and experience
-                what God is doing among us.
+                Whether you're exploring, returning to church, or
+                searching for a family to call your own, there's a place here,
+                and it is yours.
               </p>
             </div>
 
             <div className="lg:col-span-4 lg:flex lg:justify-end">
-              <button
-                onClick={onVisitSunday}
+              <a
+                href="https://www.youtube.com/@christcommonwealthglobal"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group/btn inline-flex items-center gap-4 rounded-full bg-white px-5 py-2.5 text-[#74191d] shadow-[0_12px_30px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_18px_35px_rgba(0,0,0,0.18)]"
               >
-                <span className="text-[9px] font-bold uppercase tracking-[0.15em]">
-                  Visit Us This Saturday
-                </span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#74191d] text-white transition-transform duration-500 group-hover/btn:rotate-45">
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </span>
-              </button>
-            </div>
+    <span className="text-[9px] font-bold uppercase tracking-[0.15em]">
+      Visit Us This Saturday
+    </span>
+
+    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#74191d] text-white transition-transform duration-500 group-hover/btn:rotate-45">
+      <ArrowUpRight className="h-3.5 w-3.5" />
+    </span>
+  </a>
+</div>
           </div>
         </div>
       </div>

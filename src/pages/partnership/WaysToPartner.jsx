@@ -1,4 +1,3 @@
-import React from 'react';
 import PartnershipOrbit from './PartnershipOrbit';
 import { HandCoins, HeartHandshake, Sprout, ArrowRight } from 'lucide-react';
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
@@ -42,14 +42,14 @@ export default function NewsfeedSection({ onSelectStory }) {
         const featuredQuery = supabase
           .from('featured_articles')
           .select('*')
-          .order('updated_at', { ascending: false, nullsFirst: false })
+          .order('created_at', { ascending: false, nullsFirst: false })
           .limit(1)
           .maybeSingle();
 
         const articlesQuery = supabase
           .from('articles')
           .select('*')
-          .order('updated_at', { ascending: false, nullsFirst: false });
+          .order('created_at', { ascending: false, nullsFirst: false });
 
         const [featuredRes, articlesRes] = await Promise.all([featuredQuery, articlesQuery]);
 

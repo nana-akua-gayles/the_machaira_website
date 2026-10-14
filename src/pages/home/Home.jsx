@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import HeroSection from "./HeroSection";
 import RecentDevotionalSection from "./RecentDevotionalSection";

@@ -1,9 +1,8 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import apostleImg from "../../../src/assets/images/Apostle3.jpg";
 
-export default function ChurchLeadership({ onLearnMore }) {
+export default function ChurchLeadership() {
   const navigate = useNavigate();
 
   return (

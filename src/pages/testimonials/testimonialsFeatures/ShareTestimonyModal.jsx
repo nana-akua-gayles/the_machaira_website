@@ -34,17 +34,19 @@ export default function ShareTestimonyModal({ isOpen, onClose, onSuccess }) {
 
   const fileInputRef = useRef(null);
 
-  // ----- Reset state whenever modal opens -----
+  // ----- Reset state whenever modal opens (deferred to avoid synchronous setState-in-effect) -----
   useEffect(() => {
     if (!isOpen) return;
-    setCategory("");
-    setContent("");
-    setIsAnonymous(false);
-    setImageFile(null);
-    setImagePreview(null);
-    setSubmitting(false);
-    setErrorMsg("");
-    setFieldErrors({});
+    queueMicrotask(() => {
+      setCategory("");
+      setContent("");
+      setIsAnonymous(false);
+      setImageFile(null);
+      setImagePreview(null);
+      setSubmitting(false);
+      setErrorMsg("");
+      setFieldErrors({});
+    });
   }, [isOpen]);
 
   // ----- Lock body scroll -----

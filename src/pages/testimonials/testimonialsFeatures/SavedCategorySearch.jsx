@@ -9,7 +9,7 @@ const readSaved = () => {
   } catch { return []; }
 };
 
-export default function SavedCategorySearch({ activeCategory, onCategoryChange, categorySearch, onSearchChange }) {
+export default function SavedCategorySearch({ onCategoryChange, categorySearch, onSearchChange }) {
   const [saved, setSaved] = useState(readSaved);
   const [draft, setDraft] = useState("");
   const [menu, setMenu] = useState(null);

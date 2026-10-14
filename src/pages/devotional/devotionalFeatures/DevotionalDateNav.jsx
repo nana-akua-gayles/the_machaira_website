@@ -18,11 +18,9 @@ function getDateParts(dateString) {
 }
 
 function DevotionalDateNav({
-  devotional,
   selectedDate,
   onDateSelect,
   loading,
-  topOffsetClassName = "pt-24",
 }) {
   /*
    * Always generate five calendar dates around
