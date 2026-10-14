@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import LoginForm from "./authFeatures/LoginForm";
-import churchLogo from "../../assets/images/MLogo.png";
+import churchLogo from "../../assets/images/Mlogo.png";
 
 const motes = Array.from({ length: 10 }, (_, i) => ({ left: `${(i * 41 + 12) % 100}%`, size: 2 + (i % 2), delay: `${(i * 2.3) % 12}s`, dur: `${20 + (i % 5) * 5}s` }));
 
