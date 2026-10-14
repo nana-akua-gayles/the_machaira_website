@@ -138,8 +138,8 @@ function fixAllCapsGlue(str) {
 
 function stripShortcodes(str) {
   return (str || "")
-    .replace(/\[\/[a-z0-9_\-]+\]/gi, "")
-    .replace(/\[([a-z][a-z0-9_\-]*)((?:\s+[a-z0-9_\-]+=["'][^"']*["'])+)\s*\]/gi, "")
+    .replace(/\[\/[a-z0-9_-]+\]/gi, "")
+    .replace(/\[([a-z][a-z0-9_-]*)((?:\s+[a-z0-9_-]+=["'][^"']*["'])+)\s*\]/gi, "")
     .trim();
 }
 
@@ -315,8 +315,8 @@ function matchCapsTitleRun(text) {
 }
 
 const JUNK_TEXT_PATTERNS = [
-  /CHRIST\s+COMMONWEALTH[\-\s]+COMMUNITY/gi,
-  /The\s+Love[\-\s]+Life\s+Agency/gi,
+  /CHRIST\s+COMMONWEALTH[-\s]+COMMUNITY/gi,
+  /The\s+Love[-\s]+Life\s+Agency/gi,
   /Download\s+PDF/gi,
   /\bBy\b(?=\s*(<a[^>]*>[\s\S]*?<\/a>\s*)?\(Pronounced)/g,
   /\(Pronounced\s*makh['\u2019]-ahee-rah\)\s*Daily\s*revelatory\s*thoughts\s*to\s*sharpen\s*you\s*and\s*to\s*help\s*you\s*grow\s*in\s*deep\s*spiritual\s*understanding\s*and\s*knowledge\.?\s*Daily\s*Christ-centered\s*and\s*apostolic-prophetic\s*prayers\.?/gi,
