@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
@@ -32,7 +31,10 @@ export default function HeroSection() {
     }
 
     fetchSlides();
-    return () => { active = false; };
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -69,8 +71,16 @@ export default function HeroSection() {
   const currentTestimonies = Array.isArray(currentSlide.testimonies)
     ? currentSlide.testimonies.slice(0, 2)
     : [
-        { quote: currentSlide.testimony || 'A transformative word that anchors our faith daily.' },
-        { quote: currentSlide.testimony_second || 'An indispensable guide for spiritual growth and clarity.' }
+        {
+          quote:
+            currentSlide.testimony ||
+            'A transformative word that anchors our faith daily.',
+        },
+        {
+          quote:
+            currentSlide.testimony_second ||
+            'An indispensable guide for spiritual growth and clarity.',
+        },
       ];
 
   const handleReadMore = () => {
@@ -79,6 +89,12 @@ export default function HeroSection() {
         ? `/devotional/${currentSlide.devotional_id}`
         : '/devotionals'
     );
+  };
+
+  const handleSlideChange = (index) => {
+    setCurrentIndex(index);
+    setTextAnimState('idle');
+    setAnimatingQuote(false);
   };
 
   if (loading) {
@@ -92,9 +108,8 @@ export default function HeroSection() {
   }
 
   return (
-    <div className="relative w-full">
-      <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[600px] w-screen items-end overflow-hidden bg-[#101A2B] sm:min-h-[650px] lg:min-h-0 lg:h-[min(780px,88svh)]">
-        
+    <div className="relative w-full min-w-0">
+      <section className="relative isolate flex min-h-[560px] w-full min-w-0 items-end overflow-hidden bg-black sm:min-h-[600px] lg:min-h-[640px] lg:items-center xl:min-h-[680px]">
         {/* Background image */}
         <img
           key={bannerImage}
@@ -104,15 +119,14 @@ export default function HeroSection() {
           className="absolute inset-0 h-full w-full object-cover object-[65%_center] sm:object-center"
         />
 
-        {/* Readability overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#101A2B]/95 via-[#101A2B]/45 to-[#101A2B]/10 sm:from-[#101A2B]/90 sm:via-[#101A2B]/30 lg:bg-gradient-to-r lg:from-[#101A2B]/80 lg:via-[#101A2B]/45 lg:to-transparent" />
+        {/* Dark black overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/25 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-black/10" />
 
         {/* Main content */}
-        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] grid-cols-1 items-end px-5 pb-9 pt-36 sm:px-8 sm:pb-12 md:px-12 lg:min-h-full lg:grid-cols-12 lg:items-center lg:gap-8 lg:px-16 lg:py-16 xl:px-20">
-          
-          <div className="min-w-0 lg:col-span-7 xl:col-span-6">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 items-end gap-8 px-5 pb-16 pt-32 sm:px-8 sm:pb-16 sm:pt-36 md:px-12 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-10 lg:py-20 xl:gap-10 xl:px-16 2xl:px-20">
+          <div className="min-w-0 max-w-full lg:col-span-8 xl:col-span-7">
             <div
-              className={`max-w-2xl space-y-4 text-white transition-all duration-500 ease-out sm:space-y-5 ${
+              className={`w-full min-w-0 max-w-3xl space-y-4 text-white transition-all duration-500 ease-out sm:space-y-5 ${
                 textAnimState === 'fade-out'
                   ? 'translate-y-3 opacity-0'
                   : textAnimState === 'fade-in'
@@ -120,12 +134,13 @@ export default function HeroSection() {
                     : 'translate-y-0 opacity-100'
               }`}
             >
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/80 sm:text-xs">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/80 [overflow-wrap:anywhere] sm:text-xs sm:tracking-[0.22em]">
                 Highly Sought Episodes
               </p>
 
-              <h1 className="break-words text-[clamp(2rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-[-0.04em]">
+              <h1 className="max-w-full [overflow-wrap:anywhere] text-[clamp(2rem,4.2vw,4.25rem)] font-bold leading-[1.08] tracking-[-0.035em] sm:text-[clamp(2.5rem,4vw,4.5rem)] lg:text-[clamp(2.75rem,3.5vw,4.25rem)]">
                 {currentSlide.title_first}
+
                 {currentSlide.title_highlight && (
                   <>
                     {' '}
@@ -134,27 +149,31 @@ export default function HeroSection() {
                     </span>
                   </>
                 )}
+
                 {currentSlide.title_rest && (
                   <>
-                    <br className="hidden sm:block" /> {currentSlide.title_rest}
+                    <br className="hidden sm:block" />{' '}
+                    {currentSlide.title_rest}
                   </>
                 )}
               </h1>
 
               {currentSlide.description && (
-                <p className="max-w-xl whitespace-pre-line text-sm leading-6 text-white/85 sm:text-base sm:leading-7">
+                <p className="max-w-2xl whitespace-pre-line [overflow-wrap:anywhere] text-sm leading-6 text-white/85 sm:text-base sm:leading-7 lg:text-[1.05rem]">
                   {currentSlide.description}
                 </p>
               )}
 
               <div className="pt-1">
                 <button
+                  type="button"
                   onClick={handleReadMore}
-                  className="inline-flex min-h-11 items-center gap-3 rounded-lg bg-[#5A181C] px-5 py-3 text-sm font-semibold text-[#FBF9F5] shadow-lg transition-colors duration-300 hover:bg-[#3D0F12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#101A2B]"
+                  className="group inline-flex min-h-11 max-w-full items-center justify-center gap-3 rounded-lg bg-[#5A181C] px-5 py-3 text-sm font-semibold text-[#FBF9F5] shadow-lg transition-colors duration-300 hover:bg-[#3D0F12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
-                  Read more
+                  <span>Read more</span>
+
                   <svg
-                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                    className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -171,21 +190,25 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Testimonies: tablet/desktop only */}
-            <div className="mt-7 hidden max-w-lg grid-cols-2 gap-3 lg:grid">
+            {/* Testimonies */}
+            <div className="mt-7 hidden w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid">
               {currentTestimonies.map((item, index) => (
                 <div
                   key={`${currentIndex}-${index}`}
-                  className={`rounded-xl border border-white/15 bg-[#101A2B]/60 p-4 shadow-lg backdrop-blur-md transition-all duration-500 ${
+                  className={`min-w-0 max-w-full rounded-xl border border-white/15 bg-black/60 p-3 shadow-lg backdrop-blur-md transition-all duration-500 sm:p-4 ${
                     animatingQuote
                       ? 'translate-y-2 opacity-0'
                       : 'translate-y-0 opacity-100'
                   }`}
                 >
-                  <p className="mb-2 text-xl leading-none text-burgundy-primary" aria-hidden="true">
+                  <p
+                    className="mb-2 text-xl leading-none text-burgundy-primary"
+                    aria-hidden="true"
+                  >
                     “
                   </p>
-                  <p className="line-clamp-4 text-xs italic leading-relaxed text-white/90">
+
+                  <p className="line-clamp-4 [overflow-wrap:anywhere] text-xs italic leading-relaxed text-white/90 sm:text-sm">
                     {item.quote}
                   </p>
                 </div>
@@ -193,24 +216,21 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Reserved breathing room for the image on desktop */}
-          <div className="hidden lg:col-span-5 lg:block xl:col-span-6" />
+          {/* Flexible image space on desktop */}
+          <div className="hidden min-w-0 lg:col-span-4 lg:block xl:col-span-5" />
         </div>
 
         {/* Slide indicators */}
         {slides.length > 1 && (
-          <div className="absolute bottom-4 right-5 z-20 flex items-center gap-2 sm:bottom-6 sm:right-8 lg:bottom-8 lg:right-12">
+          <div className="absolute bottom-4 right-4 z-20 flex max-w-[calc(100%-2rem)] flex-wrap items-center justify-end gap-2 sm:bottom-6 sm:right-8 lg:bottom-8 lg:right-10 xl:right-12">
             {slides.map((_, index) => (
               <button
                 key={index}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setTextAnimState('idle');
-                  setAnimatingQuote(false);
-                }}
+                type="button"
+                onClick={() => handleSlideChange(index)}
                 aria-label={`Go to slide ${index + 1}`}
                 aria-current={currentIndex === index ? 'true' : undefined}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 shrink-0 rounded-full transition-all duration-300 ${
                   currentIndex === index
                     ? 'w-7 bg-white'
                     : 'w-2 bg-white/50 hover:bg-white/80'
