@@ -22,9 +22,7 @@ function Navbar() {
   const { user, signOut } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 30);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -47,9 +45,7 @@ function Navbar() {
     }
 
     function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        setProfileMenuOpen(false);
-      }
+      if (event.key === "Escape") setProfileMenuOpen(false);
     }
 
     document.addEventListener("mousedown", handlePointerDown);
@@ -84,24 +80,30 @@ function Navbar() {
             : "min-h-23 px-4.5 lg:px-6 bg-white/96 border-none rounded-none shadow-none backdrop-blur-md"
         }`}
       >
-        {/* LOGO WITH OVERFLOWING LARGE IMAGE */}
+        {/* ENLARGED LOGO */}
         <NavLink
           to="/"
           onClick={closeMenu}
           className={`relative flex items-center h-full no-underline text-navy-dark transition-transform duration-300 hover:-translate-y-px shrink-0 ${
-            scrolled ? "basis-[clamp(120px,13vw,170px)]" : "basis-[clamp(130px,14vw,190px)]"
+            scrolled
+              ? "basis-[clamp(155px,17vw,215px)]"
+              : "basis-[clamp(170px,18vw,235px)]"
           }`}
         >
           <div className="relative h-full w-full flex items-center">
             <img
               src={logoImage}
               alt="Machaira Logo"
-              className="absolute top-1/2 left-0 -translate-y-1/2 h-[clamp(120px,17vw,770px)] w-auto object-contain pointer-events-none"
+              className={`absolute top-1/2 left-0 -translate-y-1/2 w-auto max-w-none object-contain pointer-events-none transition-[height] duration-300 ${
+                scrolled
+                  ? "h-[clamp(150px,18vw,260px)]"
+                  : "h-[clamp(165px,20vw,340px)]"
+              }`}
             />
           </div>
         </NavLink>
 
-        {/* NAVIGATION LINKS — Desktop */}
+        {/* DESKTOP NAVIGATION */}
         <nav
           className={`hidden lg:flex flex-1 min-w-0 items-center justify-center transition-all duration-300 ${
             scrolled ? "gap-6.5 mx-2" : "gap-7.5 mx-2.5"
@@ -128,8 +130,7 @@ function Navbar() {
           ))}
         </nav>
 
-        {/* RIGHT ACTIONS — Desktop profile / login live here; hidden on mobile,
-            where they move inside the slide-out menu instead. */}
+        {/* DESKTOP PROFILE / LOGIN AND MOBILE HAMBURGER */}
         <div className="flex items-center gap-3 shrink-0">
           {user ? (
             <div className="relative hidden lg:block" ref={profileMenuRef}>
@@ -176,7 +177,7 @@ function Navbar() {
             </NavLink>
           )}
 
-          {/* HAMBURGER TOGGLE — Mobile only */}
+          {/* MOBILE HAMBURGER */}
           <button
             type="button"
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 bg-transparent border-none cursor-pointer p-2 z-50"
@@ -184,9 +185,21 @@ function Navbar() {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
-            <span className={`w-6 h-0.5 bg-[#222] transition-transform duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-            <span className={`w-6 h-0.5 bg-[#222] transition-opacity duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`w-6 h-0.5 bg-[#222] transition-transform duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            <span
+              className={`w-6 h-0.5 bg-[#222] transition-transform duration-300 ${
+                menuOpen ? "rotate-45 translate-y-2" : ""
+              }`}
+            />
+            <span
+              className={`w-6 h-0.5 bg-[#222] transition-opacity duration-300 ${
+                menuOpen ? "opacity-0" : ""
+              }`}
+            />
+            <span
+              className={`w-6 h-0.5 bg-[#222] transition-transform duration-300 ${
+                menuOpen ? "-rotate-45 -translate-y-2" : ""
+              }`}
+            />
           </button>
         </div>
       </div>
@@ -194,10 +207,12 @@ function Navbar() {
       {/* MOBILE MENU PANEL */}
       <div
         className={`fixed inset-0 bg-white z-40 flex flex-col transition-all duration-300 lg:hidden ${
-          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none translate-x-full"
+          menuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none translate-x-full"
         }`}
       >
-        {/* Panel header — explicit close button, always visible while open */}
+        {/* PANEL HEADER */}
         <div className="flex items-center justify-between px-6 h-20 shrink-0 border-b border-black/8">
           <span className="text-xs font-semibold uppercase tracking-[0.22em] text-cool-gray">
             Menu
@@ -219,7 +234,7 @@ function Navbar() {
           </button>
         </div>
 
-        {/* Profile block — mobile only, replaces the desktop avatar dropdown */}
+        {/* MOBILE PROFILE */}
         {user && (
           <div className="flex items-center gap-3 px-6 py-5 shrink-0 border-b border-black/8">
             <UserAvatar user={user} size={44} />
@@ -238,7 +253,7 @@ function Navbar() {
           </div>
         )}
 
-        {/* Nav links — professional list layout, not centered stacked text */}
+        {/* MOBILE NAVIGATION LINKS */}
         <nav className="flex-1 overflow-y-auto px-6 py-2">
           {navItems.map((item, index) => (
             <NavLink
@@ -280,7 +295,7 @@ function Navbar() {
           ))}
         </nav>
 
-        {/* Login — mobile only, logged-out state */}
+        {/* MOBILE LOGIN */}
         {!user && (
           <div className="px-6 pt-4 pb-8 shrink-0 border-t border-black/8">
             <NavLink

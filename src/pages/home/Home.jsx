@@ -220,7 +220,7 @@ export default function Home({ onSaturdayChurchPress }) {
                 </h1>
                 <div>
                   <span className="uppercase tracking-widest text-burgundy-primary font-semibold text-xs">
-                    {activeStory.isFeatured ? "Featured Article of the Week" : "Newsfeed Update"}
+                    {activeStory.isFeatured ? "Featured Article of the Week" : "News Update"}
                   </span>
                 </div>
               </div>

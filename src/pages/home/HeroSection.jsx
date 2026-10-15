@@ -119,11 +119,11 @@ export default function HeroSection() {
           className="absolute inset-0 h-full w-full object-cover object-[65%_center] sm:object-center"
         />
 
-        {/* Dark black overlay */}
+        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/25 lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-black/10" />
 
         {/* Main content */}
-        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 items-end gap-8 px-5 pb-16 pt-32 sm:px-8 sm:pb-16 sm:pt-36 md:px-12 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-10 lg:py-20 xl:gap-10 xl:px-16 2xl:px-20">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 items-end gap-8 px-5 pb-16 pt-24 sm:px-8 sm:pb-16 sm:pt-28 md:px-12 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-10 lg:py-20 xl:gap-10 xl:px-16 2xl:px-20">
           <div className="min-w-0 max-w-full lg:col-span-8 xl:col-span-7">
             <div
               className={`w-full min-w-0 max-w-3xl space-y-4 text-white transition-all duration-500 ease-out sm:space-y-5 ${
@@ -190,12 +190,12 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Testimonies */}
+            {/* Testimonies without glassmorphism */}
             <div className="mt-7 hidden w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid">
               {currentTestimonies.map((item, index) => (
                 <div
                   key={`${currentIndex}-${index}`}
-                  className={`min-w-0 max-w-full rounded-xl border border-white/15 bg-black/60 p-3 shadow-lg backdrop-blur-md transition-all duration-500 sm:p-4 ${
+                  className={`min-w-0 max-w-full rounded-xl border border-white/15 bg-black/70 p-3 shadow-lg transition-all duration-500 sm:p-4 ${
                     animatingQuote
                       ? 'translate-y-2 opacity-0'
                       : 'translate-y-0 opacity-100'

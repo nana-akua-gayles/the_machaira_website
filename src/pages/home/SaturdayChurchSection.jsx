@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -47,8 +46,28 @@ export default function SaturdayChurchSection() {
   const [loading, setLoading] = useState(true);
   const [flipped, setFlipped] = useState(false);
   const [playMobile, setPlayMobile] = useState(false);
+  const [inView, setInView] = useState(false);
   const swipeStart = useRef(null);
   const ignoreNextClick = useRef(false);
+  const flipRef = useRef(null);
+
+  useEffect(() => {
+    const node = flipRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.6 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -88,8 +107,15 @@ export default function SaturdayChurchSection() {
     ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
     : null;
 
+  const showPlayer = Boolean(embedSrc) && (playMobile || (inView && !flipped));
+
   const resetToVideo = () => {
     setFlipped(false);
+    setPlayMobile(false);
+  };
+
+  const showAbout = () => {
+    setFlipped(true);
     setPlayMobile(false);
   };
 
@@ -153,21 +179,36 @@ export default function SaturdayChurchSection() {
             animation: churchFloat 4s ease-in-out infinite;
           }
         }
+
+        @keyframes churchGlow {
+          0% { box-shadow: 0 0 0 0 rgba(184, 134, 59, 0.55); }
+          70%, 100% { box-shadow: 0 0 0 12px rgba(184, 134, 59, 0); }
+        }
+        .church-bead {
+          background: radial-gradient(circle at 35% 35%, #E8C58F, #5A181C 70%);
+          transition: left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: churchGlow 2.4s ease-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .church-bead { transition: none; animation: none; }
+        }
       `}</style>
 
       {/* MOBILE AND TABLET */}
-      <div className="mx-auto w-full max-w-xl px-4 sm:px-6 lg:hidden">
-        <div className="mb-4 flex items-end justify-between gap-3">
-          <div className="min-w-0">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#5A181C] sm:text-xs">
-              Commonwealth Digital Church
-            </p>
-          </div>
+      <div className="lg:hidden">
+        <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
+          <h2
+            id="digital-church-heading"
+            className="text-[28px] font-extrabold uppercase leading-[1.1] tracking-[0.06em] text-[#5A181C] sm:text-4xl"
+          >
+            The Commonwealth Digital Church
+          </h2>
         </div>
 
         <div
-          className="relative w-full touch-pan-y [perspective:1200px]"
-          style={{ height: 'clamp(340px, 105vw, 470px)' }}
+          ref={flipRef}
+          className="relative mt-5 w-full touch-pan-y overflow-hidden transition-[height] duration-500 ease-in-out [perspective:1200px] motion-reduce:transition-none"
+          style={{ height: flipped ? 'clamp(400px, 125vw, 640px)' : '56.25vw' }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={() => {
@@ -181,8 +222,8 @@ export default function SaturdayChurchSection() {
             } transition-transform duration-500 ease-in-out`}
           >
             {/* FRONT: VIDEO */}
-            <div className="absolute inset-0 overflow-hidden rounded-3xl bg-[#171111] shadow-lg [backface-visibility:hidden]">
-              {thumbnail && !playMobile && (
+            <div className="absolute inset-0 overflow-hidden bg-[#171111] [backface-visibility:hidden]">
+              {thumbnail && !showPlayer && (
                 <img
                   src={thumbnail}
                   alt="Featured Commonwealth Digital Church video thumbnail"
@@ -190,10 +231,10 @@ export default function SaturdayChurchSection() {
                 />
               )}
 
-              {playMobile && embedSrc ? (
+              {showPlayer ? (
                 <iframe
-                  title="The Commonwealth Digital Church featured video"
-                  src={`${embedSrc}?autoplay=1`}
+                  title="Live Coverage"
+                  src={`${embedSrc}?autoplay=1&playsinline=1${playMobile ? '' : '&mute=1'}`}
                   className="absolute inset-0 h-full w-full border-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
@@ -203,25 +244,19 @@ export default function SaturdayChurchSection() {
                   {!thumbnail && (
                     <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-white/75">
                       {loading
-                        ? 'Loading featured video…'
-                        : 'Our featured video is currently unavailable.'}
+                        ? 'Loading live...'
+                        : 'Our live video is currently unavailable.'}
                     </div>
                   )}
 
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/10" />
 
                   <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4 sm:inset-x-6 sm:bottom-6">
-                    <div className="min-w-0 text-white">
-                      <p className="mt-2 text-xs text-white/80 sm:text-sm">
-                        Glean from our messages and join our community.
-                      </p>
-                    </div>
-
                     <button
                       type="button"
                       disabled={!videoId}
                       onClick={() => setPlayMobile(true)}
-                      aria-label="Play featured church video"
+                      aria-label="Play live video"
                       className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#5A181C] shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#5A181C] disabled:cursor-not-allowed disabled:opacity-50 sm:h-14 sm:w-14"
                     >
                       <svg
@@ -239,75 +274,82 @@ export default function SaturdayChurchSection() {
             </div>
 
             {/* BACK: CHURCH INFORMATION */}
-            <div className="absolute inset-0 flex flex-col overflow-y-auto rounded-3xl bg-[#5A181C] p-6 text-white shadow-lg [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-8">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70 sm:text-xs">
-                The Commonwealth Digital Church
-              </p>
-
-              <p className="mt-4 text-sm leading-6 text-white/90 sm:text-base sm:leading-7">
+            <div className="absolute inset-0 flex flex-col overflow-y-auto bg-[#5A181C] px-6 py-8 text-white [backface-visibility:hidden] [transform:rotateY(180deg)] sm:px-10 sm:py-10">
+              <p className="text-[15px] leading-7 text-white/90 sm:text-base sm:leading-8">
                 Our digital church is not a concession to convenience. It is
                 the continuation of the apostolic pattern: to reach men where
                 they are, while forming them into who they must become in
                 Christ.
               </p>
 
-              <div className="mt-5 rounded-xl border border-white/15 bg-white/10 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-white/70">
+              <div className="mt-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C58F]/80">
                   Join us online
                 </p>
-                <p className="mt-1 text-base font-semibold">
+                <p className="mt-1.5 text-xl font-semibold leading-7 text-white">
                   Every Saturday · 6:30 pm
                 </p>
-                <p className="mt-1 text-xs leading-5 text-white/80">
+                <p className="mt-3 text-sm italic leading-6 text-white/75">
                   Distance cannot dissolve what Christ has joined.
                 </p>
               </div>
 
-              <div className="mt-auto flex flex-col items-start gap-3 pt-5">
+              <div className="mt-auto pt-6">
                 <a
                   href={YOUTUBE_CHANNEL}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(event) => event.stopPropagation()}
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#5A181C] transition-colors hover:bg-[#F7EDEA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#5A181C]"
+                  className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#5A181C]"
                 >
-                  Visit our YouTube →
+                  <span className="border-b border-white/40 pb-0.5 transition-colors group-hover:border-white">
+                    Visit our YouTube
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  >
+                    →
+                  </span>
                 </a>
-                <p className="text-[10px] text-white/65">
-                  Swipe left or right to turn the card.
-                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* CLEAR, ACCESSIBLE CARD CONTROL */}
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={resetToVideo}
-            disabled={!flipped && !playMobile}
-            className="flex min-h-11 items-center justify-center rounded-xl border border-[#5A181C]/20 bg-white px-3 py-3 text-xs font-semibold text-[#5A181C] transition-colors hover:bg-[#F8F3F0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5A181C] disabled:cursor-default disabled:opacity-50 sm:text-sm"
-          >
-            Live Service
-          </button>
+        <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
+          <div className="mt-5 flex items-center gap-4">
+            <button
+              type="button"
+              onClick={resetToVideo}
+              aria-pressed={!flipped}
+              className={`min-h-11 shrink-0 text-sm font-semibold tracking-wide transition-colors duration-500 focus-visible:outline-none focus-visible:text-[#5A181C] ${
+                flipped ? 'text-stone-400' : 'text-[#5A181C]'
+              }`}
+            >
+              Live Service
+            </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              setFlipped((value) => !value);
-              setPlayMobile(false);
-            }}
-            className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#5A181C] px-3 py-3 text-xs font-semibold text-white transition-colors hover:bg-[#3D0F12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5A181C] focus-visible:ring-offset-2 sm:text-sm"
-          >
-            {flipped ? 'Get to know us' : 'Get to know us'}
-            <span aria-hidden="true">↻</span>
-          </button>
+            <div className="relative h-6 flex-1" aria-hidden="true">
+              <span className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-[#5A181C]/10 via-[#5A181C]/40 to-[#5A181C]/10" />
+              <span
+                className="church-bead absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full"
+                style={{ left: flipped ? 'calc(100% - 0.75rem)' : '0px' }}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={showAbout}
+              aria-pressed={flipped}
+              className={`min-h-11 shrink-0 text-sm font-semibold tracking-wide transition-colors duration-500 focus-visible:outline-none focus-visible:text-[#5A181C] ${
+                flipped ? 'text-[#5A181C]' : 'text-stone-400'
+              }`}
+            >
+              Get to know us
+            </button>
+          </div>
         </div>
-
-        <p className="mt-3 text-center text-xs leading-5 text-stone-500">
-          Join us online every Saturday at 6:30 pm.
-        </p>
       </div>
 
       {/* DESKTOP */}

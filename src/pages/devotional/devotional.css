@@ -55,7 +55,6 @@
 /* Decorative quotation mark */
 
 .devotional-content blockquote::before {
-  content: "“";
   position: absolute;
   left: 1rem;
   top: 0.4rem;

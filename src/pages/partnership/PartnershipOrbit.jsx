@@ -11,21 +11,18 @@ import './PartnershipMotion.css';
 const paths = [
   {
     title: 'Give',
-    kicker: '01 / SOW',
     Icon: HandCoins,
     text: 'Every word written is a seed sown into a soul. Your giving puts the word into the hands of thousands who may never meet us, but will meet God through it.',
     action: 'Give Now',
   },
   {
     title: 'Serve',
-    kicker: '02 / BUILD',
     Icon: HeartHandshake,
     text: 'Outpouring needs hands, not just hearts. Lend your time, your voice, your platform and help us carry this Gospel of our Lord to the nations!',
     action: 'Explore Opportunities',
   },
   {
     title: 'Grow',
-    kicker: '03 / BECOME',
     Icon: Sprout,
     text: "This is more than a book you read, it's a life that reads you. Let what you read disciple you, stretch you, and build you day by day, until your life becomes the message.",
     action: 'Be transformed',
@@ -100,12 +97,8 @@ export default function PartnershipOrbit() {
       </div>
 
       <div className="partnership-orbit-detail" key={active}>
-        <span className="partnership-orbit-kicker">
-          {current.kicker} / PARTNERSHIP
-        </span>
         <h3>
           {current.title}
-          <span className="text-[#991313]">.</span>
         </h3>
         <p>{current.text}</p>
         <span className="partnership-orbit-action">
@@ -121,10 +114,6 @@ export default function PartnershipOrbit() {
         >
           <ArrowLeft size={19} />
         </button>
-
-        <span>
-          0{active + 1} <span className="opacity-40">/ 03</span>
-        </span>
 
         <button
           type="button"

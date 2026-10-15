@@ -9,7 +9,6 @@ function readSaved() {
       ? parsed.filter((item) => typeof item === "string")
       : [];
   } catch {
-    // Fallback gracefully if localStorage is restricted, missing, or fails to parse
     return [];
   }
 }
@@ -36,7 +35,7 @@ function PreviousDevotionalFilters({
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
     } catch {
-      // Ignore write errors (e.g. storage quota exceeded or disabled storage)
+      // Ignore storage errors.
     }
   }, [saved]);
 
@@ -57,8 +56,14 @@ function PreviousDevotionalFilters({
     if (!value) return;
 
     setSaved((prev) =>
-      [value, ...prev.filter((item) => item.toLowerCase() !== value.toLowerCase())].slice(0, 20)
+      [
+        value,
+        ...prev.filter(
+          (item) => item.toLowerCase() !== value.toLowerCase()
+        ),
+      ].slice(0, 20)
     );
+
     onCategoryChange(value);
     setDraft("");
     setDeleteTarget(null);
@@ -90,19 +95,21 @@ function PreviousDevotionalFilters({
 
   return (
     <aside className="w-full lg:w-[255px] lg:shrink-0">
-      <div className="mb-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-burgundy-primary">
-          Refine
-        </p>
+      {/* Desktop heading */}
+      <div className="mb-5 hidden lg:block">
         <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-navy-dark">
           Filter devotionals
         </h2>
       </div>
 
-      <div className="border-t border-black/[0.08] py-5">
-        <h3 className="mb-3 text-sm font-semibold text-navy-dark">Category</h3>
+      {/* Category search and desktop category options */}
+      <div className="border-t border-black/[0.08] py-3 lg:py-5">
+        <h3 className="mb-3 hidden text-sm font-semibold text-navy-dark lg:block">
+          Category
+        </h3>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 [scrollbar-width:thin] lg:flex-col lg:gap-1 lg:overflow-visible">
+        {/* Saved categories: desktop only */}
+        <div className="hidden gap-2 overflow-x-auto pb-2 [scrollbar-width:thin] lg:flex lg:flex-col lg:gap-1 lg:overflow-visible">
           <button
             type="button"
             onClick={() => choose("all")}
@@ -160,13 +167,15 @@ function PreviousDevotionalFilters({
           )}
         </div>
 
-        <form onSubmit={submit} className="mt-3">
+        {/* Category search: mobile and desktop */}
+        <form onSubmit={submit} className="mt-0 lg:mt-3">
           <label
             htmlFor="previous-category-search"
-            className="mb-2 block text-xs font-medium text-[#6B7280]"
+            className="mb-2 hidden text-xs font-medium text-[#6B7280] lg:block"
           >
-            Search another category
+            Search or add a category
           </label>
+
           <div className="flex min-w-0 gap-2">
             <input
               id="previous-category-search"
@@ -177,19 +186,24 @@ function PreviousDevotionalFilters({
             />
             <button
               type="submit"
-              className="rounded-xl bg-burgundy-primary px-3 text-xs font-semibold text-white"
+              className="shrink-0 rounded-xl bg-burgundy-primary px-4 py-2.5 text-xs font-semibold text-white"
             >
               Search
             </button>
           </div>
-          <p className="mt-2 text-[11px] leading-4 text-[#6B7280]">
+
+          <p className="mt-2 hidden text-[11px] leading-4 text-[#6B7280] lg:block">
             Recent searches are saved on this device. Long-press or right-click to delete.
           </p>
         </form>
       </div>
 
+      {/* Date range: desktop only */}
       <div className="hidden border-t border-black/[0.08] py-6 lg:block">
-        <h3 className="mb-4 text-sm font-semibold text-navy-dark">Date Range</h3>
+        <h3 className="mb-4 text-sm font-semibold text-navy-dark">
+          Date Range
+        </h3>
+
         <div className="grid gap-3">
           <label className="text-xs text-[#6B7280]">
             From
@@ -200,6 +214,7 @@ function PreviousDevotionalFilters({
               className="mt-2 w-full rounded-xl border border-[#E5E7EB] px-3 py-2.5 text-sm text-charcoal-text"
             />
           </label>
+
           <label className="text-xs text-[#6B7280]">
             To
             <input
@@ -212,8 +227,12 @@ function PreviousDevotionalFilters({
         </div>
       </div>
 
-      <div className="border-t border-black/[0.08] py-5">
-        <h3 className="mb-3 text-sm font-semibold text-navy-dark">Episode number</h3>
+      {/* Episode number: desktop only */}
+      <div className="hidden border-t border-black/[0.08] py-5 lg:block">
+        <h3 className="mb-3 text-sm font-semibold text-navy-dark">
+          Episode number
+        </h3>
+
         <div className="grid grid-cols-2 gap-3">
           <label className="text-xs text-[#6B7280]">
             From
@@ -226,6 +245,7 @@ function PreviousDevotionalFilters({
               className="mt-2 w-full min-w-0 rounded-xl border border-[#E5E7EB] px-3 py-2.5 text-sm text-charcoal-text"
             />
           </label>
+
           <label className="text-xs text-[#6B7280]">
             To
             <input

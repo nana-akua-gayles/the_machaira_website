@@ -1,10 +1,12 @@
-@import '@fontsource/montserrat';
+@import "@fontsource/montserrat/400.css";
+@import "@fontsource/montserrat/500.css";
+@import "@fontsource/montserrat/600.css";
+@import "@fontsource/montserrat/700.css";
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Montserrat';
-  
-  /* Exact requested color palette */
+  --font-sans: "Montserrat", sans-serif;
+
   --color-parchment: #FFFFFF;
   --color-burgundy-primary: #991313;
   --color-navy-dark: #101A2B;
@@ -13,9 +15,24 @@
   --color-soft-gray: #B9BEC8;
 }
 
+html {
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100%;
   background-color: var(--color-parchment);
   color: var(--color-charcoal-text);
+  font-family: "Montserrat", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 @keyframes slideUp {
@@ -23,6 +40,7 @@ body {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;

@@ -151,7 +151,6 @@ export default function DevotionalOverlay({ onReadDevotional }) {
           <div className="flex items-center gap-3 px-3.5 pb-3 pt-3.5 sm:px-4 sm:pb-3.5 sm:pt-4 lg:gap-4 lg:px-5 lg:py-4">
             <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#76252B] text-[#FFF9F1] shadow-sm sm:h-11 sm:w-11">
               <BookOpen size={19} strokeWidth={1.7} />
-              <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-[#FCF9F4] bg-[#D2A66B]" />
             </div>
 
             <div className="min-w-0 flex-1">

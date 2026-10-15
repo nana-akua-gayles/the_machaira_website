@@ -265,7 +265,7 @@ export default function NewsfeedSection({ onSelectStory }) {
                     viewport={{ once: true, amount: 0.3 }}
                     variants={fadeInUp}
                     custom={index * 0.3}
-                    onClick={() => handleStoryClick(story, "UPDATE")}
+                    onClick={() => handleStoryClick(story)}
                     className="py-5 first:pt-0 last:pb-0 flex flex-row items-start sm:items-center gap-3 sm:gap-5 group cursor-pointer bg-white/40 backdrop-blur-md p-3 sm:p-4 rounded-2xl hover:bg-white/80 transition-all duration-300"
                   >
                     {story.image_url && (
