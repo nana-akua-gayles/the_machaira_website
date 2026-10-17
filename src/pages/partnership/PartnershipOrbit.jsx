@@ -1,35 +1,40 @@
-import { useState, useRef } from 'react';
+
+import { useState, useRef } from "react";
 import {
   ArrowLeft,
   ArrowRight,
   HandCoins,
   HeartHandshake,
   Sprout,
-} from 'lucide-react';
-import './PartnershipMotion.css';
+} from "lucide-react";
+import "./PartnershipMotion.css";
 
 const paths = [
   {
-    title: 'Give',
+    title: "Give",
     Icon: HandCoins,
-    text: 'Every word written is a seed sown into a soul. Your giving puts the word into the hands of thousands who may never meet us, but will meet God through it.',
-    action: 'Give Now',
+    text: "Every word written is a seed sown into a soul. Your giving puts the word into the hands of thousands who may never meet us, but will meet God through it.",
+    action: "Give Now",
   },
   {
-    title: 'Serve',
+    title: "Serve",
     Icon: HeartHandshake,
-    text: 'Outpouring needs hands, not just hearts. Lend your time, your voice, your platform and help us carry this Gospel of our Lord to the nations!',
-    action: 'Explore Opportunities',
+    text: "Outpouring needs hands, not just hearts. Lend your time, your voice, your platform and help us carry this Gospel of our Lord to the nations!",
+    action: "Explore Opportunities",
   },
   {
-    title: 'Grow',
+    title: "Grow",
     Icon: Sprout,
     text: "This is more than a book you read, it's a life that reads you. Let what you read disciple you, stretch you, and build you day by day, until your life becomes the message.",
-    action: 'Be transformed',
+    action: "Be transformed",
   },
 ];
 
-export default function PartnershipOrbit() {
+export default function PartnershipOrbit({
+  onGive,
+  onServe,
+  onGrow,
+}) {
   const [active, setActive] = useState(0);
   const [turn, setTurn] = useState(0);
   const startX = useRef(null);
@@ -48,7 +53,8 @@ export default function PartnershipOrbit() {
   const handleTouchEnd = (event) => {
     if (startX.current === null) return;
 
-    const distance = event.changedTouches[0].clientX - startX.current;
+    const distance =
+      event.changedTouches[0].clientX - startX.current;
 
     if (Math.abs(distance) > 45) {
       choose(active + (distance < 0 ? 1 : -1));
@@ -56,6 +62,12 @@ export default function PartnershipOrbit() {
 
     startX.current = null;
   };
+
+  const handleAction = {
+    Give: onGive,
+    Serve: onServe,
+    Grow: onGrow,
+  }[current.title];
 
   return (
     <div
@@ -69,7 +81,7 @@ export default function PartnershipOrbit() {
       >
         <div
           className="partnership-orbit-ring"
-          style={{ '--orbit-angle': `${turn * -120}deg` }}
+          style={{ "--orbit-angle": `${turn * -120}deg` }}
           aria-hidden="true"
         />
 
@@ -79,7 +91,7 @@ export default function PartnershipOrbit() {
             type="button"
             onClick={() => choose(index)}
             className={`partnership-orbit-node partnership-orbit-node-${index} ${
-              active === index ? 'is-active' : ''
+              active === index ? "is-active" : ""
             }`}
             aria-label={`View ${title}`}
             aria-pressed={active === index}
@@ -97,13 +109,17 @@ export default function PartnershipOrbit() {
       </div>
 
       <div className="partnership-orbit-detail" key={active}>
-        <h3>
-          {current.title}
-        </h3>
+        <h3>{current.title}</h3>
         <p>{current.text}</p>
-        <span className="partnership-orbit-action">
-          {current.action} <ArrowRight size={16} />
-        </span>
+
+        <button
+          type="button"
+          onClick={handleAction}
+          className="partnership-orbit-action"
+        >
+          {current.action}
+          <ArrowRight size={16} />
+        </button>
       </div>
 
       <div className="partnership-orbit-controls">

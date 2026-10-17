@@ -158,10 +158,6 @@ export default function MainFeedSection({ onSelectStory }) {
                   <span className="truncate">
                     {article.category || "Article"}
                   </span>
-                  <ArrowUpRight
-                    size={17}
-                    className="shrink-0 text-[#101A2B] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
                 </div>
 
                 <h3 className="mt-2 text-[15px] sm:text-xl font-semibold leading-[1.3] tracking-[-0.035em] text-[#101A2B] line-clamp-3 group-hover:text-[#991313] transition-colors">
@@ -169,7 +165,7 @@ export default function MainFeedSection({ onSelectStory }) {
                 </h3>
 
                 <p className="hidden sm:block mt-2 text-xs leading-relaxed text-[#4D5057] line-clamp-2">
-                  {article.body || "Read the full story"}
+                  {article.body || "Read the full article"}
                 </p>
 
                 <div className="mt-auto pt-3 flex items-center justify-between gap-2 text-[10px] text-[#4D5057]">

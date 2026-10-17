@@ -24,10 +24,6 @@ export default function ChurchOrbit({ variant = "values" }) {
 
   return (
     <div className="church-orbit-shell lg:hidden" aria-label={`${variant === "purpose" ? "Mission and vision" : "Church values"} interactive orbit`}>
-      <div className="church-orbit-topline">
-        <span>{variant === "purpose" ? "" : "FOUR VALUES · ONE FOCUS"}</span>
-        <span>0{active + 1} / 0{items.length}</span>
-      </div>
       <div
         className="church-orbit-stage"
         onTouchStart={(event) => { touchStart.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }}

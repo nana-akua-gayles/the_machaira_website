@@ -79,8 +79,16 @@ function DevotionalContent({ parsed, fallbackContent }) {
         </blockquote>
       )}
 
+      {/*
+        clear-both: on small screens the date nav is floated (see
+        DevotionalReader.jsx), and the memory verse above is allowed to
+        wrap beside it -- but the body paragraphs here must always start
+        full width below the date nav, never beside it. lg:clear-none is
+        explicit since clear has no effect in the large-screen grid
+        layout anyway; this never touches large screens.
+      */}
       <div
-        className="devotional-article-body"
+        className="devotional-article-body clear-both lg:clear-none"
         dangerouslySetInnerHTML={{
           __html: mainContent,
         }}

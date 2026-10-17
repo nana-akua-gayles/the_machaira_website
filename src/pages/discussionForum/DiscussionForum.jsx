@@ -5,10 +5,7 @@ import DiscussionFeed from './discussionFeatures/DiscussionFeed';
 import DiscussionRightSidebar from './discussionFeatures/DiscussionRightSidebar';
 
 const DiscussionForum = () => {
-  // Selected category lives here because both DiscussionCategory (which
-  // sets it) and DiscussionFeed (which filters by it) need it. The active
-  // tab (Latest/Trending/etc) stays local to DiscussionFeed since nothing
-  // else depends on it.
+
   const [selectedCategory, setSelectedCategory] = useState('All Discussions');
 
   return (

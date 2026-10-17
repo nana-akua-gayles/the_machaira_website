@@ -109,7 +109,7 @@ export default function NewsfeedPage() {
                   <h2 className="mt-3 text-[clamp(1.6rem,5.5vw,2.8rem)] leading-[1.08] tracking-[-0.045em] font-semibold line-clamp-3">{featuredStory.title}</h2>
                   <p className="mt-3 text-sm text-white/75 line-clamp-2 leading-relaxed">{featuredStory.body?.replace(/\\n/g, " ")}</p>
                   <div className="mt-5 flex items-center justify-between border-t border-white/25 pt-4 text-xs font-semibold uppercase tracking-[0.14em]">
-                    Read the story <span className="grid place-items-center rounded-full bg-white text-[#101A2B] w-10 h-10 transition-transform group-hover:translate-x-1"><ArrowUpRight size={18} /></span>
+                    Read this article <span className="grid place-items-center rounded-full bg-white text-[#101A2B] w-10 h-10 transition-transform group-hover:translate-x-1"><ArrowUpRight size={18} /></span>
                   </div>
                 </div>
               </button>
@@ -128,8 +128,7 @@ export default function NewsfeedPage() {
         <div className="fixed inset-0 z-[9999] bg-[#F9F9F7] flex flex-col" role="dialog" aria-modal="true" aria-label={activeStory.title}>
           <header className="shrink-0 border-b border-[#B9BEC8]/40 bg-white/95 backdrop-blur-lg px-4 sm:px-8 py-3 sm:py-4">
             <div className="mx-auto max-w-6xl flex items-center justify-between gap-4">
-              <span className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] text-[#991313]"><BookOpen size={16} /> The Commonwealth Journal</span>
-              <button type="button" onClick={() => setIsExpanded(false)} className="inline-flex items-center gap-2 rounded-full border border-[#B9BEC8] px-4 py-2 text-xs font-semibold text-[#101A2B] hover:bg-[#101A2B] hover:text-white transition" aria-label="Close article"><X size={16} /> Close</button>
+              <button type="button" onClick={() => setIsExpanded(false)} className="inline-flex items-center gap-2 rounde-full border border-[#B9BEC8] px-4 py-2 text-xs font-semibold text-[#101A2B] hover:bg-[#101A2B] hover:text-white transition" aria-label="Close article"><X size={16} /></button>
             </div>
           </header>
           <div className="flex-1 overflow-y-auto overscroll-contain" onKeyDown={(event) => { if (event.key === "Escape") setIsExpanded(false); }}>

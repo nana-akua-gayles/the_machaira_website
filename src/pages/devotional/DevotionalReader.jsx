@@ -396,16 +396,30 @@ function DevotionalReader() {
 
       <main className="bg-white">
         <section className="bg-white">
-          <div className="mx-auto grid max-w-300 grid-cols-[70px_minmax(0,1fr)] gap-x-5 gap-y-8 px-4 py-10 sm:gap-x-6 sm:px-6 lg:grid-cols-[120px_minmax(0,1fr)_320px] lg:gap-x-14 lg:gap-y-0 lg:px-12 lg:py-16">
-            <DevotionalDateNav
-              devotional={devotional}
-              selectedDate={selectedDate}
-              onDateSelect={handleDateSelect}
-              loading={dateLoading}
-              topOffsetClassName="pt-0"
-            />
+          <div className="mx-auto block max-w-300 px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[120px_minmax(0,1fr)_320px] lg:gap-x-14 lg:gap-y-0 lg:px-12 lg:py-16">
+            {/*
+              On small screens this container is a plain block, not a
+              grid: the date-nav is floated left so the content below
+              wraps beside it only while it's shorter than the date-nav,
+              then continues at full width once past it. Grid can't do
+              this (a grid row's height is fixed by its tallest item,
+              so content would stay squeezed beside the date-nav for
+              its entire height). At the lg breakpoint this switches
+              back to the original 3-column grid, where float has no
+              effect on a grid item anyway, so lg:float-none below is
+              just for clarity.
+            */}
+            <div className="float-left mr-5 w-[70px] sm:mr-6 sm:w-[92px] lg:float-none lg:mr-0 lg:w-auto">
+              <DevotionalDateNav
+                devotional={devotional}
+                selectedDate={selectedDate}
+                onDateSelect={handleDateSelect}
+                loading={dateLoading}
+                topOffsetClassName="pt-0"
+              />
+            </div>
 
-            <div className="col-start-2 row-start-1 min-w-0 lg:col-auto lg:row-auto">
+            <div className="min-w-0">
               {dateNotice && (
                 <p role="status" aria-live="polite" className="mb-4 flex items-center gap-2 rounded-xl border border-[#eadfda] bg-[#FBF8F6] px-4 py-3 text-sm font-medium text-burgundy-primary">
                   {dateLoading && <span className="h-4 w-4 animate-spin rounded-full border-2 border-burgundy-primary/30 border-t-burgundy-primary" />}
@@ -454,7 +468,14 @@ function DevotionalReader() {
               </div>
             </div>
 
-            <div className="col-span-full min-w-0 lg:col-auto lg:col-start-3 lg:row-start-1">
+            {/*
+              clear-both: must start below BOTH the floated date-nav and
+              the content column, regardless of where either one ends.
+              mt-8 replicates the old grid's gap-y-8 row spacing; reset
+              to 0 at lg since the grid's own lg:gap-x-14 provides
+              spacing there instead (sidebar sits beside, not below).
+            */}
+            <div className="clear-both mt-8 min-w-0 lg:clear-none lg:col-auto lg:col-start-3 lg:row-start-1 lg:mt-0">
               <DevotionalSidebar
                 deepDiver={parsed?.deepDiver}
                 prayer={parsed?.prayer}
@@ -467,7 +488,7 @@ function DevotionalReader() {
               />
             </div>
 
-            <div className="col-span-full min-w-0 print:hidden lg:hidden">
+            <div className="clear-both mt-8 min-w-0 print:hidden lg:hidden">
               <DevotionalComments episodeNumber={devotional.episode_number} />
             </div>
           </div>

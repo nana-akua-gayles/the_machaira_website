@@ -73,7 +73,7 @@ export default function ChurchCoreValues() {
                   {/* Mobile: the original desktop tree composition, adapted to fit the viewport. */}
           <div className="lg:hidden">
             <h2 className="max-w-md text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-[#241516]">
-              Revealing Christ <span className="text-[#8d1515]">To the world</span>
+              Revealing Jesus <span className="text-[#8d1515]">To the world</span>
             </h2>
             <p className="mt-5 max-w-lg text-sm leading-7 text-[#6d6260]">
               Everything we are and everything we do grows from a foundation of
@@ -206,8 +206,7 @@ export default function ChurchCoreValues() {
                 );
               })}
               <div className="pointer-events-none absolute bottom-[2%] left-1/2 z-20 -translate-x-1/2 rounded-full border border-[#8d1515]/20 bg-white/85 px-4 py-2 text-center shadow-sm backdrop-blur-sm">
-                <span className="block whitespace-nowrap text-[8px] font-semibold uppercase tracking-[0.2em] text-[#8d1515]">Our Foundation</span>
-                <span className="block text-sm font-semibold text-[#332829]">Christ</span>
+                <span className="block whitespace-nowrap text-[8px] font-semibold uppercase tracking-[0.2em] text-[#8d1515]">Our Values</span>
               </div>
             </div>
           </div>
@@ -221,7 +220,7 @@ export default function ChurchCoreValues() {
           <div className="lg:col-span-4">
 
             <h2 className="max-w-md text-3xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#241516] sm:text-3xl lg:text-4xl">
-              Revealing Christ
+              Revealing Jesus
               <br />
               <span className="text-[#8d1515]">To the World.</span>
             </h2>
@@ -336,10 +335,7 @@ export default function ChurchCoreValues() {
               {/* CENTER FOUNDATION BADGE */}
               <div className="absolute bottom-6 left-1/2 z-30 -translate-x-1/2 text-center bg-white/80 backdrop-blur-md px-5 py-2 rounded-full border border-[#8d1515]/20 shadow-sm">
                 <span className="block text-[9px] font-semibold uppercase tracking-[0.3em] text-[#8d1515]">
-                  Our Foundation
-                </span>
-                <span className="mt-0.5 block text-xs sm:text-sm font-semibold text-[#332829]">
-                  Christ
+                  Our Values
                 </span>
               </div>
             </div>

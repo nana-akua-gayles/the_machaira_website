@@ -109,14 +109,6 @@ function DevotionalTopics() {
           </div>
         </div>
 
-        {/* Mobile View All */}
-        <button
-          type="button"
-          className="mt-3 rounded-full border border-soft-gray px-5 py-2.5 text-xs font-semibold text-navy-dark transition duration-300 hover:border-burgundy-primary hover:bg-burgundy-primary hover:text-white md:hidden"
-        >
-          View All
-        </button>
-
       </div>
     </section>
   );
