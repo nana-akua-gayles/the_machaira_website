@@ -1,3 +1,4 @@
+
 function DevotionalContent({ parsed, fallbackContent }) {
   if (!parsed) {
     if (fallbackContent) {
@@ -14,6 +15,7 @@ function DevotionalContent({ parsed, fallbackContent }) {
       </p>
     );
   }
+
   const { memoryVerse, mainContent } = parsed;
 
   return (
@@ -66,6 +68,39 @@ function DevotionalContent({ parsed, fallbackContent }) {
         .devotional-article-body a:hover {
           color: #7f0e0e;
         }
+
+        .devotional-memory-verse {
+          box-sizing: border-box;
+          display: flow-root;
+          width: auto;
+          max-width: 100%;
+          min-width: 0;
+          margin: 0 0 1.5rem;
+          padding: 1rem 1.25rem;
+          border-left: 4px solid #991313;
+          border-radius: 0.5rem;
+          background-color: #FBF8F6;
+          color: #374151;
+          overflow-wrap: anywhere;
+          word-break: normal;
+        }
+
+        .devotional-memory-verse-citation {
+          display: block;
+          margin-top: 0.75rem;
+          color: #991313;
+          font-size: 0.95rem;
+          font-weight: 700;
+          font-style: normal;
+        }
+
+        @media (min-width: 1024px) {
+          .devotional-memory-verse {
+            display: block;
+            width: auto;
+            margin: 1.5rem 0;
+          }
+        }
       `}</style>
 
       {memoryVerse && (
@@ -79,14 +114,6 @@ function DevotionalContent({ parsed, fallbackContent }) {
         </blockquote>
       )}
 
-      {/*
-        clear-both: on small screens the date nav is floated (see
-        DevotionalReader.jsx), and the memory verse above is allowed to
-        wrap beside it -- but the body paragraphs here must always start
-        full width below the date nav, never beside it. lg:clear-none is
-        explicit since clear has no effect in the large-screen grid
-        layout anyway; this never touches large screens.
-      */}
       <div
         className="devotional-article-body clear-both lg:clear-none"
         dangerouslySetInnerHTML={{
