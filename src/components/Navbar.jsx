@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import UserAvatar from "./UserAvatar";
-import logoImage from "../assets/images/Mlogo.png";
+import logoImage from "../assets/images/mIcon.png";
 
 const navItems = [
   { to: "/", label: "Home" },
