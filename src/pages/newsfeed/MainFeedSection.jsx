@@ -1,21 +1,13 @@
 import { useState, useEffect } from "react";
-import {
-  Globe,
-  Megaphone,
-  BookOpen,
-  Heart,
-  Calendar,
-  ArrowUpRight,
-  Loader2,
-} from "lucide-react";
+import { Loader2} from "lucide-react";
 import { supabase } from "../../lib/supabaseClient";
 
 const categories = [
-  { label: "All Updates", icon: Globe },
-  { label: "Announcements", icon: Megaphone, dbValue: "ANNOUNCEMENTS" },
-  { label: "Teachings", icon: BookOpen, dbValue: "TEACHINGS" },
-  { label: "Testimonies", icon: Heart, dbValue: "TESTIMONIES" },
-  { label: "Events", icon: Calendar, dbValue: "EVENTS" },
+  { label: "All Updates"},
+  { label: "Announcements", dbValue: "ANNOUNCEMENTS" },
+  { label: "Teachings", dbValue: "TEACHINGS" },
+  { label: "Testimonies", dbValue: "TESTIMONIES" },
+  { label: "Events", dbValue: "EVENTS" },
 ];
 
 export default function MainFeedSection({ onSelectStory }) {
@@ -82,7 +74,7 @@ export default function MainFeedSection({ onSelectStory }) {
         aria-label="Filter stories by category"
       >
         {categories.map((item) => {
-          const Icon = item.icon;
+          // const Icon = item.icon;
           const selected = activeCategory === item.label;
 
           return (
@@ -97,7 +89,6 @@ export default function MainFeedSection({ onSelectStory }) {
                   : "bg-white border-[#B9BEC8]/60 text-[#4D5057] hover:border-[#991313]"
               }`}
             >
-              <Icon size={14} />
               {item.label}
             </button>
           );
@@ -148,7 +139,6 @@ export default function MainFeedSection({ onSelectStory }) {
                   />
                 ) : (
                   <div className="h-full grid place-content-center text-[#4D5057]">
-                    <BookOpen size={26} />
                   </div>
                 )}
               </div>

@@ -1,15 +1,12 @@
 import { supabase } from "./supabaseClient";
 
-export async function signInWithOAuth(provider) {
-  const { error } = await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: window.location.origin } });
-  if (error) {
-    console.error(`Error starting ${provider} sign-in:`, error);
-    throw error;
-  }
+function redirectUrl(path) {
+  const origin = window.location.origin;
+  return typeof path === "string" && path.startsWith("/") && !path.startsWith("//") ? origin + path : origin;
 }
 
-export async function signInWithMagicLink(email) {
-  const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin } });
+export async function signInWithMagicLink(email, redirectPath) {
+  const { error } = await supabase.auth.signInWithOtp({ email: String(email).trim().toLowerCase(), options: { emailRedirectTo: redirectUrl(redirectPath), shouldCreateUser: true } });
   if (error) {
     console.error("Error sending magic link:", error);
     throw error;
@@ -17,6 +14,7 @@ export async function signInWithMagicLink(email) {
 }
 
 export async function signInWithGoogleIdToken(idToken) {
+  if (!idToken) throw new Error("Missing Google credential.");
   const { data, error } = await supabase.auth.signInWithIdToken({ provider: "google", token: idToken });
   if (error) {
     console.error("Error signing in with Google ID token:", error);

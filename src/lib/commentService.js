@@ -3,12 +3,13 @@ import { supabase } from "./supabaseClient";
 /**
  * Get all comments for a devotional episode, along with each
  * commenter's profile (name + avatar), newest first.
+ * Guest comments have no profile, so their typed name is used instead.
  */
 export async function getCommentsForEpisode(episodeNumber) {
   try {
     const { data: comments, error } = await supabase
       .from("devotional_comments")
-      .select("id, user_id, episode_number, content, created_at, likes_count, parent_id")
+      .select("id, user_id, guest_name, episode_number, content, created_at, likes_count, parent_id")
       .eq("episode_number", episodeNumber)
       .order("created_at", { ascending: false });
 
@@ -21,23 +22,28 @@ export async function getCommentsForEpisode(episodeNumber) {
       return [];
     }
 
-    const userIds = [...new Set(comments.map((c) => c.user_id))];
+    const userIds = [...new Set(comments.map((c) => c.user_id).filter(Boolean))];
+    let profileById = new Map();
 
-    const { data: profiles, error: profilesError } = await supabase
-      .from("profiles")
-      .select("id, name, avatar_url")
-      .in("id", userIds);
+    if (userIds.length > 0) {
+      const { data: profiles, error: profilesError } = await supabase
+        .from("profiles")
+        .select("id, name, avatar_url")
+        .in("id", userIds);
 
-    if (profilesError) {
-      console.error("Error fetching comment authors:", profilesError);
-      throw profilesError;
+      if (profilesError) {
+        console.error("Error fetching comment authors:", profilesError);
+        throw profilesError;
+      }
+
+      profileById = new Map(profiles.map((p) => [p.id, p]));
     }
-
-    const profileById = new Map(profiles.map((p) => [p.id, p]));
 
     return comments.map((comment) => ({
       ...comment,
-      author: profileById.get(comment.user_id) || null,
+      author: comment.user_id
+        ? profileById.get(comment.user_id) || null
+        : { id: null, name: comment.guest_name, avatar_url: null },
     }));
   } catch (error) {
     console.error("getCommentsForEpisode failed:", error);
@@ -72,6 +78,37 @@ export async function addComment(episodeNumber, userId, content, parentId = null
     return data;
   } catch (error) {
     console.error("addComment failed:", error);
+    throw error;
+  }
+}
+
+/**
+ * Post a comment as a guest (no account). Needs a name of 2 to 40 characters.
+ * Pass parentId to post it as a reply to another comment.
+ */
+export async function addGuestComment(episodeNumber, guestName, content, parentId = null) {
+  try {
+    const row = {
+      episode_number: episodeNumber,
+      guest_name: guestName,
+      content,
+    };
+    if (parentId) row.parent_id = parentId;
+
+    const { data, error } = await supabase
+      .from("devotional_comments")
+      .insert(row)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error adding guest comment:", error);
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("addGuestComment failed:", error);
     throw error;
   }
 }

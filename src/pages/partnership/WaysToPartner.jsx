@@ -4,12 +4,6 @@ import PartnershipOrbit from "./PartnershipOrbit";
 import PartnershipModal from "./PartnershipModal";
 import ServeModal from "./ServeModal";
 import GrowModal from "./GrowModal";
-import {
-  HandCoins,
-  HeartHandshake,
-  Sprout,
-  ArrowRight,
-} from "lucide-react";
 
 export default function WaysToPartner() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +17,7 @@ export default function WaysToPartner() {
         id="ways-to-partner"
         className="px-5 sm:px-8 md:px-15 py-14 md:py-16 flex flex-col items-center overflow-hidden"
       >
-        <span className="text-burgundy-primary text-2xl md:text-xl font-bold tracking-tight md:tracking-wider mb-4 text-center max-w-3xl leading-tight">
+        <span className="text-burgundy-primary text-2xl md:text-xl font-bold tracking-tight md:tracking-wider mb-4 text-center max-w-2xl leading-tight">
           WE ARE MORE THAN A DEVOTIONAL, WE ARE A TRANSFORMATIONAL MOVEMENT.
         </span>
 
@@ -43,12 +37,8 @@ export default function WaysToPartner() {
         {/* Desktop Partnership Cards */}
         <div className="hidden md:flex flex-col md:flex-row justify-between w-full gap-5">
           {/* Give Card */}
-          <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start gap-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-            <div className="w-12 h-12 rounded-xl bg-burgundy-primary flex justify-center items-center shrink-0 shadow-sm transition-transform duration-300 hover:scale-105">
-              <HandCoins className="w-6 h-6 text-white" />
-            </div>
-
-            <div className="flex flex-col justify-between h-full">
+          <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-col justify-between h-full w-full">
               <div>
                 <h3 className="text-lg font-bold text-charcoal-text mb-1">
                   Give
@@ -63,21 +53,16 @@ export default function WaysToPartner() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-1.5 text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity group w-fit"
+                className="flex items-center text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity w-fit"
               >
                 Give Now
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
 
           {/* Serve Card */}
-          <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start gap-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-            <div className="w-12 h-12 rounded-xl bg-burgundy-primary flex justify-center items-center shrink-0 shadow-sm transition-transform duration-300 hover:scale-105">
-              <HeartHandshake className="w-6 h-6 text-white" />
-            </div>
-
-            <div className="flex flex-col justify-between h-full">
+          <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-col justify-between h-full w-full">
               <div>
                 <h3 className="text-lg font-bold text-charcoal-text mb-1">
                   Serve
@@ -92,21 +77,16 @@ export default function WaysToPartner() {
               <button
                 type="button"
                 onClick={() => setIsServeOpen(true)}
-                className="flex items-center gap-1.5 text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity group w-fit"
+                className="flex items-center text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity w-fit"
               >
                 Explore Opportunities
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
 
           {/* Grow Card */}
-          <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start gap-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-            <div className="w-12 h-12 rounded-xl bg-burgundy-primary flex justify-center items-center shrink-0 shadow-sm transition-transform duration-300 hover:scale-105">
-              <Sprout className="w-6 h-6 text-white" />
-            </div>
-
-            <div className="flex flex-col justify-between h-full">
+          <div className="flex-1 bg-parchment rounded-xl p-6 border border-soft-gray/40 flex items-start shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-col justify-between h-full w-full">
               <div>
                 <h3 className="text-lg font-bold text-charcoal-text mb-1">
                   Grow
@@ -121,10 +101,9 @@ export default function WaysToPartner() {
               <button
                 type="button"
                 onClick={() => setIsGrowOpen(true)}
-                className="flex items-center gap-1.5 text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity group w-fit"
+                className="flex items-center text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity w-fit"
               >
                 Be transformed
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
@@ -137,13 +116,13 @@ export default function WaysToPartner() {
         onClose={() => setIsModalOpen(false)}
       />
 
-      {/* New Serve Modal */}
+      {/* Serve Modal */}
       <ServeModal
         isOpen={isServeOpen}
         onClose={() => setIsServeOpen(false)}
       />
 
-      {/* New Grow Modal */}
+      {/* Grow Modal */}
       <GrowModal
         isOpen={isGrowOpen}
         onClose={() => setIsGrowOpen(false)}

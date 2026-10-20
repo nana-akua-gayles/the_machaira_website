@@ -1,7 +1,5 @@
 import { supabase } from "./supabaseClient";
 
-// The fixed category list. Lives here (not in a table) per our earlier
-// decision — adding a category means adding it here, not a DB migration.
 export const FORUM_CATEGORIES = [
   "Faith & Spirituality",
   "Prayer Requests",
@@ -9,19 +7,11 @@ export const FORUM_CATEGORIES = [
   "Christian Living",
   "Family & Relationships",
   "Youth & Young Adults",
-  "Church Community",
+  "Wisdom for Men",
   "Announcements",
-  "Events & Programs",
+  "Wisdom for Ladies",
 ];
 
-// ---------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------
-
-// forum_posts.user_id / forum_replies.user_id point at auth.users, not
-// profiles, so we can't rely on an automatic embedded join. Instead we
-// batch-fetch the profiles for whatever set of user_ids we just loaded
-// and merge them in manually (same pattern as commentService.js).
 async function attachProfiles(rows, userIdKey = "user_id") {
   if (!rows || rows.length === 0) return rows;
 
@@ -44,10 +34,6 @@ async function attachProfiles(rows, userIdKey = "user_id") {
 
 const POST_FIELDS =
   "id, user_id, category, title, body, pinned, views, replies_count, created_at, updated_at";
-
-// ---------------------------------------------------------------------
-// Stats (hero + category sidebar)
-// ---------------------------------------------------------------------
 
 export async function getForumStats() {
   const [postsResult, repliesResult, membersResult] = await Promise.all([

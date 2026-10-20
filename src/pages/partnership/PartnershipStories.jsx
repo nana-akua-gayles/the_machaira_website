@@ -137,7 +137,10 @@ export default function PartnershipStories() {
           </div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight text-charcoal-text sm:text-4xl">
             Why partner with us?
-          </h2>
+          </h2> <br />
+          <span className="mt-4 text-burgundy-primary text-xl md:text-sm font-bold tracking-tight md:tracking-wider mb-4 text-center max-w-xl leading-tight">
+          WE ARE MORE THAN A DEVOTIONAL, WE ARE A TRANSFORMATIONAL MOVEMENT.
+        </span>
           <p className="mt-3 max-w-xl text-sm leading-7 text-cool-gray sm:text-base">
             We walk into banks, salons, offices, hospitals, places preachers don't get invited to 
             and we leave them with copies for free. <br />

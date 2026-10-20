@@ -153,7 +153,6 @@ export async function getTestimonyStats() {
     data: [
       { value: storiesShared.toLocaleString(), label: "Stories Shared", icon: "users" },
       { value: livesInspired.toLocaleString(), label: "Lives Inspired", icon: "heart" },
-      { value: countriesReached.toLocaleString(), label: "Countries Reached", icon: "flame" },
     ],
     error: null,
   };

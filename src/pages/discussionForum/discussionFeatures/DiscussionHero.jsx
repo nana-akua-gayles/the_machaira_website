@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, MessageSquare, Users, MessageCircle } from 'lucide-react';
+import { Plus} from 'lucide-react';
 import { getForumStats } from '../../../lib/forumService';
 import { isAdmin } from '../../../lib/adminAccess';
 import { useAuth } from '../../../context/AuthContext';
@@ -33,9 +33,9 @@ const DiscussionHero = () => {
   }, []);
 
   const statCards = [
-    { label: 'Discussions', value: stats.discussions, icon: MessageSquare },
-    { label: 'Members', value: stats.members, icon: Users },
-    { label: 'Replies', value: stats.replies, icon: MessageCircle },
+    { label: 'Discussions', value: stats.discussions},
+    { label: 'Members', value: stats.members},
+    { label: 'Replies', value: stats.replies},
   ];
 
   return (
@@ -65,39 +65,20 @@ const DiscussionHero = () => {
             </button>
           ) : (
             <p className="text-xs sm:text-sm text-cool-gray">
-              New discussions are started by the ministry team. Jump into a conversation below.
+              New discussions are started by an Administrator. Share into a conversation below.
             </p>
           )}
-        </div>
-
-        {/* Scripture quote — same editorial treatment as the devotional blockquote */}
-        <div className="hidden lg:block lg:col-span-5">
-          <div className="relative rounded-2xl border border-black/8 bg-[#FBF8F6] p-7">
-            <span className="text-5xl leading-none text-burgundy-primary">
-              &ldquo;
-            </span>
-            <p className="mt-2 text-[17px] italic leading-relaxed text-navy-dark">
-              Iron sharpens iron, and one man sharpens another.
-            </p>
-            <p className="mt-4 text-right text-sm font-semibold text-burgundy-primary">
-              Proverbs 27:17
-            </p>
-          </div>
         </div>
       </div>
 
       {/* Stats */}
       <div className="mt-5 grid grid-cols-3 gap-2 sm:mt-10 sm:gap-4">
         {statCards.map((stat) => {
-          const Icon = stat.icon;
           return (
             <div
               key={stat.label}
               className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-[#B9BEC8]/35 bg-white px-1 py-3 text-center sm:flex-row sm:justify-start sm:gap-4 sm:rounded-2xl sm:p-5 sm:text-left"
             >
-              <div className="hidden sm:flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FBF0F0] text-burgundy-primary">
-                <Icon className="w-5 h-5" />
-              </div>
               <div>
                 <span className="block text-lg sm:text-xl font-semibold leading-none text-navy-dark">
                   {loading ? '...' : stat.value.toLocaleString()}

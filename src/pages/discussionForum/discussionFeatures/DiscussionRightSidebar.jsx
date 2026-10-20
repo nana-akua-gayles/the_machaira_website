@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { TrendingUp, Star, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { getTrendingPosts, getTopContributor } from '../../../lib/forumService';
 import { initials } from './forumHelpers';
 import { isAdmin } from '../../../lib/adminAccess';

@@ -4,9 +4,15 @@ import { ChevronDown, ChevronUp, CornerUpLeft, X } from "lucide-react";
 
 import { useAuth } from "../../../context/AuthContext";
 import { supabase } from "../../../lib/supabaseClient";
-import { getCommentsForEpisode, addComment, getLikedCommentIds, likeComment, unlikeComment, editComment, deleteComment } from "../../../lib/commentService";
+import { getCommentsForEpisode, addComment, addGuestComment, getLikedCommentIds, likeComment, unlikeComment, editComment, deleteComment } from "../../../lib/commentService";
 
 const NO_LIKES = new Set();
+const GUEST_NAME_KEY = "machaira_guest_name";
+const POST_COOLDOWN_MS = 15000;
+
+function loadGuestName() {
+  try { return window.localStorage.getItem(GUEST_NAME_KEY) || ""; } catch { return ""; }
+}
 
 function authorName(author) {
   return author?.name?.trim() || "Anonymous";
@@ -148,6 +154,9 @@ function DevotionalComments({ episodeNumber }) {
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [guestName, setGuestName] = useState(loadGuestName);
+  const honeypotRef = useRef(null);
+  const lastPostRef = useRef(0);
 
   const [replyTo, setReplyTo] = useState(null);
   const [trigger, setTrigger] = useState(null);
@@ -167,6 +176,9 @@ function DevotionalComments({ episodeNumber }) {
 
   const [likes, setLikes] = useState({ userId: null, ids: NO_LIKES });
   const likedCommentIds = likes.userId === userId ? likes.ids : NO_LIKES;
+  const cleanGuestName = guestName.trim().replace(/\s+/g, " ");
+  const guestNameOk = Boolean(user) || (cleanGuestName.length >= 2 && cleanGuestName.length <= 40);
+  const nameInvalid = !user && Boolean(submitError) && !guestNameOk;
 
   useEffect(() => {
     if (!episodeNumber) return;
@@ -222,7 +234,8 @@ function DevotionalComments({ episodeNumber }) {
   const people = useMemo(() => {
     const seen = new Map();
     comments.forEach((c) => {
-      if (!seen.has(c.user_id)) seen.set(c.user_id, { id: c.user_id, name: authorName(c.author), avatar_url: c.author?.avatar_url || null });
+      const key = c.user_id || `guest:${authorName(c.author)}`;
+      if (!seen.has(key)) seen.set(key, { id: key, name: authorName(c.author), avatar_url: c.author?.avatar_url || null });
     });
     return [...seen.values()];
   }, [comments]);
@@ -318,23 +331,37 @@ function DevotionalComments({ episodeNumber }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (!newComment.trim()) return;
+    const text = newComment.trim();
+    if (!text) return;
+
+    const name = guestName.trim().replace(/\s+/g, " ");
+    if (!user && (name.length < 2 || name.length > 40)) {
+      setSubmitError("Please enter your name (2 to 40 characters).");
+      return;
+    }
+    if (Date.now() - lastPostRef.current < POST_COOLDOWN_MS) {
+      setSubmitError("Please wait a few seconds before posting again.");
+      return;
+    }
 
     const threadToOpen = replyTo ? findRoot(replyTo, byId).id : null;
 
     setSubmitError(null);
     setIsSubmitting(true);
     try {
-      const created = await addComment(episodeNumber, user.id, newComment.trim(), replyTo?.id || null);
-      const ownName = myProfile ? myProfile.name : user.user_metadata?.full_name || user.email;
-      const ownAvatar = myProfile ? myProfile.avatar_url : user.user_metadata?.avatar_url || null;
-      setComments((prev) => [
-        {
-          ...created,
-          author: { id: user.id, name: ownName, avatar_url: ownAvatar },
-        },
-        ...prev,
-      ]);
+      let comment = null;
+      if (user) {
+        const created = await addComment(episodeNumber, user.id, text, replyTo?.id || null);
+        const ownName = myProfile ? myProfile.name : user.user_metadata?.full_name || user.email;
+        const ownAvatar = myProfile ? myProfile.avatar_url : user.user_metadata?.avatar_url || null;
+        comment = { ...created, author: { id: user.id, name: ownName, avatar_url: ownAvatar } };
+      } else if (!honeypotRef.current?.value) {
+        const created = await addGuestComment(episodeNumber, name, text, replyTo?.id || null);
+        try { window.localStorage.setItem(GUEST_NAME_KEY, name); } catch { /* Storage may be unavailable */ }
+        comment = { ...created, user_id: null, author: { id: null, name, avatar_url: null } };
+      }
+      lastPostRef.current = Date.now();
+      if (comment) setComments((prev) => [comment, ...prev]);
       if (threadToOpen) setExpanded((prev) => new Set(prev).add(threadToOpen));
       setNewComment("");
       setReplyTo(null);
@@ -514,11 +541,9 @@ function DevotionalComments({ episodeNumber }) {
             <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-soft-gray">
               <span title={formatCommentDate(comment.created_at)}>{timeAgo(comment.created_at)}</span>
 
-              {user && (
-                <button type="button" onClick={() => startReply(comment)} className="font-semibold transition-colors hover:text-burgundy-primary">
-                  Reply
-                </button>
-              )}
+              <button type="button" onClick={() => startReply(comment)} className="font-semibold transition-colors hover:text-burgundy-primary">
+                Reply
+              </button>
 
               {isOwner && !isConfirmingDelete && (
                 <>
@@ -585,87 +610,109 @@ function DevotionalComments({ episodeNumber }) {
         Comments {comments.length > 0 && `(${comments.length})`}
       </h3>
 
-      {user ? (
-        <form ref={formRef} onSubmit={handleSubmit} className="mt-6">
-          {replyTo && (
-            <div className="mb-2 flex items-center justify-between gap-3 rounded-xl bg-burgundy-primary/5 px-4 py-2.5">
-              <div className="flex min-w-0 items-center gap-2 text-xs text-cool-gray">
-                <CornerUpLeft size={13} className="shrink-0 text-burgundy-primary" />
-                <span className="shrink-0">Replying to</span>
-                <span className="shrink-0 font-semibold text-navy-dark">{authorName(replyTo.author)}</span>
-                <span className="truncate">· {replyTo.content}</span>
-              </div>
-              <button type="button" onClick={cancelReply} aria-label="Cancel reply" className="shrink-0 text-cool-gray transition-colors hover:text-burgundy-primary">
-                <X size={15} />
-              </button>
+      <form ref={formRef} onSubmit={handleSubmit} className="mt-6">
+        {replyTo && (
+          <div className="mb-2 flex items-center justify-between gap-3 rounded-xl bg-burgundy-primary/5 px-4 py-2.5">
+            <div className="flex min-w-0 items-center gap-2 text-xs text-cool-gray">
+              <CornerUpLeft size={13} className="shrink-0 text-burgundy-primary" />
+              <span className="shrink-0">Replying to</span>
+              <span className="shrink-0 font-semibold text-navy-dark">{authorName(replyTo.author)}</span>
+              <span className="truncate">· {replyTo.content}</span>
             </div>
-          )}
-
-          <div className="relative">
-            <textarea
-              ref={textareaRef}
-              value={newComment}
-              onChange={handleChange}
-              onClick={(e) => setTrigger(getMentionTrigger(e.target.value, e.target.selectionStart))}
-              onKeyDown={handleKeyDown}
-              onBlur={() => setTrigger(null)}
-              placeholder={replyTo ? `Reply to ${authorName(replyTo.author)}...` : "Share your thoughts on today's devotional..."}
-              rows={3}
-              className="w-full resize-none rounded-2xl border border-black/10 bg-[#F8F8F7] p-4 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none"
-            />
-
-            {trigger && mentionMatches.length > 0 && (
-              <ul role="listbox" className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-black/10 bg-white py-1.5 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.25)]">
-                {mentionMatches.map((person, index) => (
-                  <li key={person.id}>
-                    <button
-                      type="button"
-                      role="option"
-                      aria-selected={index === activeIndex}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        insertMention(person);
-                      }}
-                      onMouseEnter={() => setActiveIndex(index)}
-                      className={`flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition-colors ${index === activeIndex ? "bg-burgundy-primary/5" : ""}`}
-                    >
-                      <CommentAvatar author={person} sizeClass="h-7 w-7 text-[11px]" />
-                      <span className="font-medium text-navy-dark">{person.name}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {submitError && (
-            <p className="mt-2 text-sm text-burgundy-primary">{submitError}</p>
-          )}
-
-          <div className="mt-3 flex items-center justify-between gap-4">
-            <p className="text-xs text-soft-gray">Type @ to mention someone</p>
-            <button
-              type="submit"
-              disabled={isSubmitting || !newComment.trim()}
-              className="rounded-full bg-burgundy-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e] disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isSubmitting ? "Posting..." : replyTo ? "Post Reply" : "Post Comment"}
+            <button type="button" onClick={cancelReply} aria-label="Cancel reply" className="shrink-0 text-cool-gray transition-colors hover:text-burgundy-primary">
+              <X size={15} />
             </button>
           </div>
-        </form>
-      ) : (
-        <div className="mt-6 rounded-2xl bg-[#F8F8F7] p-5 text-center">
-          <p className="text-sm text-cool-gray">
-            Sign in to join the conversation.
-          </p>
-          <Link
-            to="/login"
-            className="mt-3 inline-flex items-center justify-center rounded-full border border-burgundy-primary px-6 py-2.5 text-sm font-semibold text-burgundy-primary transition-colors hover:bg-burgundy-primary hover:text-white"
-          >
-            Sign In
-          </Link>
+        )}
+
+        {!user && (
+          <div className="mb-3">
+            <label htmlFor="guest-name" className="mb-1.5 block text-xs font-semibold text-cool-gray">
+              Your name <span className="text-burgundy-primary">*</span>
+            </label>
+            <input
+              type="text"
+              value={guestName}
+              onChange={(e) => setGuestName(e.target.value)}
+              maxLength={40}
+              autoComplete="name"
+              placeholder="Your name (required)"
+              id="guest-name"
+              required
+              aria-required="true"
+              aria-invalid={nameInvalid}
+              className={`w-full rounded-2xl border bg-[#F8F8F7] px-4 py-3 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none ${nameInvalid ? "border-burgundy-primary" : "border-black/10"}`}
+            />
+            <input
+              ref={honeypotRef}
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute -left-[9999px] h-0 w-0 opacity-0"
+            />
+          </div>
+        )}
+
+        <div className="relative">
+          <textarea
+            ref={textareaRef}
+            value={newComment}
+            onChange={handleChange}
+            onClick={(e) => setTrigger(getMentionTrigger(e.target.value, e.target.selectionStart))}
+            onKeyDown={handleKeyDown}
+            onBlur={() => setTrigger(null)}
+            placeholder={replyTo ? `Reply to ${authorName(replyTo.author)}...` : "Share your thoughts on today's devotional..."}
+            rows={3}
+            maxLength={1000}
+            className="w-full resize-none rounded-2xl border border-black/10 bg-[#F8F8F7] p-4 text-sm text-navy-dark placeholder:text-soft-gray focus:border-burgundy-primary focus:outline-none"
+          />
+
+          {trigger && mentionMatches.length > 0 && (
+            <ul role="listbox" className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-black/10 bg-white py-1.5 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.25)]">
+              {mentionMatches.map((person, index) => (
+                <li key={person.id}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={index === activeIndex}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      insertMention(person);
+                    }}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    className={`flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition-colors ${index === activeIndex ? "bg-burgundy-primary/5" : ""}`}
+                  >
+                    <CommentAvatar author={person} sizeClass="h-7 w-7 text-[11px]" />
+                    <span className="font-medium text-navy-dark">{person.name}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      )}
+
+        {submitError && (
+          <p className="mt-2 text-sm text-burgundy-primary">{submitError}</p>
+        )}
+
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <p className="text-xs text-soft-gray">Type @ to mention someone</p>
+          <button
+            type="submit"
+            disabled={isSubmitting || !newComment.trim() || !guestNameOk}
+            className="rounded-full bg-burgundy-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7f0e0e] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSubmitting ? "Posting..." : replyTo ? "Post Reply" : "Post Comment"}
+          </button>
+        </div>
+        {!user && (
+          <p className="mt-3 text-xs text-soft-gray">
+            Posting as a guest. <Link to="/login" className="font-semibold text-burgundy-primary hover:underline">Sign in</Link> to edit, delete and like.
+          </p>
+        )}
+      </form>
 
       {loading && (
         <p className="mt-8 text-sm text-cool-gray">Loading comments...</p>

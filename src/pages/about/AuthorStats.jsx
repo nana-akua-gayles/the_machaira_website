@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Users, BookOpen, Globe, HeartHandshake } from 'lucide-react';
 
 // Helper component for count-up animation triggered on scroll
 function Counter({ value }) {
@@ -43,10 +42,9 @@ function Counter({ value }) {
 
 export default function AuthorStats() {
   const stats = [
-    { icon: Users, count: '10+', label: 'Years in Ministry' },
-    { icon: BookOpen, count: '35+', label: 'Books & Resources' },
-    { icon: Globe, count: '5K+', label: 'Raised Missionaries' },
-    { icon: HeartHandshake, count: '100K+', label: 'Lives Impacted' },
+    { count: '10+', label: 'Years in Ministry' },
+    { count: '5K+', label: 'Raised Missionaries' },
+    { count: '100K+', label: 'Lives Impacted' },
   ];
 
   return (
@@ -57,13 +55,8 @@ export default function AuthorStats() {
       className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3"
     >
       {stats.map((item, index) => {
-        const IconComponent = item.icon;
         return (
           <div key={index} className="bg-white p-3.5 rounded-xl border border-soft-gray/40 shadow-xs flex items-center space-x-3">
-            {/* Icon on the left side */}
-            <div className="w-10 h-10 shrink-0 rounded-full bg-red-50 flex items-center justify-center text-burgundy-primary">
-              <IconComponent size={18} />
-            </div>
             {/* Text and Number content */}
             <div className="flex flex-col">
               <span className="font-bold text-lg leading-tight">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowUpRight, ArrowLeft, BookOpen, X } from "lucide-react";
+import { ArrowUpRight, ArrowLeft, X } from "lucide-react";
 import MainFeedSection from "./MainFeedSection";
 import AllArticlesArchive from "./AllArticlesArchive";
 import { supabase } from "../../lib/supabaseClient";

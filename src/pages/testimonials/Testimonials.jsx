@@ -567,20 +567,6 @@ function Testimonials() {
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-burgundy-primary px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[#7F0E0E]"
               >
                 Share Your Story
-
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M22 2L11 13" />
-                  <path d="M22 2l-7 20-4-9-9-4 20-7Z" />
-                </svg>
               </button>
             </div>
 
@@ -595,37 +581,6 @@ function Testimonials() {
               <div className="mt-5 space-y-4 sm:space-y-5">
                 {impactStats.map((stat) => (
                   <div key={stat.label} className="flex items-center gap-3 sm:gap-4">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F8EDED] text-burgundy-primary sm:h-11 sm:w-11">
-                      {stat.icon === "users" && (
-                        <svg
-                          width="19"
-                          height="19"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                        >
-                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                          <circle cx="9" cy="7" r="4" />
-                          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                        </svg>
-                      )}
-
-                      {stat.icon === "heart" && (
-                        <svg
-                          width="19"
-                          height="19"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                        >
-                          <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7C3.2 5.6 5.3 4 7.8 4c1.6 0 3.1.8 4.2 2.1C13.1 4.8 14.6 4 16.2 4c2.5 0 4.6 1.6 4.6 4.7Z" />
-                        </svg>
-                      )}
-                    </div>
-
                     <div>
                       <p className="text-base font-semibold text-navy-dark sm:text-lg">
                         {stat.value}

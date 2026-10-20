@@ -3,7 +3,6 @@ import DevotionalDateNav from "./DevotionalDateNav";
 import DevotionalAudio from "./DevotionalAudio";
 import heroImage from "../../../assets/devotionalImages/devotional-hero.png";
 import { useNavigate } from "react-router-dom";
-import { BookOpen } from "lucide-react";
 
 function formatDevotionalTitle(title) {
   if (!title) {
@@ -156,7 +155,6 @@ function DevotionalHero({
                   onClick={() => navigate(`/devotional/${devotional.id}`)}
                   className="inline-flex items-center gap-2 rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#7f0e0e] hover:shadow-lg"
                 >
-                  <BookOpen size={18} strokeWidth={2} />
                   Read
                 </button>
 

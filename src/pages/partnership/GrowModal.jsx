@@ -1,42 +1,27 @@
+
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BookOpen,
-  CalendarDays,
-  Check,
-  Share2,
-  Users,
-  X,
-} from "lucide-react";
 
 const growthPaths = [
   {
     number: "01",
     title: "Sit To Learn before You Stand To Teach",
-    description:
-      "You cannot give what you do not have. Submit to a systematic study of the Word.",
+    description: "You cannot give what you do not have. Submit to a systematic study of the Word.",
     detail: "BEGIN TODAY",
-    Icon: BookOpen,
     href: "/devotional",
   },
   {
     number: "02",
     title: "Meditate Until It Becomes Your Revelation",
-    description:
-      "Marinate! Think, pray and speak the Word until it stops being information and becomes your conviction.",
+    description: "Marinate! Think, pray and speak the Word until it stops being information and becomes your conviction.",
     detail: "EXPLORE THE ARCHIVE",
-    Icon: CalendarDays,
     href: "/previous-devotionals",
   },
   {
     number: "03",
     title: "Return To It",
-    description:
-      "When doubt, confusion, or fear comes, the wise don't look for a new word, they return to the ledger of God's faithfulness.",
+    description: "When doubt, confusion, or fear comes, the wise don't look for a new word, they return to the ledger of God's faithfulness.",
     detail: "READ THE STORIES",
-    Icon: Users,
     href: "/testimonials",
   },
 ];
@@ -114,9 +99,9 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
           type="button"
           onClick={onClose}
           aria-label="Close growth options"
-          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/25 bg-white/10 text-white transition hover:bg-white/20 sm:right-6 sm:top-6"
+          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-white/25 bg-white/10 text-white text-2xl leading-none transition hover:bg-white/20 sm:right-6 sm:top-6"
         >
-          <X size={19} />
+          ×
         </button>
 
         <header className="relative overflow-hidden bg-[#101A2B] px-6 pb-8 pt-12 text-white sm:px-10 sm:pb-10 sm:pt-14 lg:px-12">
@@ -152,7 +137,6 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {growthPaths.map((path) => {
-              const Icon = path.Icon;
               const href = routes[path.number] || path.href;
 
               return (
@@ -161,10 +145,7 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
                   href={href}
                   className="group flex min-h-[220px] flex-col border border-[#E5E7EB] bg-white p-5 transition duration-200 hover:border-[#991313]/50 hover:shadow-lg hover:shadow-[#101A2B]/5 sm:p-6"
                 >
-                  <div className="mb-6 flex items-start justify-between">
-                    <div className="flex h-12 w-12 items-center justify-center border border-[#E5E7EB] text-[#991313] transition group-hover:border-[#991313] group-hover:bg-[#991313] group-hover:text-white">
-                      <Icon size={21} strokeWidth={1.6} />
-                    </div>
+                  <div className="mb-6 flex items-start justify-end">
                     <span className="text-xs font-medium tracking-[0.15em] text-[#9CA3AF]">
                       {path.number}
                     </span>
@@ -181,10 +162,9 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
                       <span className="text-[10px] font-semibold tracking-[0.13em] text-[#991313]">
                         {path.detail}
                       </span>
-                      <ArrowUpRight
-                        size={18}
-                        className="text-[#991313] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                      />
+                      <span className="text-xs text-[#991313] transition-colors group-hover:text-[#101A2B]">
+                        Explore
+                      </span>
                     </div>
                   </div>
                 </a>
@@ -196,10 +176,7 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
               onClick={handleShare}
               className="group flex min-h-[220px] flex-col border border-[#E5E7EB] bg-[#F9FAFB] p-5 text-left transition duration-200 hover:border-[#991313]/50 hover:bg-white hover:shadow-lg hover:shadow-[#101A2B]/5 sm:p-6"
             >
-              <div className="mb-6 flex items-start justify-between">
-                <div className="flex h-12 w-12 items-center justify-center border border-[#E5E7EB] text-[#991313] transition group-hover:border-[#991313] group-hover:bg-[#991313] group-hover:text-white">
-                  <Share2 size={21} strokeWidth={1.6} />
-                </div>
+              <div className="mb-6 flex items-start justify-end">
                 <span className="text-xs font-medium tracking-[0.15em] text-[#9CA3AF]">
                   04
                 </span>
@@ -210,22 +187,15 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
                   Teach What You Have Become
                 </h4>
                 <p className="mt-3 flex-1 text-sm leading-6 text-[#4D5057]">
-                 The Proof that you are rich in doctrine is that you can make another rich. 
-                 Don't just be a consumer of truth, be a distributor of it. 
-                 Make disciples.  
+                  The Proof that you are rich in doctrine is that you can make another rich. Don't just be a consumer of truth, be a distributor of it. Make disciples.
                 </p>
                 <div className="mt-6 flex items-center justify-between border-t border-[#E5E7EB] pt-4">
                   <span className="text-[10px] font-semibold tracking-[0.13em] text-[#991313]">
                     {shareStatus ? "MESSAGE READY" : "PASS IT ON"}
                   </span>
-                  {shareStatus ? (
-                    <Check size={18} className="text-[#991313]" />
-                  ) : (
-                    <ArrowRight
-                      size={18}
-                      className="text-[#991313] transition-transform duration-200 group-hover:translate-x-1"
-                    />
-                  )}
+                  <span className="text-xs text-[#991313] transition-colors group-hover:text-[#101A2B]">
+                    {shareStatus ? "Ready" : "Share"}
+                  </span>
                 </div>
               </div>
             </button>
@@ -241,17 +211,12 @@ export default function GrowModal({ isOpen, onClose, routes = {} }) {
           )}
 
           <div className="mt-7 flex flex-col gap-3 border-t border-[#E5E7EB] pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="max-w-xl text-sm leading-6 text-[#4D5057]">
-              You do not have to take every step today. Start with one, and
-              let each day bring you closer to the truth.
-            </p>
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex w-fit shrink-0 items-center gap-2 text-sm font-semibold text-[#111827] transition hover:text-[#991313]"
+              className="inline-flex w-fit shrink-0 items-center text-sm font-semibold text-[#111827] transition hover:text-[#991313]"
             >
               Return to the page
-              <ArrowRight size={16} />
             </button>
           </div>
         </div>

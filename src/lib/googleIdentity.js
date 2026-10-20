@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 
 const GOOGLE_SCRIPT_SRC = "https://accounts.google.com/gsi/client";
 
+const isReady = () => typeof window !== "undefined" && !!window.google?.accounts?.id;
+
 export function useGoogleIdentityScript() {
-  const [loaded, setLoaded] = useState(typeof window !== "undefined" && !!window.google?.accounts?.id);
+  const [loaded, setLoaded] = useState(isReady);
 
   useEffect(() => {
     if (loaded) return;
-    const onLoad = () => setLoaded(true);
+    if (isReady()) return setLoaded(true);
     let script = document.querySelector(`script[src="${GOOGLE_SCRIPT_SRC}"]`);
     if (!script) {
       script = document.createElement("script");
@@ -16,8 +18,14 @@ export function useGoogleIdentityScript() {
       script.defer = true;
       document.body.appendChild(script);
     }
+    const onLoad = () => setLoaded(isReady());
+    const onError = () => script.remove();
     script.addEventListener("load", onLoad);
-    return () => script.removeEventListener("load", onLoad);
+    script.addEventListener("error", onError);
+    return () => {
+      script.removeEventListener("load", onLoad);
+      script.removeEventListener("error", onError);
+    };
   }, [loaded]);
 
   return loaded;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, ArrowRight, X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import machairaImg from "../assets/images/wave2.png";
 
 const POPULAR_MOODS = [
@@ -151,12 +151,8 @@ export default function WelcomeModal({ onTodayEpisode }) {
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 transition-opacity group-hover:opacity-100" />
 
-                <BookOpen className="pointer-events-none absolute -bottom-6 -right-4 h-28 w-28 text-white/5 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 sm:h-32 sm:w-32" />
-
                 <div className="relative z-10 flex min-w-0 items-center gap-3 sm:gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white shadow-inner ring-1 ring-white/30 sm:h-14 sm:w-14 sm:rounded-2xl">
-                    <BookOpen className="h-5 w-5 sm:h-7 sm:w-7" />
-                  </span>
+
 
                   <div className="min-w-0">
                     <span className="block text-[13px] font-bold leading-snug tracking-tight text-white sm:text-[16px]">
