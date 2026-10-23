@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGoogleIdentityScript } from "../../../lib/googleIdentity";
 import { signInWithGoogleIdToken } from "../../../lib/authService";
 
-const GOOGLE_CLIENT_ID = import.meta.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const UNAVAILABLE = "Google sign-in is unavailable right now. Please use email instead.";
 const FAILED = "Google sign-in failed. Please try again.";
 
@@ -43,7 +43,7 @@ function GoogleSignInButton({ onError }) {
   useEffect(() => {
     if (!scriptLoaded) return;
     if (!GOOGLE_CLIENT_ID || !window.google?.accounts?.id) {
-      console.error("Google sign-in unavailable: missing GOOGLE_CLIENT_ID or Google script.");
+      console.error("Google sign-in unavailable: missing VITE_GOOGLE_CLIENT_ID or Google script.");
       setFailed(true);
       onErrorRef.current?.(UNAVAILABLE);
       return;

@@ -14,7 +14,7 @@ with check (
 );
 
 */
-export const ADMIN_EMAILS = (import.meta.env.ADMIN_EMAILS ?? "")
+export const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS ?? "")
   .split(",")
   .map((email) => email.trim())
   .filter(Boolean);
