@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
@@ -54,8 +55,8 @@ export default function HeroSection() {
         resetTimer = setTimeout(() => {
           setTextAnimState('idle');
           setAnimatingQuote(false);
-        }, 450);
-      }, 450);
+        }, 500);
+      }, 500);
     }, 6000);
 
     return () => {
@@ -116,7 +117,12 @@ export default function HeroSection() {
           src={bannerImage}
           alt=""
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[65%_center] sm:object-center"
+          className={`absolute inset-0 h-full w-full object-cover object-[65%_center] transition-opacity duration-500 ease-in-out sm:object-center ${
+            textAnimState === 'fade-out' ||
+            textAnimState === 'fade-in'
+              ? 'opacity-0'
+              : 'opacity-100'
+          }`}
         />
 
         {/* Dark overlay for text readability */}
@@ -126,12 +132,10 @@ export default function HeroSection() {
         <div className="relative z-10 mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 items-end gap-8 px-5 pb-16 pt-24 sm:px-8 sm:pb-16 sm:pt-28 md:px-12 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-10 lg:py-20 xl:gap-10 xl:px-16 2xl:px-20">
           <div className="min-w-0 max-w-full lg:col-span-8 xl:col-span-7">
             <div
-              className={`w-full min-w-0 max-w-3xl space-y-4 text-white transition-all duration-500 ease-out sm:space-y-5 ${
+              className={`w-full min-w-0 max-w-3xl space-y-4 text-white transition-all duration-500 ease-in-out sm:space-y-5 ${
                 textAnimState === 'fade-out'
                   ? 'translate-y-3 opacity-0'
-                  : textAnimState === 'fade-in'
-                    ? 'translate-y-0 opacity-0'
-                    : 'translate-y-0 opacity-100'
+                  : 'translate-y-0 opacity-100'
               }`}
             >
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/80 [overflow-wrap:anywhere] sm:text-xs sm:tracking-[0.22em]">

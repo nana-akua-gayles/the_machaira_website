@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import logoImage from "../assets/images/mIcon.png";
+import logoImage from "../assets/images/logo.png";
 import { supabase } from "../lib/supabaseClient";
 
 function Footer() {

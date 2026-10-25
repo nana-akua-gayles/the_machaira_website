@@ -150,7 +150,7 @@ export default function MainFeedSection({ onSelectStory }) {
                   </span>
                 </div>
 
-                <h3 className="mt-2 text-[15px] sm:text-xl font-semibold leading-[1.3] tracking-[-0.035em] text-[#101A2B] line-clamp-3 group-hover:text-[#991313] transition-colors">
+                <h3 className="mt-2 text-[15px] sm:text-xl font-semibold leading-[1.3] tracking-[-0.035em] text-[#101A2B] group-hover:text-[#991313] transition-colors">
                   {article.title}
                 </h3>
 
