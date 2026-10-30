@@ -179,7 +179,6 @@ export default function DevotionalOverlay({ onReadDevotional }) {
             <div className="relative z-10 flex items-center gap-4 pr-7 sm:gap-5">
               <div className="flex-1">
                 <div className="mb-3 flex items-center gap-2">
-                  <span className="h-[2px] w-6 rounded-full bg-[#8B3438]" />
                   <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#8B3438] sm:text-[10px]">
                     A moment with God
                   </span>
@@ -199,7 +198,6 @@ export default function DevotionalOverlay({ onReadDevotional }) {
                 <div className="absolute h-[100px] w-[100px] rounded-full bg-white/70 blur-xl sm:h-[125px] sm:w-[125px]" />
                 <img
                   src={devotionalImage}
-                  alt="Open Bible"
                   className="devotional-reminder-image relative z-10 h-[100px] w-[100px] object-contain sm:h-[132px] sm:w-[132px]"
                 />
               </div>

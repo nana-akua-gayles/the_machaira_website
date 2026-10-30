@@ -1,5 +1,6 @@
 //Run the below SQL commands in the Supabase SQL editor to restrict forum post creation to admins only. You can add/remove emails from the list as needed.
 /*
+
 drop policy if exists "Only admins can create posts" on forum_posts;
 
 create policy "Only admins can create posts"
@@ -11,6 +12,7 @@ with check (
     'new.person@machaira.org'
   )
 );
+
 */
 export const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS ?? "")
   .split(",")
