@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import devotionalHero from "../../assets/devotionalImages/devotional-hero.png";
+import devotionalHero from "../../assets/devotionalImages/devotional-hero.jpg";
 import TestimonyModal from "./testimonialsFeatures/TestimonyModal";
 import ShareTestimonyModal from "./testimonialsFeatures/ShareTestimonyModal";
 import { useAuth } from "../../context/AuthContext";

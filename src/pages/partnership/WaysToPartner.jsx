@@ -4,6 +4,8 @@ import PartnershipOrbit from "./PartnershipOrbit";
 import PartnershipModal from "./PartnershipModal";
 import ServeModal from "./ServeModal";
 import GrowModal from "./GrowModal";
+import { ArrowRight } from "lucide-react";
+
 
 export default function WaysToPartner() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +57,7 @@ export default function WaysToPartner() {
                 onClick={() => setIsModalOpen(true)}
                 className="flex items-center text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity w-fit"
               >
-                Give Now
+                Give Now<ArrowRight className="w-8 h-4" />
               </button>
             </div>
           </div>
@@ -79,7 +81,7 @@ export default function WaysToPartner() {
                 onClick={() => setIsServeOpen(true)}
                 className="flex items-center text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity w-fit"
               >
-                Explore Opportunities
+                Explore Opportunities <ArrowRight className="w-8 h-4" />
               </button>
             </div>
           </div>
@@ -103,7 +105,7 @@ export default function WaysToPartner() {
                 onClick={() => setIsGrowOpen(true)}
                 className="flex items-center text-burgundy-primary font-semibold text-xs hover:opacity-80 transition-opacity w-fit"
               >
-                Be transformed
+                Be transformed <ArrowRight className="w-8 h-4" />
               </button>
             </div>
           </div>

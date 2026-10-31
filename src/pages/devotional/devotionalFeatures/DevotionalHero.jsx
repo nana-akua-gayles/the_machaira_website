@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DevotionalDateNav from "./DevotionalDateNav";
 import DevotionalAudio from "./DevotionalAudio";
-import heroImage from "../../../assets/devotionalImages/devotional-hero.png";
+import heroImage from "../../../assets/devotionalImages/devotional-hero.jpg";
 import { useNavigate } from "react-router-dom";
 
 function formatDevotionalTitle(title) {
