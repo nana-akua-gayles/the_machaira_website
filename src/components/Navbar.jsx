@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import UserAvatar from "./UserAvatar";
 import logoImage from "../assets/images/mIcon.png";
+import { searchAllContent } from "../lib/globalSearch";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -14,12 +15,28 @@ const navItems = [
   { to: "/about", label: "About Author" },
 ];
 
+const emptySearchResults = {
+  devotionals: [],
+  articles: [],
+  featuredArticles: [],
+  forumPosts: [],
+};
+
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState(emptySearchResults);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState(false);
+
   const profileMenuRef = useRef(null);
+  const searchInputRef = useRef(null);
+
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -30,6 +47,7 @@ function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
+
     return () => {
       document.body.style.overflow = "";
     };
@@ -45,7 +63,9 @@ function Navbar() {
     }
 
     function handleKeyDown(event) {
-      if (event.key === "Escape") setProfileMenuOpen(false);
+      if (event.key === "Escape") {
+        setProfileMenuOpen(false);
+      }
     }
 
     document.addEventListener("mousedown", handlePointerDown);
@@ -57,8 +77,101 @@ function Navbar() {
     };
   }, [profileMenuOpen]);
 
+  useEffect(() => {
+    if (!searchOpen) return;
+
+    searchInputRef.current?.focus();
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        closeSearch();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [searchOpen]);
+
+  // Live search with a 350ms debounce.
+  useEffect(() => {
+    const query = searchQuery.trim();
+
+    if (!searchOpen || query.length < 2) {
+      setSearchResults(emptySearchResults);
+      setSearchLoading(false);
+      setSearchError(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    const timeout = setTimeout(async () => {
+      setSearchLoading(true);
+      setSearchError(false);
+
+      try {
+        const results = await searchAllContent(query);
+
+        if (!cancelled) {
+          setSearchResults(results);
+        }
+      } catch (error) {
+        console.error("Global search failed:", error);
+
+        if (!cancelled) {
+          setSearchResults(emptySearchResults);
+          setSearchError(true);
+        }
+      } finally {
+        if (!cancelled) {
+          setSearchLoading(false);
+        }
+      }
+    }, 350);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
+  }, [searchQuery, searchOpen]);
+
   function closeMenu() {
     setMenuOpen(false);
+  }
+
+  function closeSearch() {
+    setSearchOpen(false);
+    setSearchQuery("");
+    setSearchResults(emptySearchResults);
+    setSearchError(false);
+  }
+
+  function handleResultClick(type, item) {
+    closeSearch();
+    closeMenu();
+
+    if (type === "devotional") {
+      navigate(`/devotional/${item.id}`);
+      return;
+    }
+
+    if (type === "forum") {
+      navigate(`/forum/${item.id}`);
+      return;
+    }
+
+    // Newsfeed and featured articles use the existing Newsfeed reader.
+    navigate("/newsfeed", {
+      state: {
+        selectedSearchResult: {
+          ...item,
+          isFeatured: type === "featured",
+        },
+      },
+    });
   }
 
   async function handleLogout() {
@@ -66,6 +179,33 @@ function Navbar() {
     setProfileMenuOpen(false);
     closeMenu();
   }
+
+  const searchGroups = [
+    {
+      title: "Devotionals",
+      type: "devotional",
+      items: searchResults.devotionals,
+    },
+    {
+      title: "Newsfeed",
+      type: "article",
+      items: searchResults.articles,
+    },
+    {
+      title: "Featured Articles",
+      type: "featured",
+      items: searchResults.featuredArticles,
+    },
+    {
+      title: "Discussion Forum",
+      type: "forum",
+      items: searchResults.forumPosts,
+    },
+  ];
+
+  const hasSearchResults = searchGroups.some(
+    (group) => group.items.length > 0
+  );
 
   return (
     <header
@@ -80,7 +220,7 @@ function Navbar() {
             : "min-h-23 px-4.5 lg:px-6 bg-white/96 border-none rounded-none shadow-none backdrop-blur-md"
         }`}
       >
-        {/* ENLARGED LOGO */}
+        {/* LOGO */}
         <NavLink
           to="/"
           onClick={closeMenu}
@@ -117,7 +257,9 @@ function Navbar() {
                 `relative no-underline text-[14px] ${
                   scrolled ? "py-6.75 text-[13.5px]" : "py-8.5"
                 } font-medium whitespace-nowrap transition-all duration-250 hover:text-burgundy-primary hover:-translate-y-px ${
-                  isActive ? "text-[#a41414] font-semibold" : "text-cool-gray"
+                  isActive
+                    ? "text-[#a41414] font-semibold"
+                    : "text-cool-gray"
                 } after:content-[''] after:absolute after:left-1/2 ${
                   scrolled ? "after:bottom-4" : "after:bottom-5.75"
                 } after:h-0.5 after:bg-[#a41414] after:-translate-x-1/2 transition-all duration-300 ${
@@ -130,8 +272,49 @@ function Navbar() {
           ))}
         </nav>
 
-        {/* DESKTOP PROFILE / LOGIN AND MOBILE HAMBURGER */}
+        {/* PROFILE / SEARCH / MOBILE MENU */}
         <div className="flex items-center gap-3 shrink-0">
+          {/* SEARCH ICON */}
+          <button
+            type="button"
+            onClick={() => {
+              setSearchOpen((prev) => !prev);
+              setMenuOpen(false);
+            }}
+            aria-label={searchOpen ? "Close search" : "Open search"}
+            aria-expanded={searchOpen}
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-black/10 text-navy-dark hover:bg-black/5 transition-colors shrink-0 lg:ml-5"
+          >
+            {searchOpen ? (
+              <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              >
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-4-4" />
+              </svg>
+            )}
+          </button>
+
+          {/* DESKTOP PROFILE */}
           {user ? (
             <div className="relative hidden lg:block" ref={profileMenuRef}>
               <button
@@ -153,6 +336,7 @@ function Navbar() {
                   <span className="px-4 py-2 text-xs text-gray-500 truncate border-b border-gray-100">
                     {user.email}
                   </span>
+
                   <button
                     type="button"
                     className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
@@ -181,7 +365,10 @@ function Navbar() {
           <button
             type="button"
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 bg-transparent border-none cursor-pointer p-2 z-50"
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() => {
+              setMenuOpen((prev) => !prev);
+              setSearchOpen(false);
+            }}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
@@ -204,6 +391,111 @@ function Navbar() {
         </div>
       </div>
 
+      {/* LIVE SEARCH PANEL */}
+      <div
+        className={`absolute top-full left-0 right-0 px-4 pt-3 transition-all duration-300 ${
+          searchOpen
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-2 pointer-events-none"
+        }`}
+      >
+        <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-black/10 shadow-xl overflow-hidden">
+          <div className="flex items-center gap-3 p-3">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="shrink-0 text-gray-400"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" />
+            </svg>
+
+            <input
+              ref={searchInputRef}
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search devotionals, articles, discussions..."
+              aria-label="Search Machaira"
+              className="flex-1 min-w-0 outline-none border-none bg-transparent text-sm text-navy-dark"
+            />
+
+            <button
+              type="button"
+              onClick={closeSearch}
+              aria-label="Close search"
+              className="flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 text-xl transition-colors"
+            >
+              ×
+            </button>
+          </div>
+
+          {searchQuery.trim().length > 0 && (
+            <div className="max-h-[65vh] overflow-y-auto border-t border-black/5">
+              {searchQuery.trim().length < 2 ? (
+                <p className="px-5 py-4 text-sm text-gray-500">
+                  Type at least 2 characters to search.
+                </p>
+              ) : searchLoading ? (
+                <p className="px-5 py-5 text-sm text-gray-500">
+                  Searching Machaira...
+                </p>
+              ) : searchError ? (
+                <p className="px-5 py-5 text-sm text-red-600">
+                  Search could not be completed. Please try again.
+                </p>
+              ) : !hasSearchResults ? (
+                <p className="px-5 py-5 text-sm text-gray-500">
+                  No results found for "{searchQuery.trim()}".
+                </p>
+              ) : (
+                searchGroups.map((group) =>
+                  group.items.length > 0 ? (
+                    <section
+                      key={group.title}
+                      className="px-4 py-3 border-b border-black/5 last:border-b-0"
+                    >
+                      <h3 className="mb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                        {group.title}
+                      </h3>
+
+                      <div className="space-y-1">
+                        {group.items.map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() =>
+                              handleResultClick(group.type, item)
+                            }
+                            className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
+                          >
+                            <span className="block text-sm font-semibold text-navy-dark line-clamp-1">
+                              {item.title}
+                            </span>
+
+                            {(item.category || item.subtitle) && (
+                              <span className="block mt-1 text-xs text-gray-500 line-clamp-1">
+                                {item.category || item.subtitle}
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+                  ) : null
+                )
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* MOBILE MENU PANEL */}
       <div
         className={`fixed inset-0 bg-white z-40 flex flex-col transition-all duration-300 lg:hidden ${
@@ -217,6 +509,7 @@ function Navbar() {
           <span className="text-xs font-semibold uppercase tracking-[0.22em] text-cool-gray">
             Menu
           </span>
+
           <button
             type="button"
             onClick={closeMenu}
@@ -238,10 +531,12 @@ function Navbar() {
         {user && (
           <div className="flex items-center gap-3 px-6 py-5 shrink-0 border-b border-black/8">
             <UserAvatar user={user} size={44} />
+
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-navy-dark truncate">
                 {user.email}
               </p>
+
               <button
                 type="button"
                 onClick={handleLogout}
@@ -262,7 +557,9 @@ function Navbar() {
               onClick={closeMenu}
               className={({ isActive }) =>
                 `group flex items-center justify-between gap-4 py-4 border-b border-black/6 no-underline transition-colors ${
-                  isActive ? "text-burgundy-primary" : "text-navy-dark"
+                  isActive
+                    ? "text-burgundy-primary"
+                    : "text-navy-dark"
                 }`
               }
             >
@@ -271,15 +568,19 @@ function Navbar() {
                   <span className="flex items-center gap-4">
                     <span
                       className={`text-[11px] font-semibold tabular-nums ${
-                        isActive ? "text-burgundy-primary" : "text-soft-gray"
+                        isActive
+                          ? "text-burgundy-primary"
+                          : "text-soft-gray"
                       }`}
                     >
                       {String(index + 1).padStart(2, "0")}
                     </span>
+
                     <span className="text-[16px] font-medium tracking-[-0.01em]">
                       {item.label}
                     </span>
                   </span>
+
                   <span
                     className={`text-base transition-all duration-200 ${
                       isActive
