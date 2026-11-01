@@ -31,7 +31,7 @@ export default function AllArticlesArchive({ onSelectStory, excludeIds = [] }) {
 
       let query = supabase
         .from("articles")
-        .select("*", { count: "exact" })
+        .select("id, title, category, body, created_at, image_url", { count: "exact" })
         .order("created_at", { ascending: false })
         .range(from, to);
 

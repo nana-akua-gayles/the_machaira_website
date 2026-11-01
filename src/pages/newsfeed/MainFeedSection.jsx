@@ -26,7 +26,7 @@ export default function MainFeedSection({ onSelectStory }) {
 
         let query = supabase
           .from("articles")
-          .select("*")
+          .select("id, title, category, body, created_at, image_url")
           .order("created_at", { ascending: false })
           .limit(3);
 

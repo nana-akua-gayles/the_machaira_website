@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ref1 from "../../assets/images/ref1.png";
+import ref2 from "../../assets/images/ref2.png";
+import phot from "../../assets/images/phot.png";
+
 
 export default function BooksGrid() {
   const books = [
@@ -8,7 +12,7 @@ export default function BooksGrid() {
       title: "Photizo",
       subtitle: "Alpha Edition",
       price: "GHS 200.00",
-      image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=700&auto=format&fit=crop",
+      image: phot,
       body: "Our efficiency and increase in God depend on knowing His Word. This knowledge will cause you to experience God more deeply. The Word of God is the mind of God declared or revealed. When you come into contact with THE WORD, the WORD brings you to light. Yes! You experience true liberty and rest, with doubt and fear having no place, and no uncertain wind of doctrine will be able to toss you to and fro. Knowing God’s Word illuminates your world.\n\n“The unfolding of Your [glorious] words give light; Their unfolding gives understanding to the simple (childlike)”\n\n(Psalm 119:130 (Amplified Bible))\n\nWhen God’s written words are unfolded or explained, they become edible. The Word of His Grace nourishes you unto maturity, and your eyes are open to the reality of life. God and His ways are no longer complex. We can now see His eternal Plan and Purpose for our enjoyment. His unfolded word lights up our minds. And it was why the apostles of our Lord Jesus did not relent in teaching and preaching the Word of Truth.\n\nPaul (an apostle of Jesus) wrote: “Unto me, who am less than the least of all saints, is this grace given, that I should preach among the Gentiles the unsearchable riches of Christ; And to make all men see what is the fellowship of the mystery, which from the beginning of the world hath been hid in God, who created all things by Jesus Christ”\n\nEphesians 3:8-9 (KJV)\n\nAmazing!\n\nThe Apostle’s preaching is “TO MAKE ALL SEE”. He chose the Greek word “Photizo.”\n\nAccording to Thayer’s Greek Lexicon Phōtizō (G5461) means:\n- to give light, to shine\n- to enlighten, light up, illuminate\n- to bring to light, render evident\n- to bring something into existence and thus make it visible and clear to all.\n- to enlighten, spiritually, imbue with saving knowledge\n- to instruct, inform, and teach\n- to give understanding to\n\nStrong’s Definition: From G5457; to shed rays, that is, to shine or (transitively) to brighten up (literally or figuratively): enlighten, illuminate, (bring to, give) light, make to see.\n\nBeloved, you are enlightened when the glorious Word of Truth enters or unfolds to you. You come to a place of complete understanding. You are enlightened and illuminated. Life no longer becomes a mystery; instead, you begin to express or make known the quality of life.\n\nBeing enlightened is essential; thus, Apostle Paul included it in his prayers for the saints in Ephesus.\n\n“The eyes of your understanding being enlightened; that ye may know what is the hope of his calling, and what the riches of the glory of his inheritance in the saints,”\n\n(Ephesians 1:18 (KJV))",
     },
     {
@@ -16,7 +20,7 @@ export default function BooksGrid() {
       title: "Machaira with Apostle Bennie",
       subtitle: "Refulgence Edition 1",
       price: "GHS 25.00",
-      image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=700&auto=format&fit=crop",
+      image: ref1,
       body: "There can be no growth or transformation without the proper knowledge, revelation, and understanding of the Word of God. God brought forth the physical universe through His Word. Thus, to establish a consistent and impactful worldview, you will need to handle the reality of the Word of God. The reality of the Word is to help shape your worldview and make you rightly express God. Machaira (pronounced makh’-ahee-rah) is a Greek word that means a dagger or a sword used for combat.\n\n Thus, MACHAIRA with Apostle Bennie is a sword of the Spirit, which cuts deep into your heart and being. It’s a double-edged sword designed to thrust deep into your heart with divine insights. It demystifies enigmas, dissolves complex sentences in scriptures, and uproots misconceptions. It is one of the spiritual nutritional packs for your growth in the knowledge of God in Christ. Machaira with Apostle Bennie is a treasure chest for your enrichment and a tool designed to equip you to fulfil your divine purpose. Machaira (pronounced makh’ahee-rah) with Apostle Bennie is designed to serve you with the reality of the Word.\n\n This is a daily revelatory thought to sharpen you and help you grow in deep spiritual understanding and knowledge. It has scriptures for your daily meditation. And daily Apostolic-Prophetic prayers.\n\n However, this Word-study material is for 15 weeks; you must engage each topic weekly in outreaches, Bible studies, and team meetings.\n\n In this material, there is an indication of all scripture quotations. Enjoy this Kingdom reality pack as you walk in your blessedness in Christ.",
     },
     {
@@ -24,7 +28,7 @@ export default function BooksGrid() {
       title: "Machaira with Apostle Bennie",
       subtitle: "Refulgence Edition 2",
       price: "GHS 25.00",
-      image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=700&auto=format&fit=crop",
+      image: ref2,
       body: "How you live is a picture of your mindset or worldview. The dimension of light you possess becomes the frame of your worldview or mindset. There is no more excellent light than the reality or wisdom of God. The Word of God is the aggregation of the wisdom of God or the light of God. The teaching and administration of the Word give light to every person who needs to it. “The teaching of your word gives light, so even the simple can understand.” Psalm 119:130 (New Living Translation - NLT) It demystifies enigmas, dissolves complex sentences in scriptures, and uproots misconceptions. It is one of the spiritual nutritional packs for your growth in the knowledge of God in Christ. Machaira with Apostle Bennie is a treasure chest for your enrichment and a toolbox designed to equip you to fulfil your divine purpose. This material includes an indication of all scripture quotations. Enjoy this Kingdom reality pack as you walk in your blessedness in Christ. Machaira (pronounced makh’-ahee-rah) with Apostle Bennie is a daily revelatory thought to sharpen you and help you grow in deep spiritual understanding and knowledge. It has scriptures for your daily meditation. And daily Apostolic-Prophetic prayers. However, this Word-study material in your hand is for 15 weeks; you must engage each topic weekly in Outreaches, Bible studies, and Team or Group meetings. It demystifies enigmas, dissolves complex sentences in scriptures, and uproots misconceptions. It is one of the spiritual nutritional packs for your growth in the knowledge of God in Christ. Machaira with Apostle Bennie is a treasure chest for your enrichment and a toolbox designed to equip you to fulfil your divine purpose.\n\n This material includes an indication of all scripture quotations. Enjoy this Kingdom reality pack as you walk in your blessedness in Christ.",
     },
   ];
