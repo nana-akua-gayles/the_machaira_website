@@ -19,11 +19,24 @@ export default function HeroSection() {
       try {
         const { data, error } = await supabase
           .from('hero_slides')
-          .select('*')
+          .select(`
+            id,
+            title_first,
+            title_highlight,
+            title_rest,
+            description,
+            testimony,
+            testimony_second,
+            image,
+            devotional_id
+          `)
           .order('created_at', { ascending: true });
 
         if (error) throw error;
-        if (active && data?.length) setSlides(data);
+
+        if (active && data?.length) {
+          setSlides(data);
+        }
       } catch (err) {
         console.error('Error fetching hero slides:', err);
       } finally {
@@ -69,20 +82,18 @@ export default function HeroSection() {
   const currentSlide = slides[currentIndex] || {};
   const bannerImage = currentSlide.image || localFallbackImage;
 
-  const currentTestimonies = Array.isArray(currentSlide.testimonies)
-    ? currentSlide.testimonies.slice(0, 2)
-    : [
-        {
-          quote:
-            currentSlide.testimony ||
-            'A transformative word that anchors our faith daily.',
-        },
-        {
-          quote:
-            currentSlide.testimony_second ||
-            'An indispensable guide for spiritual growth and clarity.',
-        },
-      ];
+  const currentTestimonies = [
+    {
+      quote:
+        currentSlide.testimony ||
+        'A transformative word that anchors our faith daily.',
+    },
+    {
+      quote:
+        currentSlide.testimony_second ||
+        'An indispensable guide for spiritual growth and clarity.',
+    },
+  ];
 
   const handleReadMore = () => {
     navigate(

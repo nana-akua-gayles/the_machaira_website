@@ -104,7 +104,7 @@ function AuthPage() {
                 <div className="mb-8 text-center">
                   <img src={churchLogo} alt="Machaira" width="240" height="240" decoding="async" fetchpriority="high" className="mx-auto -mb-16 block h-60 w-60 object-contain" />
                   <h1 className="auth-rise text-[12px] leading-tight tracking-tight text-slate-900 sm:text-[15px]" style={{ "--d": ".4s" }}>We are excited to have you join the unstoppable chariots of Impact.</h1>
-                <br />  <p className="auth-rise mx-auto mt-2.5 max-w-[300px] text-[12px] leading-relaxed text-slate-500" style={{ "--d": ".5s" }}>Kindly shoose an account to continue</p>
+                <br />  <p className="auth-rise mx-auto mt-2.5 max-w-[300px] text-[12px] leading-relaxed text-slate-500" style={{ "--d": ".5s" }}>Kindly choose an account to continue</p>
                 </div>
                 <div className="auth-rise" style={{ "--d": ".6s" }}>
                   <LoginForm />
