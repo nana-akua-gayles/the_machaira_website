@@ -254,9 +254,6 @@ const DiscussionThread = () => {
               <p className="whitespace-pre-line break-words text-sm leading-8 text-white/90">{post.body}</p>
             </div>
           </div>
-          <div className="shrink-0 border-t border-white/15 px-8 py-5 text-xs text-white/65">
-            Share thoughtfully. Every voice matters.
-          </div>
         </aside>
 
         {/* Mobile: compact messaging header; desktop: replies header. */}
@@ -266,7 +263,7 @@ const DiscussionThread = () => {
               <Link to="/forum" aria-label="Back to discussions" className="rounded-full p-2 text-[#101A2B] hover:bg-[#101A2B]/5 lg:hidden"><ArrowLeft size={21} /></Link>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-bold text-[#101A2B] lg:text-lg lg:font-semibold">{post.title}</p>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[#4D5057]"><MessageCircle size={13} className="text-[#991313]" /> {replies.length} {replies.length === 1 ? 'reply' : 'replies'} <span className="lg:hidden">· {post.category || 'Community'}</span></p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[#4D5057]"> {replies.length} {replies.length === 1 ? 'reply' : 'replies'} <span className="lg:hidden">· {post.category || 'Community'}</span></p>
               </div>
               <button type="button" onClick={() => setTopicExpanded((value) => !value)} aria-expanded={topicExpanded} aria-label={topicExpanded ? 'Hide original discussion' : 'Show original discussion'} className="flex shrink-0 items-center gap-1 rounded-full border border-[#B9BEC8]/50 px-3 py-2 text-xs font-semibold text-[#991313] hover:bg-[#991313]/5 lg:hidden">
                 Topic {topicExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

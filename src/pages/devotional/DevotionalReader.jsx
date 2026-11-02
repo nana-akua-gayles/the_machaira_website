@@ -398,16 +398,7 @@ function DevotionalReader() {
         <section className="bg-white">
           <div className="mx-auto block max-w-300 px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[120px_minmax(0,1fr)_320px] lg:gap-x-14 lg:gap-y-0 lg:px-12 lg:py-16">
             {/*
-              On small screens this container is a plain block, not a
-              grid: the date-nav is floated left so the content below
-              wraps beside it only while it's shorter than the date-nav,
-              then continues at full width once past it. Grid can't do
-              this (a grid row's height is fixed by its tallest item,
-              so content would stay squeezed beside the date-nav for
-              its entire height). At the lg breakpoint this switches
-              back to the original 3-column grid, where float has no
-              effect on a grid item anyway, so lg:float-none below is
-              just for clarity.
+            
             */}
             <div className="float-left mr-5 w-[70px] sm:mr-6 sm:w-[92px] lg:float-none lg:mr-0 lg:w-auto">
               <DevotionalDateNav
@@ -459,8 +450,12 @@ function DevotionalReader() {
 
               <div ref={readEndRef} aria-hidden="true" className="h-px" />
 
-              <div className="min-w-0">
-                <DevotionalPrevNext previous={prevFormatted} next={nextFormatted} />
+              {/* Previous / Next — desktop */}
+              <div className="hidden min-w-0 lg:block">
+                <DevotionalPrevNext
+                  previous={prevFormatted}
+                  next={nextFormatted}
+                />
               </div>
 
               <div className="hidden print:hidden lg:block">
@@ -469,11 +464,7 @@ function DevotionalReader() {
             </div>
 
             {/*
-              clear-both: must start below BOTH the floated date-nav and
-              the content column, regardless of where either one ends.
-              mt-8 replicates the old grid's gap-y-8 row spacing; reset
-              to 0 at lg since the grid's own lg:gap-x-14 provides
-              spacing there instead (sidebar sits beside, not below).
+            
             */}
             <div className="clear-both mt-8 min-w-0 lg:clear-none lg:col-auto lg:col-start-3 lg:row-start-1 lg:mt-0">
               <DevotionalSidebar
@@ -485,6 +476,14 @@ function DevotionalReader() {
                 title={formatted.mainTitle}
                 episode={formatted.episodeLabel}
                 publishedAt={devotional.created_at}
+              />
+            </div>
+
+            {/* Previous / Next — mobile */}
+            <div className="mt-8 min-w-0 lg:hidden">
+              <DevotionalPrevNext
+                previous={prevFormatted}
+                next={nextFormatted}
               />
             </div>
 

@@ -6,6 +6,7 @@ import WelcomeModal from "./WelcomeModal";
 import DevotionalOverlay from "./DevotionalOverlay";
 import { supabase } from "../lib/supabaseClient";
 import "./componentStylesheet/MainLayout.css";
+import NewsletterAnnouncement from "./NewsletterAnnouncement";
 
 function MainLayout() {
   const location = useLocation();
@@ -100,6 +101,7 @@ function MainLayout() {
           onTodayEpisode={handleTodayEpisode}
         />
       )}
+      <NewsletterAnnouncement />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { X, Check, ArrowRight } from "lucide-react";
 import devotionalImage from "../assets/images/seated.png";
@@ -146,7 +145,7 @@ export default function DevotionalOverlay({ onReadDevotional }) {
           onClick={handleOpen}
           aria-label="Open today's devotional reminder"
           title="Today's devotional"
-          className="devotional-slide-up fixed bottom-5 right-5 z-50 flex h-[100px] w-[100px] items-center justify-center bg-transparent transition-transform duration-300 hover:scale-105 sm:bottom-7 sm:right-7 sm:h-[115px] sm:w-[115px]"
+          className="devotional-slide-up fixed bottom-5 right-5 z-50 flex h-[140px] w-[140px] items-center justify-center bg-transparent transition-transform duration-300 hover:scale-105 sm:bottom-7 sm:right-7 sm:h-[180px] sm:w-[180px]"
         >
           <img
             src={devotionalImage}
@@ -154,17 +153,14 @@ export default function DevotionalOverlay({ onReadDevotional }) {
             aria-hidden="true"
             className="devotional-reminder-image h-full w-full object-contain"
           />
-          <span className="absolute right-2 top-2 h-4 w-4 rounded-full border-[3px] border-[#FAF7F2] bg-[#8C3036] shadow-sm sm:right-3 sm:top-3" />
         </button>
       ) : (
         <div
           role="dialog"
           aria-label="Daily devotional reminder"
-          className="devotional-slide-up fixed bottom-3 left-3 right-3 z-50 overflow-hidden rounded-[26px] border border-[#E9DCD3] bg-[#FCF9F4] text-[#302625] shadow-[0_18px_60px_rgba(43,20,20,0.22)] sm:bottom-6 sm:left-auto sm:right-6 sm:w-[440px] lg:bottom-8 lg:right-8 lg:w-[540px] lg:max-w-[calc(100vw-4rem)]"
+          className="devotional-slide-up fixed bottom-3 left-3 right-3 z-50 max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-[26px] border border-[#E9DCD3] bg-[#FCF9F4] text-[#302625] shadow-[0_18px_60px_rgba(43,20,20,0.22)] sm:bottom-6 sm:left-auto sm:right-6 sm:w-[440px] lg:bottom-8 lg:right-8 lg:w-[580px] lg:max-w-[calc(100vw-4rem)]"
         >
           <div className="relative overflow-hidden bg-gradient-to-br from-[#F8EEE5] via-[#FCF9F4] to-[#F0DFD0] px-5 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
-            <div className="pointer-events-none absolute -right-10 -top-12 h-44 w-44 rounded-full border border-[#76252B]/10" />
-            <div className="pointer-events-none absolute -right-5 -top-7 h-32 w-32 rounded-full border border-[#76252B]/10" />
 
             <button
               type="button"
@@ -176,13 +172,8 @@ export default function DevotionalOverlay({ onReadDevotional }) {
               <X size={17} />
             </button>
 
-            <div className="relative z-10 flex items-center gap-4 pr-7 sm:gap-5">
-              <div className="flex-1">
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#8B3438] sm:text-[10px]">
-                    A moment with God
-                  </span>
-                </div>
+            <div className="relative z-10 flex items-center gap-4 sm:gap-5 lg:pt-8">
+              <div className="min-w-0 flex-1">
 
                 <h2 className="max-w-[290px] text-[21px] font-semibold leading-[1.12] tracking-[-0.04em] text-[#302625] sm:text-[24px]">
                   Have you read today's devotional?
@@ -190,21 +181,24 @@ export default function DevotionalOverlay({ onReadDevotional }) {
 
                 <p className="mt-3 max-w-[300px] text-[12px] leading-[1.8] text-[#75645D] sm:text-[13px]">
                   Before you face the world, hear from the One who holds it all together.
-                  Today has its own challenges. Don't walk into it empty. God left you a word on the table!
+                  Today has its own challenges. <br />
+                   Don't walk into it empty. God left you a word on the table!
                 </p>
               </div>
 
-              <div className="relative flex w-[90px] shrink-0 items-center justify-center sm:w-[120px]">
-                <div className="absolute h-[100px] w-[100px] rounded-full bg-white/70 blur-xl sm:h-[125px] sm:w-[125px]" />
-                <img
-                  src={devotionalImage}
-                  className="devotional-reminder-image relative z-10 h-[100px] w-[100px] object-contain sm:h-[132px] sm:w-[132px]"
-                />
+              <div className="relative h-[130px] w-[90px] shrink-0 self-end sm:h-[170px] sm:w-[120px] lg:h-[190px] lg:w-[150px]">
+                <div className="absolute inset-y-0 -right-5 flex w-[130px] items-center justify-center sm:-right-7 sm:w-[170px] lg:w-[190px]">
+                  <div className="absolute h-[110px] w-[110px] rounded-full bg-white/70 blur-xl sm:h-[150px] sm:w-[150px] lg:h-[170px] lg:w-[170px]" />
+                  <img
+                    src={devotionalImage}
+                    className="devotional-reminder-image relative z-10 h-full w-full object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2.5 border-t border-[#EDE3DA] bg-white/50 px-5 py-4 sm:flex-row sm:gap-3 sm:px-7 sm:py-5">
+          <div className="flex flex-col gap-2.5 px-5 py-4 sm:flex-row sm:gap-3 sm:px-7 sm:py-5">
             <button
               type="button"
               onClick={handleYes}
