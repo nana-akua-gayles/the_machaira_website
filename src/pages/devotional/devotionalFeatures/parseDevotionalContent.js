@@ -1,26 +1,5 @@
 import DOMPurify from "dompurify";
 
-// =====================================================================
-// parseDevotionalContent (web)
-//
-// Pipeline:
-//   sanitize -> text cleanup -> strip header junk (banner/title/date)
-//   -> pull opening memory verse -> split footer (DIG DEEPER / WE PRAY /
-//   BIBLE READING / DECLARE) -> format body (lists, bold refs, paragraphs)
-//
-// Header, verse and footer handling is ported from the mobile app's
-// formatDevotionalHtml.js, which copes with far more of the CMS layouts.
-// The list/paragraph formatting stays the web version (it is newer).
-//
-// Return shape is unchanged, so DevotionalContent / Sidebar keep working.
-// New: pass { title } (the DB title) as the 2nd argument for better
-// header stripping. Extra fields: closing, prayerPoints.
-// =====================================================================
-
-// ---------------------------------------------------------------------
-// TEXT CLEANUP
-// ---------------------------------------------------------------------
-
 const ENTITY_MAP = {
   "&#8211;": "–",
   "&#8212;": "—",
@@ -386,7 +365,7 @@ function cleanBannerText(before) {
   let text = collapseWhitespace(stripTags(before));
   text = text.replace(/Apostle\s+Bennie.*$/i, "").replace(/\bAuthor\b\s*$/i, "").trim();
   // A real banner message is a short line; anything longer is leftover header junk.
-  return text.length >= 10 && text.length <= 400 ? text : null;
+  return text.length >= 10 && text.length <= 1000 ? text : null;
 }
 
 function stripStructuredPreamble(content) {

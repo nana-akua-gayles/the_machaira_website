@@ -16,7 +16,7 @@ const messages = [
   },
   {
     message:
-      "Thou comest daily. Thou readest the devotional. Thou art blessed and refreshed... \n\n Thy consistency has not gone unnoticed in the heavens. But have thou already opted to be a family?\n\n If not, just make it official",
+      "We want to specially thank you,\n\n  Yes you!\n\n Thank you for your dedication and commitment to this rich platform. Thank you for believing in this great course. We don’t cease in giving thanks to God for your sake.\n\n  By the way, have you opted to be part of the family? If not, then make it official. We love you permanently."
   },
   {
     message:
