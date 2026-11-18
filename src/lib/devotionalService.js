@@ -1,3 +1,4 @@
+
 import { supabase } from "./supabaseClient";
 
 function getGhanaDateParts(date = new Date()) {
@@ -9,7 +10,6 @@ function getGhanaDateParts(date = new Date()) {
   });
 
   const parts = formatter.formatToParts(date);
-
   const values = {};
 
   parts.forEach(({ type, value }) => {
@@ -25,11 +25,12 @@ function getGhanaDateParts(date = new Date()) {
   };
 }
 
-
 export async function getTodaysDevotional() {
   try {
     const { year, month, day } = getGhanaDateParts();
+
     const startOfDay = `${year}-${month}-${day}T00:00:00+00:00`;
+
     const tomorrow = new Date(
       Date.UTC(
         Number(year),
@@ -37,7 +38,9 @@ export async function getTodaysDevotional() {
         Number(day) + 1
       )
     );
+
     const endOfDay = tomorrow.toISOString();
+
     const { data, error } = await supabase
       .from("devotionals")
       .select(`
@@ -58,10 +61,12 @@ export async function getTodaysDevotional() {
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
+
     if (error) {
       console.error("Error fetching today's devotional:", error);
       throw error;
     }
+
     return data;
   } catch (error) {
     console.error("getTodaysDevotional failed:", error);
@@ -69,11 +74,11 @@ export async function getTodaysDevotional() {
   }
 }
 
-
 export async function getDevotionalByDate(dateString) {
   try {
     const startOfDay = `${dateString}T00:00:00+00:00`;
     const [year, month, day] = dateString.split("-");
+
     const nextDay = new Date(
       Date.UTC(
         Number(year),
@@ -81,7 +86,9 @@ export async function getDevotionalByDate(dateString) {
         Number(day) + 1
       )
     );
+
     const endOfDay = nextDay.toISOString();
+
     const { data, error } = await supabase
       .from("devotionals")
       .select(`
@@ -102,10 +109,12 @@ export async function getDevotionalByDate(dateString) {
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
+
     if (error) {
       console.error("Error fetching devotional by date:", error);
       throw error;
     }
+
     return data;
   } catch (error) {
     console.error("getDevotionalByDate failed:", error);
@@ -113,11 +122,8 @@ export async function getDevotionalByDate(dateString) {
   }
 }
 
-
 /**
  * Get recent devotionals.
- *
- * This will eventually power the devotional library.
  */
 export async function getRecentDevotionals(limit = 12) {
   try {
@@ -138,10 +144,12 @@ export async function getRecentDevotionals(limit = 12) {
       `)
       .order("created_at", { ascending: false })
       .limit(limit);
+
     if (error) {
       console.error("Error fetching recent devotionals:", error);
       throw error;
     }
+
     return data ?? [];
   } catch (error) {
     console.error("getRecentDevotionals failed:", error);
@@ -149,9 +157,8 @@ export async function getRecentDevotionals(limit = 12) {
   }
 }
 
-
-/*
-Get devotionals belonging to a category.
+/**
+ * Get devotionals belonging to a category.
  */
 export async function getDevotionalsByCategory(category, limit = 12) {
   try {
@@ -173,17 +180,18 @@ export async function getDevotionalsByCategory(category, limit = 12) {
       .eq("category", category)
       .order("created_at", { ascending: false })
       .limit(limit);
+
     if (error) {
       console.error("Error fetching devotionals by category:", error);
       throw error;
     }
+
     return data ?? [];
   } catch (error) {
     console.error("getDevotionalsByCategory failed:", error);
     throw error;
   }
 }
-
 
 /**
  * Get one devotional by its ID.
@@ -227,7 +235,7 @@ export async function getPreviousDevotional(createdAt) {
   try {
     const { data, error } = await supabase
       .from("devotionals")
-      .select(`id, title, created_at`)
+      .select("id, title, created_at")
       .lt("created_at", createdAt)
       .order("created_at", { ascending: false })
       .limit(1)
@@ -252,7 +260,7 @@ export async function getNextDevotional(createdAt) {
   try {
     const { data, error } = await supabase
       .from("devotionals")
-      .select(`id, title, created_at`)
+      .select("id, title, created_at")
       .gt("created_at", createdAt)
       .order("created_at", { ascending: true })
       .limit(1)
@@ -270,6 +278,24 @@ export async function getNextDevotional(createdAt) {
   }
 }
 
+/**
+ * Get devotionals for the Previous Devotional library.
+ *
+ * Search:
+ * - Searches titles only.
+ * - Uses partial, case-insensitive matching.
+ *
+ * Sorting:
+ * - Always newest to oldest.
+ *
+ * Filters:
+ * - Category
+ * - Date range
+ * - Episode range
+ *
+ * Pagination:
+ * - Supports page sizes up to 100.
+ */
 export async function getDevotionals({
   page = 1,
   pageSize = 10,
@@ -279,11 +305,11 @@ export async function getDevotionals({
   dateTo = "",
   episodeFrom = "",
   episodeTo = "",
-  sortBy = "newest",
 } = {}) {
   try {
-    // Make sure pagination values are safe.
+    // Validate pagination values.
     const safePage = Math.max(1, Number(page) || 1);
+
     const safePageSize = Math.min(
       100,
       Math.max(1, Number(pageSize) || 10)
@@ -308,29 +334,22 @@ export async function getDevotionals({
         { count: "exact" }
       );
 
-    // -----------------------------
-    // Search
-    // -----------------------------
-    if (search.trim()) {
-      const searchTerm = search.trim();
-      query = query.or(
-        `title.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%,pure_content.ilike.%${searchTerm}%`
-      );
+    // Search devotional titles only.
+    const searchTerm = String(search || "").trim();
+
+    if (searchTerm) {
+      query = query.ilike("title", `%${searchTerm}%`);
     }
 
-    // -----------------------------
-    // Category
-    // -----------------------------
+    // Category filter.
     if (category && category !== "all") {
       query = query.ilike(
         "category",
-        `%${category.trim()}%`
+        `%${String(category).trim()}%`
       );
     }
 
-    // -----------------------------
-    // Date range
-    // -----------------------------
+    // Start date filter.
     if (dateFrom) {
       query = query.gte(
         "created_at",
@@ -338,57 +357,50 @@ export async function getDevotionals({
       );
     }
 
+    // End date filter (inclusive).
     if (dateTo) {
       const nextDay = new Date(`${dateTo}T00:00:00+00:00`);
       nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+
       query = query.lt(
         "created_at",
         nextDay.toISOString()
       );
     }
 
-    // -----------------------------
-    // Episode range
-    // -----------------------------
-    if (episodeFrom) {
-      query = query.gte(
-        "episode_number",
-        Number(episodeFrom)
-      );
+    // Starting episode filter.
+    if (episodeFrom !== "" && episodeFrom != null) {
+      const episodeStart = Number(episodeFrom);
+
+      if (Number.isFinite(episodeStart)) {
+        query = query.gte("episode_number", episodeStart);
+      }
     }
 
-    if (episodeTo) {
-      query = query.lte(
-        "episode_number",
-        Number(episodeTo)
-      );
+    // Ending episode filter.
+    if (episodeTo !== "" && episodeTo != null) {
+      const episodeEnd = Number(episodeTo);
+
+      if (Number.isFinite(episodeEnd)) {
+        query = query.lte("episode_number", episodeEnd);
+      }
     }
 
-    // -----------------------------
-    // Sorting
-    // -----------------------------
-    switch (sortBy) {
-      case "oldest":
-        query = query.order("created_at", {
-          ascending: true,
-        });
-        break;
+    // Always sort newest to oldest.
+    query = query
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false });
 
-      case "newest":
-      default:
-        query = query.order("created_at", {
-          ascending: false,
-        });
-        break;
-    }
-
-    // -----------------------------
-    // Pagination
-    // -----------------------------
+    // Apply pagination.
     query = query.range(from, to);
+
     const { data, error, count } = await query;
+
     if (error) {
-      console.error( "Error fetching paginated devotionals:", error );
+      console.error(
+        "Error fetching paginated devotionals:",
+        error
+      );
       throw error;
     }
 
@@ -397,7 +409,7 @@ export async function getDevotionals({
       count: count ?? 0,
     };
   } catch (error) {
-    console.error("getDevotionals failed:",error);
+    console.error("getDevotionals failed:", error);
     throw error;
   }
 }

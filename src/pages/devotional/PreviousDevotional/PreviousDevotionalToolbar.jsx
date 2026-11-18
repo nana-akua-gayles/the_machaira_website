@@ -36,7 +36,7 @@ function PreviousDevotionalToolbar({
             type="text"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by title, topic, scripture or keyword..."
+            placeholder="Search a devotional by it's title..."
             className="w-full bg-transparent py-3 text-sm text-charcoal-text outline-none placeholder:text-[#9CA3AF]"
           />
         </div>
