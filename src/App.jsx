@@ -1,106 +1,90 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./components/MainLayout";
 import { AuthProvider } from "./context/AuthContext";
 
 // Pages
-//HOME
+// HOME
 import Home from "./pages/home/Home";
 
-//ABOUT
+// ABOUT
 import About from "./pages/about/About";
 
-//NEWSFEED
+// NEWSFEED
 import Newsfeed from "./pages/newsfeed/NewsfeedPage";
 
-
-
-//DEVOTIONAL
+// DEVOTIONAL
 import Devotional from "./pages/devotional/Devotional";
 import DevotionalReader from "./pages/devotional/DevotionalReader";
 import PreviousDevotional from "./pages/devotional/PreviousDevotional";
 
-//Discussion Forum
+// DISCUSSION FORUM
 import DiscussionForum from "./pages/discussionForum/DiscussionForum";
 import DiscussionThread from "./pages/discussionForum/DiscussionThread";
 import DiscussionNewPost from "./pages/discussionForum/DiscussionNewPost";
 
+// CHURCH
 import AboutChurch from "./pages/churchabout/AboutChurch";
 
-
-//PARTNERSHIP
+// PARTNERSHIP
 import Partnership from "./pages/partnership/Partnership";
 
-//AUTH
+// AUTH
 import AuthPage from "./pages/auth/AuthPage";
 
-//testimonials
+// TESTIMONIALS
 import Testimonials from "./pages/testimonials/Testimonials";
+
+// SUBSCRIPTION
+import Subscribe from "./pages/Subscribe";
 
 function App() {
   return (
     <AuthProvider>
-    <BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          {/* Main Website Layout */}
+          <Route element={<MainLayout />}>
 
-      <Routes>
+            {/* Home */}
+            <Route path="/" element={<Home />} />
 
-        {/* Main Website Layout */}
-        <Route element={<MainLayout />}>
+            {/* About */}
+            <Route path="/about" element={<About />} />
 
-          {/* Home */}
-          <Route path="/" element={<Home />} />
+            {/* Devotional */}
+            <Route path="/devotional" element={<Devotional />} />
+            <Route path="/devotional/:id" element={<DevotionalReader />} />
+            <Route
+              path="/previous-devotionals"
+              element={<PreviousDevotional />}
+            />
 
-          {/* About */}
-          <Route path="/about" element={<About />} />
+            {/* Church Blog */}
+            <Route path="/newsfeed" element={<Newsfeed />} />
+            <Route path="/aboutChurch" element={<AboutChurch />} />
 
-          {/* Devotional */}
-          <Route path="/devotional" element={<Devotional />} />
-          <Route path="/devotional/:id" element={<DevotionalReader />} />
-          <Route path="/previous-devotionals" element={<PreviousDevotional />} />
+            {/* Discussion Forum */}
+            <Route path="/forum" element={<DiscussionForum />} />
+            <Route path="/forum/new" element={<DiscussionNewPost />} />
+            <Route path="/forum/:id" element={<DiscussionThread />} />
 
-          {/* Church Blog */}
-          <Route
-            path="/newsfeed"
-            element={<Newsfeed />}
-          />
+            {/* Partnership */}
+            <Route path="/partnership" element={<Partnership />} />
 
-          <Route
-            path="/aboutChurch"
-            element={<AboutChurch />}
-          />
+            {/* Auth */}
+            <Route path="/login" element={<AuthPage />} />
 
-          {/* Discussion Forum */}
-          <Route
-            path="/forum"
-            element={<DiscussionForum />}
-          />
-          <Route path="/forum/new" element={<DiscussionNewPost />} />
-          <Route path="/forum/:id" element={<DiscussionThread />} />
+            {/* Testimonials */}
+            <Route path="/testimonials" element={<Testimonials />} />
 
-          {/* Partnership */}
-          <Route
-            path="/partnership"
-            element={<Partnership />}
-          />
+            {/* Subscription */}
+            <Route path="/subscribe" element={<Subscribe />} />
 
-          {/* Auth */}
-          {/* Login */}
-          <Route
-            path="/login"
-            element={<AuthPage />}
-          />
-
-          {/* Testimonials */}
-          <Route
-            path="/testimonials"
-            element={<Testimonials />}
-          />
-
-        </Route>
-
-      </Routes>
-
-    </BrowserRouter>
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   );
 }
