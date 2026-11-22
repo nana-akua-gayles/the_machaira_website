@@ -180,25 +180,51 @@ function DevotionalComments({ episodeNumber }) {
   const guestNameOk = Boolean(user) || (cleanGuestName.length >= 2 && cleanGuestName.length <= 40);
   const nameInvalid = !user && Boolean(submitError) && !guestNameOk;
 
-  useEffect(() => {
-    if (!episodeNumber) return;
+  
+useEffect(() => {
+  let active = true;
 
-    async function loadComments() {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getCommentsForEpisode(episodeNumber);
+  setComments([]);
+  setLoading(true);
+  setError(null);
+  setReplyTo(null);
+  setExpanded(new Set());
+  setEditingId(null);
+  setConfirmDeleteId(null);
+  setActionError(null);
+
+  if (!Number.isInteger(Number(episodeNumber)) || Number(episodeNumber) <= 0) {
+    setLoading(false);
+    setError("Invalid devotional episode.");
+    return () => {
+      active = false;
+    };
+  }
+
+  async function loadComments() {
+    try {
+      const data = await getCommentsForEpisode(Number(episodeNumber));
+
+      if (active) {
         setComments(data);
-      } catch (err) {
-        console.error("Failed to load comments:", err);
+      }
+    } catch (err) {
+      console.error("Failed to load comments:", err);
+      if (active) {
         setError("Unable to load comments right now.");
-      } finally {
+      }
+    } finally {
+      if (active) {
         setLoading(false);
       }
     }
+  }
+  loadComments();
+  return () => {
+    active = false;
+  };
+}, [episodeNumber]);
 
-    loadComments();
-  }, [episodeNumber]);
 
   useEffect(() => {
     if (!userId || loading || !episodeNumber) return;

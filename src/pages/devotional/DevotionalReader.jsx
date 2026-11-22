@@ -272,14 +272,6 @@ function DevotionalReader() {
 
             <section className="flex min-h-[360px] min-w-0 items-center justify-center rounded-2xl border border-[#eadfda] bg-[#FBF8F6] px-6 py-12 text-center sm:px-10 lg:col-start-2">
               <div className="max-w-lg">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white text-2xl text-burgundy-primary shadow-sm" aria-hidden="true">
-                  {isLookupError ? "!" : "▦"}
-                </div>
-
-                <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-burgundy-primary">
-                  {isLookupError ? "Unable to check date" : "Devotional archive"}
-                </p>
-
                 <h1 className="mt-3 text-2xl font-semibold leading-tight text-navy-dark sm:text-3xl">
                   {isLookupError ? "We couldn't load this date" : "No devotional for this date"}
                 </h1>
