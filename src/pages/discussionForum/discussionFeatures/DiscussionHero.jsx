@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react';
+import discussionHero from "../../../../assets/images/discussion-hero.jpeg";
 import { getForumStats } from '../../../lib/forumService';
 import { isAdmin } from '../../../lib/adminAccess';
 import { useAuth } from '../../../context/AuthContext';
@@ -25,11 +26,16 @@ const DiscussionHero = () => {
     async function loadStats() {
       try {
         const data = await getForumStats();
-        if (!cancelled) setStats(data);
+
+        if (!cancelled) {
+          setStats(data);
+        }
       } catch (err) {
         console.error('FORUM STATS FAILED:', err);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
@@ -52,7 +58,7 @@ const DiscussionHero = () => {
       {/* Discussion Hero Image */}
       <div className="w-full">
         <img
-          src="/images/discussion-hero.jpeg"
+          src={discussionHero}
           alt="Let's grow together in faith and purpose"
           className="block w-full h-auto"
         />
@@ -83,6 +89,7 @@ const DiscussionHero = () => {
               <span className="block text-lg sm:text-xl font-semibold leading-none text-navy-dark">
                 {loading ? '...' : stat.value.toLocaleString()}
               </span>
+
               <span className="mt-1 block text-[10px] sm:text-xs font-medium text-cool-gray">
                 {stat.label}
               </span>
