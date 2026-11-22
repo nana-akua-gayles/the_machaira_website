@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react';
-import discussionHero from "../../../assets/images/discussion-hero.jpeg";
+import discussionHero from "../../../../assets/images/discussion-hero.jpeg";
 import { getForumStats } from '../../../lib/forumService';
 import { isAdmin } from '../../../lib/adminAccess';
 import { useAuth } from '../../../context/AuthContext';
