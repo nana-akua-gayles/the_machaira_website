@@ -10,8 +10,16 @@ import DevotionalAudio from "./devotionalFeatures/DevotionalAudio";
 import DevotionalPrintView from "./devotionalFeatures/DevotionalPrintView";
 import { formatDevotionalTitle, formatDate } from "./devotionalFeatures/formatDevotional";
 import { parseDevotionalContent } from "./devotionalFeatures/parseDevotionalContent";
-import { getDevotionalById, getDevotionalByDate, getPreviousDevotional, getNextDevotional } from "../../lib/devotionalService";
-import { recordDevotionalActivity, isTodaysDevotional } from "../../lib/recordDevotionalActivity";
+import {
+  getDevotionalById,
+  getDevotionalByDate,
+  getPreviousDevotional,
+  getNextDevotional,
+} from "../../lib/devotionalService";
+import {
+  recordDevotionalActivity,
+  isTodaysDevotional,
+} from "../../lib/recordDevotionalActivity";
 import apostleBennieAvatar from "../../assets/images/Apostle1.jpg";
 import DevotionalComments from "./devotionalFeatures/DevotionalComments";
 import "./devotional.css";
@@ -21,6 +29,7 @@ const ALWAYS_SHOW_BANNER = true;
 
 function formatSelectedDate(date) {
   if (!date) return "";
+
   return new Date(`${date}T12:00:00`).toLocaleDateString("en-GH", {
     weekday: "long",
     day: "numeric",
@@ -33,6 +42,7 @@ function DevotionalReader() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [devotional, setDevotional] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,6 +55,7 @@ function DevotionalReader() {
   const [printJob, setPrintJob] = useState(null);
   const [preparing, setPreparing] = useState(false);
 
+  // Load devotional
   useEffect(() => {
     let cancelled = false;
 
@@ -56,6 +67,7 @@ function DevotionalReader() {
         setDateEmptyState(null);
 
         const data = await getDevotionalById(id);
+
         if (cancelled) return;
 
         if (!data) {
@@ -74,10 +86,12 @@ function DevotionalReader() {
         ]);
 
         if (cancelled) return;
+
         setPrevDevotional(previous);
         setNextDevotional(next);
       } catch (err) {
         if (cancelled) return;
+
         console.error("DEVOTIONAL READER FAILED:", err);
         setError("Unable to load this devotional.");
       } finally {
@@ -86,47 +100,206 @@ function DevotionalReader() {
     }
 
     loadDevotional();
-    return () => { cancelled = true; };
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   const parsed = useMemo(
-    () => devotional
-      ? parseDevotionalContent(devotional.content, { title: devotional.title })
-      : null,
+    () =>
+      devotional
+        ? parseDevotionalContent(devotional.content, {
+            title: devotional.title,
+          })
+        : null,
     [devotional]
   );
 
-  const recordedRef = useRef(false);
-  const readEndRef = useRef(null);
-  const readStartRef = useRef(0);
+  // ==========================================
+  // DEVOTIONAL STREAK TRACKING
+  // ==========================================
 
+  const recordedRef = useRef(false);
+  const recordingRef = useRef(false);
+  const readEndRef = useRef(null);
+
+  // Reset tracking when the devotional changes.
   useEffect(() => {
     recordedRef.current = false;
-    readStartRef.current = Date.now();
+    recordingRef.current = false;
   }, [id]);
 
+  // Wait until loading finishes so the reading-end
+  // element is actually present in the DOM.
   useEffect(() => {
-    const node = readEndRef.current;
-    if (!node || !devotional || !isTodaysDevotional(devotional.created_at)) return;
+    if (
+      loading ||
+      !devotional ||
+      String(devotional.id) !== String(id)
+    ) {
+      return;
+    }
 
-    let timer;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting || timer) return;
-      const wait = Math.max(0, MIN_READ_MS - (Date.now() - readStartRef.current));
+    const isToday = isTodaysDevotional(devotional.created_at);
 
-      timer = setTimeout(() => {
-        if (recordedRef.current) return;
-        recordedRef.current = true;
-        recordDevotionalActivity(devotional.created_at);
-      }, wait);
+    console.log("[streak] devotional tracking check:", {
+      devotionalId: devotional.id,
+      publishedAt: devotional.created_at,
+      isToday,
     });
 
+    if (!isToday) {
+      console.log("[streak] skipped: this is not today's devotional");
+      return;
+    }
+
+    const node = readEndRef.current;
+
+    if (!node) {
+      console.error("[streak] reading-end element was not found");
+      return;
+    }
+
+    let activeTime = 0;
+    let activeSince = document.hidden ? null : Date.now();
+    let isAtEnd = false;
+    let timer = null;
+    let cancelled = false;
+
+    console.log("[streak] tracking initialized");
+
+    function updateActiveTime() {
+      if (activeSince !== null) {
+        const now = Date.now();
+        activeTime += now - activeSince;
+        activeSince = now;
+      }
+    }
+
+    function stopTimer() {
+      if (timer !== null) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    }
+
+    async function recordIfEligible() {
+      if (
+        cancelled ||
+        recordedRef.current ||
+        recordingRef.current ||
+        !isAtEnd ||
+        document.hidden
+      ) {
+        return;
+      }
+
+      updateActiveTime();
+
+      const remaining = MIN_READ_MS - activeTime;
+
+      if (remaining > 0) {
+        stopTimer();
+
+        console.log("[streak] waiting for reading time:", {
+          activeSeconds: Math.floor(activeTime / 1000),
+          remainingSeconds: Math.ceil(remaining / 1000),
+        });
+
+        timer = setTimeout(() => {
+          timer = null;
+          recordIfEligible();
+        }, remaining);
+
+        return;
+      }
+
+      stopTimer();
+      recordingRef.current = true;
+
+      console.log("[streak] eligible — calling recording function");
+
+      try {
+        const result = await recordDevotionalActivity(
+          devotional.created_at,
+          devotional.episode_number
+        );
+
+        if (cancelled) return;
+
+        if (result) {
+          recordedRef.current = true;
+
+          console.log("[streak] recording successful:", result);
+        } else {
+          console.error(
+            "[streak] recording returned no result. Check the RPC error above."
+          );
+        }
+      } catch (err) {
+        console.error("[streak] recording failed:", err);
+      } finally {
+        recordingRef.current = false;
+      }
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        updateActiveTime();
+
+        isAtEnd = entry.isIntersecting;
+
+        console.log("[streak] reading end visibility:", isAtEnd);
+
+        if (isAtEnd) {
+          recordIfEligible();
+        } else {
+          stopTimer();
+        }
+      },
+      {
+        threshold: 0,
+      }
+    );
+
+    function handleVisibilityChange() {
+      updateActiveTime();
+
+      if (document.hidden) {
+        activeSince = null;
+        stopTimer();
+      } else {
+        activeSince = Date.now();
+
+        if (isAtEnd) {
+          recordIfEligible();
+        }
+      }
+    }
+
     observer.observe(node);
+
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibilityChange
+    );
+
     return () => {
+      cancelled = true;
       observer.disconnect();
-      clearTimeout(timer);
+      stopTimer();
+
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+      );
     };
-  }, [devotional]);
+  }, [devotional, id, loading]);
+
+  // ==========================================
+  // PRINTING
+  // ==========================================
 
   useEffect(() => {
     if (!printJob) return;
@@ -146,18 +319,23 @@ function DevotionalReader() {
       const images = root ? [...root.querySelectorAll("img")] : [];
 
       await Promise.race([
-        Promise.all(images.map((img) =>
-          img.decode ? img.decode().catch(() => {}) : Promise.resolve()
-        )),
+        Promise.all(
+          images.map((img) =>
+            img.decode ? img.decode().catch(() => {}) : Promise.resolve()
+          )
+        ),
         new Promise((resolve) => setTimeout(resolve, 1500)),
       ]);
 
       if (cancelled) return;
 
       const { mainTitle } = formatDevotionalTitle(printJob.devotional.title);
+
       document.title = `${mainTitle} - Machaira`;
       document.body.classList.add("printing-devotional");
+
       window.addEventListener("afterprint", finish);
+
       setPreparing(false);
       window.print();
     }
@@ -171,7 +349,9 @@ function DevotionalReader() {
   }, [printJob]);
 
   useEffect(() => {
-    if (searchParams.get("print") !== "1" || loading || !devotional) return;
+    if (searchParams.get("print") !== "1" || loading || !devotional) {
+      return;
+    }
 
     const timer = setTimeout(() => {
       setPreparing(true);
@@ -184,9 +364,14 @@ function DevotionalReader() {
 
   function handlePrint() {
     if (preparing || !devotional) return;
+
     setPreparing(true);
     setPrintJob({ devotional, at: Date.now() });
   }
+
+  // ==========================================
+  // DATE NAVIGATION
+  // ==========================================
 
   async function handleDateSelect(date) {
     if (!date) return;
@@ -204,35 +389,64 @@ function DevotionalReader() {
         navigate(`/devotional/${data.id}`);
       } else {
         setDateNotice(null);
-        setDateEmptyState({ date, status: "not-found" });
+        setDateEmptyState({
+          date,
+          status: "not-found",
+        });
       }
     } catch (err) {
       console.error("DATE DEVOTIONAL LOAD FAILED:", err);
+
       setDateNotice(null);
-      setDateEmptyState({ date, status: "error" });
+      setDateEmptyState({
+        date,
+        status: "error",
+      });
     } finally {
       setDateLoading(false);
     }
   }
 
+  // ==========================================
+  // LOADING STATE
+  // ==========================================
+
   if (loading) {
     return (
       <main className="min-h-[70vh] bg-white">
         <div className="mx-auto max-w-225 px-8 py-20 lg:px-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">Devotional</p>
-          <h1 className="mt-5 text-4xl font-semibold text-navy-dark">Loading devotional...</h1>
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
+            Devotional
+          </p>
+
+          <h1 className="mt-5 text-4xl font-semibold text-navy-dark">
+            Loading devotional...
+          </h1>
         </div>
       </main>
     );
   }
 
+  // ==========================================
+  // ERROR STATE
+  // ==========================================
+
   if (error || !devotional) {
     return (
       <main className="min-h-[70vh] bg-white">
         <div className="mx-auto max-w-225 px-8 py-20 text-center lg:px-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">Devotional</p>
-          <h1 className="mt-5 text-4xl font-semibold text-navy-dark">{error || "Devotional not found."}</h1>
-          <Link to="/devotional" className="mt-8 inline-flex rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-[#7f0e0e]">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-burgundy-primary">
+            Devotional
+          </p>
+
+          <h1 className="mt-5 text-4xl font-semibold text-navy-dark">
+            {error || "Devotional not found."}
+          </h1>
+
+          <Link
+            to="/devotional"
+            className="mt-8 inline-flex rounded-full bg-burgundy-primary px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-[#7f0e0e]"
+          >
             ← Back to Devotional
           </Link>
         </div>
@@ -242,7 +456,10 @@ function DevotionalReader() {
 
   const formatted = formatDevotionalTitle(devotional.title);
 
-  // A clear empty state replaces the old devotional when the selected date has no entry.
+  // ==========================================
+  // EMPTY DATE STATE
+  // ==========================================
+
   if (dateEmptyState) {
     const emptyDateLabel = formatSelectedDate(dateEmptyState.date);
     const isLookupError = dateEmptyState.status === "error";
@@ -251,9 +468,13 @@ function DevotionalReader() {
       <main className="min-h-[70vh] bg-white">
         <div className="mx-auto max-w-300 px-4 py-8 sm:px-6 lg:px-12">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-            <Link to="/devotional" className="inline-flex items-center text-sm font-semibold text-burgundy-primary transition-colors hover:text-[#7f0e0e]">
+            <Link
+              to="/devotional"
+              className="inline-flex items-center text-sm font-semibold text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
+            >
               ← Back to Devotionals
             </Link>
+
             <span className="rounded-full border border-black/10 px-3 py-2 text-xs font-medium text-cool-gray">
               Selected date: {emptyDateLabel}
             </span>
@@ -273,7 +494,9 @@ function DevotionalReader() {
             <section className="flex min-h-[360px] min-w-0 items-center justify-center rounded-2xl border border-[#eadfda] bg-[#FBF8F6] px-6 py-12 text-center sm:px-10 lg:col-start-2">
               <div className="max-w-lg">
                 <h1 className="mt-3 text-2xl font-semibold leading-tight text-navy-dark sm:text-3xl">
-                  {isLookupError ? "We couldn't load this date" : "No devotional for this date"}
+                  {isLookupError
+                    ? "We couldn't load this date"
+                    : "No devotional for this date"}
                 </h1>
 
                 <p className="mt-3 text-sm leading-7 text-[#6B7280] sm:text-base">
@@ -309,6 +532,10 @@ function DevotionalReader() {
     );
   }
 
+  // ==========================================
+  // DEVOTIONAL CONTENT
+  // ==========================================
+
   const showBanner = !!parsed && (
     ALWAYS_SHOW_BANNER || parsed.hasBanner || !!parsed.authorMessage
   );
@@ -336,7 +563,9 @@ function DevotionalReader() {
           <div className="flex flex-col gap-6 rounded-2xl border border-black/10 bg-[#FBF8F6] p-6 md:flex-row md:items-center md:gap-8 md:p-8">
             <div className="flex flex-1 items-start gap-4">
               {parsed.authorMessage ? (
-                <p className="max-w-140 leading-relaxed text-navy-dark md:text-sm">{parsed.authorMessage}</p>
+                <p className="max-w-140 leading-relaxed text-navy-dark md:text-sm">
+                  {parsed.authorMessage}
+                </p>
               ) : (
                 <p className="text-base font-semibold text-navy-dark md:text-sm">
                   The Entrance of thy words giveth light; it giveth understanding unto the simple.{" "}
@@ -344,11 +573,20 @@ function DevotionalReader() {
                 </p>
               )}
             </div>
+
             <div className="hidden h-14 w-px shrink-0 bg-black/10 md:block" />
+
             <div className="flex items-center gap-3">
-              <img src={apostleBennieAvatar} alt="Apostle Bennie" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+              <img
+                src={apostleBennieAvatar}
+                alt="Apostle Bennie"
+                className="h-12 w-12 shrink-0 rounded-full object-cover"
+              />
+
               <div>
-                <p className="text-sm font-semibold text-navy-dark">Apostle Bennie</p>
+                <p className="text-sm font-semibold text-navy-dark">
+                  Apostle Bennie
+                </p>
                 <p className="text-xs text-cool-gray">Author</p>
               </div>
             </div>
@@ -358,10 +596,17 @@ function DevotionalReader() {
 
       <div className="bg-white">
         <div className="mx-auto flex max-w-300 items-center justify-between gap-3 px-4 py-6 sm:px-6 lg:px-12">
-          <Link to="/devotional" className="inline-flex items-center text-sm font-semibold text-burgundy-primary transition-colors hover:text-[#7f0e0e]">
+          <Link
+            to="/devotional"
+            className="inline-flex items-center text-sm font-semibold text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
+          >
             ← Back to Devotionals
           </Link>
-          <div id="devotional-audio" className="flex shrink-0 items-center gap-2 sm:gap-3">
+
+          <div
+            id="devotional-audio"
+            className="flex shrink-0 items-center gap-2 sm:gap-3"
+          >
             <button
               type="button"
               onClick={handlePrint}
@@ -373,6 +618,7 @@ function DevotionalReader() {
               <span aria-hidden="true">{preparing ? "…" : "⭳"}</span>
               <span>{preparing ? "Preparing..." : "Download"}</span>
             </button>
+
             {devotional.audio_url && (
               <DevotionalAudio
                 variant="topbar"
@@ -389,9 +635,6 @@ function DevotionalReader() {
       <main className="bg-white">
         <section className="bg-white">
           <div className="mx-auto block max-w-300 px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[120px_minmax(0,1fr)_320px] lg:gap-x-14 lg:gap-y-0 lg:px-12 lg:py-16">
-            {/*
-            
-            */}
             <div className="float-left mr-5 w-[70px] sm:mr-6 sm:w-[92px] lg:float-none lg:mr-0 lg:w-auto">
               <DevotionalDateNav
                 devotional={devotional}
@@ -404,8 +647,15 @@ function DevotionalReader() {
 
             <div className="min-w-0">
               {dateNotice && (
-                <p role="status" aria-live="polite" className="mb-4 flex items-center gap-2 rounded-xl border border-[#eadfda] bg-[#FBF8F6] px-4 py-3 text-sm font-medium text-burgundy-primary">
-                  {dateLoading && <span className="h-4 w-4 animate-spin rounded-full border-2 border-burgundy-primary/30 border-t-burgundy-primary" />}
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className="mb-4 flex items-center gap-2 rounded-xl border border-[#eadfda] bg-[#FBF8F6] px-4 py-3 text-sm font-medium text-burgundy-primary"
+                >
+                  {dateLoading && (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-burgundy-primary/30 border-t-burgundy-primary" />
+                  )}
+
                   {dateNotice}
                 </p>
               )}
@@ -413,9 +663,18 @@ function DevotionalReader() {
               <div className="flex min-w-0 flex-col justify-center lg:block">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-3 text-sm">
-                    <Link to="/devotional" className="text-burgundy-primary transition-colors hover:text-[#7f0e0e]">Devotional</Link>
+                    <Link
+                      to="/devotional"
+                      className="text-burgundy-primary transition-colors hover:text-[#7f0e0e]"
+                    >
+                      Devotional
+                    </Link>
+
                     <span className="text-soft-gray">/</span>
-                    <span className="text-cool-gray">{formatted.episodeLabel || "Reading"}</span>
+
+                    <span className="text-cool-gray">
+                      {formatted.episodeLabel || "Reading"}
+                    </span>
                   </div>
                 </div>
 
@@ -430,17 +689,29 @@ function DevotionalReader() {
                 <div className="mt-4 h-[3px] w-12 bg-burgundy-primary lg:mt-6 lg:w-16" />
 
                 <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-cool-gray sm:text-sm lg:mt-6 lg:gap-x-5">
-                  {formatted.episodeLabel && <span>{formatted.episodeLabel}</span>}
+                  {formatted.episodeLabel && (
+                    <span>{formatted.episodeLabel}</span>
+                  )}
+
                   <span className="text-soft-gray">•</span>
+
                   <span>{formatDate(devotional.created_at)}</span>
                 </div>
               </div>
 
               <article className="mt-5 min-w-0 pl-1 text-[16px] leading-[1.9] text-[#374151] sm:pl-2 sm:text-[17px] sm:leading-[2] lg:mt-14 lg:pl-0 [&_blockquote]:!h-auto [&_blockquote]:!min-h-0 [&_blockquote]:overflow-visible">
-                <DevotionalContent parsed={parsed} fallbackContent={devotional.pure_content} />
+                <DevotionalContent
+                  parsed={parsed}
+                  fallbackContent={devotional.pure_content}
+                />
               </article>
 
-              <div ref={readEndRef} aria-hidden="true" className="h-px" />
+              {/* Reading-end marker used by the streak tracker */}
+              <div
+                ref={readEndRef}
+                aria-hidden="true"
+                className="h-px w-full"
+              />
 
               {/* Previous / Next — desktop */}
               <div className="hidden min-w-0 lg:block">
@@ -451,13 +722,12 @@ function DevotionalReader() {
               </div>
 
               <div className="hidden print:hidden lg:block">
-                <DevotionalComments episodeNumber={devotional.episode_number} />
+                <DevotionalComments
+                  episodeNumber={devotional.episode_number}
+                />
               </div>
             </div>
 
-            {/*
-            
-            */}
             <div className="clear-both mt-8 min-w-0 lg:clear-none lg:col-auto lg:col-start-3 lg:row-start-1 lg:mt-0">
               <DevotionalSidebar
                 deepDiver={parsed?.deepDiver}
@@ -480,16 +750,19 @@ function DevotionalReader() {
             </div>
 
             <div className="clear-both mt-8 min-w-0 print:hidden lg:hidden">
-              <DevotionalComments episodeNumber={devotional.episode_number} />
+              <DevotionalComments
+                episodeNumber={devotional.episode_number}
+              />
             </div>
           </div>
         </section>
       </main>
 
-      {printJob && createPortal(
-        <DevotionalPrintView devotional={printJob.devotional} />,
-        document.body
-      )}
+      {printJob &&
+        createPortal(
+          <DevotionalPrintView devotional={printJob.devotional} />,
+          document.body
+        )}
     </>
   );
 }

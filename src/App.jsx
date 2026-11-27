@@ -19,6 +19,9 @@ import Devotional from "./pages/devotional/Devotional";
 import DevotionalReader from "./pages/devotional/DevotionalReader";
 import PreviousDevotional from "./pages/devotional/PreviousDevotional";
 
+// LEADERBOARD
+import Leaderboard from "./pages/leaderboard/Leaderboard";
+
 // DISCUSSION FORUM
 import DiscussionForum from "./pages/discussionForum/DiscussionForum";
 import DiscussionThread from "./pages/discussionForum/DiscussionThread";
@@ -60,6 +63,9 @@ function App() {
               path="/previous-devotionals"
               element={<PreviousDevotional />}
             />
+
+            {/* Leaderboard */}
+            <Route path="/leaderboard" element={<Leaderboard />} />
 
             {/* Church Blog */}
             <Route path="/newsfeed" element={<Newsfeed />} />

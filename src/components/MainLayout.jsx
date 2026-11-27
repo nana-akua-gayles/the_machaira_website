@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import WelcomeModal from "./WelcomeModal"; 
+import WelcomeModal from "./WelcomeModal";
 import DevotionalOverlay from "./DevotionalOverlay";
 import { supabase } from "../lib/supabaseClient";
 import "./componentStylesheet/MainLayout.css";
@@ -12,95 +13,86 @@ function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 1. Control modal visibility based on route and session storage (Initialized directly to avoid setState-in-effect)
+  // Control welcome modal visibility using session storage
   const [showWelcomeModal] = useState(() => {
     if (typeof window === "undefined") return false;
-    const isHomePage = location.pathname === "/" || location.pathname === "";
-    const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcomeModal");
+
+    const isHomePage =
+      location.pathname === "/" || location.pathname === "";
+
+    const hasSeenWelcome = sessionStorage.getItem(
+      "hasSeenWelcomeModal"
+    );
 
     if (isHomePage && !hasSeenWelcome) {
       sessionStorage.setItem("hasSeenWelcomeModal", "true");
       return true;
     }
+
     return false;
   });
 
-  const [allDevotionals, setAllDevotionals] = useState([]);
-
-  // 2. Fetch devotionals in the background when layout mounts
-  useEffect(() => {
-    async function fetchDevotionals() {
-      const { data, error } = await supabase
-        .from("devotionals")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching devotionals:", error.message);
-      } else {
-        setAllDevotionals(data || []);
-      }
-    }
-    fetchDevotionals();
-  }, []);
-
-  // 3. Handle Mood / Category Selection
+  // Navigate directly to a selected devotional
   const handleSelectEpisode = (episode) => {
+    if (!episode?.id) return;
+
     navigate(`/devotional/${episode.id}`);
   };
 
-  // 4. Handle "Today's Word" Hero Card (Instant fallback if list isn't ready)
+  // Fetch only the latest devotional when requested
   const handleTodayEpisode = async () => {
-    // If background list is already loaded, use it instantly
-    if (allDevotionals.length > 0) {
-      navigate(`/devotional/${allDevotionals[0].id}`);
-      return;
-    }
-
-    // Otherwise, fetch the latest one right away on click
     try {
       const { data, error } = await supabase
         .from("devotionals")
         .select("id")
         .order("created_at", { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error) {
-        console.error("Error fetching latest devotional on click:", error.message);
+        console.error(
+          "Error fetching latest devotional:",
+          error.message
+        );
         return;
       }
 
-      if (data && data.id) {
+      if (data?.id) {
         navigate(`/devotional/${data.id}`);
       } else {
         console.warn("No devotionals found in database.");
       }
-    } catch (err) {
-      console.error("Error fetching latest devotional on click:", err);
+    } catch (error) {
+      console.error(
+        "Unexpected error fetching latest devotional:",
+        error
+      );
     }
   };
 
   return (
     <div className="app-layout">
       <Navbar />
+
       <main className="page-content">
         <Outlet />
       </main>
+
       <Footer />
-      
+
       {/* Persistent Daily Devotional Prompt Overlay */}
-      <DevotionalOverlay 
-        onReadDevotional={handleTodayEpisode} 
+      <DevotionalOverlay
+        onReadDevotional={handleTodayEpisode}
       />
-      
+
+      {/* Welcome Modal */}
       {showWelcomeModal && (
-        <WelcomeModal 
-          allDevotionals={allDevotionals}
+        <WelcomeModal
           onSelectEpisode={handleSelectEpisode}
           onTodayEpisode={handleTodayEpisode}
         />
       )}
+
       <NewsletterAnnouncement />
     </div>
   );
