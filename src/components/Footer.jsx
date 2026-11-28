@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import logoImage from "../assets/images/logo.png";
@@ -33,7 +34,11 @@ function Footer() {
     try {
       const { error } = await supabase
         .from("subscribers")
-        .insert([{ email: email.trim().toLowerCase() }]);
+        .insert([{
+          email: email.trim().toLowerCase(),
+          consent: true,
+          consent_at: new Date().toISOString(),
+        }]);
 
       if (error) {
         if (error.code === "23505") {

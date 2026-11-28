@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowUpRight, Check, X } from "lucide-react";
@@ -16,11 +17,31 @@ const messages = [
   },
   {
     message:
-      "We want to specially thank you,\n\n  Yes you!\n\n Thank you for your dedication and commitment to this rich platform. Thank you for believing in this great course. We don’t cease in giving thanks to God for your sake.\n\n  By the way, have you opted to be part of the family? If not, then make it official. We love you permanently."
+      "We want to specially thank you.\n\nYes, YOU!\n\nThank you for being part of this journey. Thank you for every devotional you've read, every truth you've meditated on, every prayer you've whispered and every moment you've made room for God's Word.\n\nSometimes, we pause and think about the beautiful community God is building through Machaira, and honestly, our hearts are full.\n\nWe don't take you for granted. We thank God for you, and we're grateful to have you here.\n\nThere's so much more ahead, and we're excited to experience it together.\n\nThank you for being part of the Machaira family. We love you permanently!",
   },
   {
     message:
-      "That which knows your name.\n\n Before your alarm. Before you might even pray, it's already on the grass.\n\n THE DEW!\n\n So is Machaira.\n\n Dew doesn't fall once and for all. It falls daily.\n\n We just want to make sure you don't miss the DEW ADVANTAGE. ",
+      "Have you ever noticed how some things are just too good to experience once?\n\nA good conversation. A timely word. That one message that stays with you long after you've heard it.\n\nNow imagine having more of that.\n\nThat's what we're building at Machaira!\n\nAnd trust us, there's so much goodness coming your way. New releases, fresh experiences and exciting things we can't wait to share.\n\nDon't let the good stuff pass you by.\n\nCome closer. Stay connected. Subscribe!",
+  },
+  {
+    message:
+      "Psst... can we tell you a little secret?\n\nActually, we're not sure we can keep it a secret for much longer!\n\nThere are exciting things happening at Machaira, and some of them are going to make you say, \"Wait... THIS is on Machaira?\"\n\nMore ways to listen. More ways to learn. More ways to grow.\n\nAnd we'd love for you to be among the first to experience it all.\n\nYour next favourite thing might just be one email away.\n\nSubscribe and stay in the loop!",
+  },
+  {
+    message:
+      "Imagine everyone is talking about something amazing that just dropped on Machaira...\n\nAnd you're hearing about it three weeks later. 😭\n\nNo, no, no. We can't have that!\n\nFrom new teachings and audio experiences to special announcements and exciting ministry updates, there's a lot worth looking forward to.\n\nWe would rather tell you ourselves than have you hear it from someone else.\n\nLet's keep you in the know.\n\nSubscribe!",
+  },
+  {
+    message:
+      "If we could say thank you a thousand times, it still wouldn't be enough!\n\nEvery visit, every devotional, every shared testimony and every person who has allowed Machaira to be part of their walk with God means so much to us.\n\nWhat a privilege it is to serve God's people through His Word!\n\nAnd what a blessing to see this community grow, one heart at a time.\n\nWe give all the glory to God for what He is doing, and we are genuinely grateful that you're part of the story.\n\nBut guess what? We're not done yet!\n\nThere are beautiful things ahead, and we'd love you to be among the first to hear about them.\n\nThank you for being here. Now, let's see what God has in store next!",
+  },
+  {
+    message:
+      "One last thing before you go...\n\nWhat if your next favourite teaching, life-changing devotional or exciting Machaira announcement is released tomorrow?\n\nWouldn't it be lovely to know about it?\n\nThat's exactly why we're inviting you to subscribe.\n\nNo complicated process. No long forms. Just your email, and we'll keep you updated on the things happening at Machaira.\n\nBecause good things are even better when you don't miss them.\n\nLet's stay connected. ❤️",
+  },
+  {
+    message:
+      "Sometimes, you have to pause, look back and simply say, \"Thank You, Jesus!\"\n\nFor every life touched, every heart encouraged, every seed of the Word planted and every testimony that has come from this journey, we are grateful.\n\nMachaira is more than a platform. It's a testimony of God's grace, faithfulness and the beautiful things He can do through surrendered hearts.\n\nAnd you are part of that story!\n\nThank you for showing up. Thank you for growing with us. Thank you for making room for God's Word in your everyday life.\n\nWe are excited about where God is taking us, and we can't wait to share what's ahead.\n\nAll glory to Jesus. And thank you for being part of the journey!",
   },
 ];
 
@@ -285,7 +306,13 @@ export default function NewsletterAnnouncement() {
     setError("");
 
     try {
-      const { error: supabaseError } = await supabase.from("subscribers").insert([{ email: normalizedEmail }]);
+      const { error: supabaseError } = await supabase
+        .from("subscribers")
+        .insert([{
+          email: normalizedEmail,
+          consent: true,
+          consent_at: new Date().toISOString(),
+        }]);
 
       if (supabaseError && supabaseError.code !== "23505") throw supabaseError;
 
@@ -351,7 +378,7 @@ export default function NewsletterAnnouncement() {
           {!letterOpened && !subscribed && (
             <div className="announcement-content w-full max-w-[470px] py-10 text-center text-white">
               <div className="mb-5 text-[10px] font-semibold uppercase tracking-[.32em] text-white/65">
-                A personal message from Machaira
+                A message from the Machaira team.
               </div>
 
               <div className="relative mx-auto mb-7 flex w-full justify-center">
