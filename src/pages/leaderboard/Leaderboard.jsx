@@ -42,6 +42,14 @@ const embeddedStyles = `
   0% { background-position: 150% 0; }
   100% { background-position: -150% 0; }
 }
+@keyframes heroTextIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroImageIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
 
 .lb-rise { animation: lbRise .7s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .lb-pop { animation: lbPop .45s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -64,9 +72,17 @@ const embeddedStyles = `
   animation: lbSkeleton 1.6s ease-in-out infinite;
 }
 
+.hero-text-in {
+  animation: heroTextIn .8s cubic-bezier(.22, 1, .36, 1) both;
+}
+.hero-image-in {
+  animation: heroImageIn 1s cubic-bezier(.22, 1, .36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lb-rise, .lb-pop, .lb-grow, .lb-flame,
-  .lb-crown, .lb-drift, .lb-spin, .lb-skeleton {
+  .lb-crown, .lb-drift, .lb-spin, .lb-skeleton,
+  .hero-text-in, .hero-image-in {
     animation: none !important;
   }
 }
@@ -80,13 +96,13 @@ const GOLD = "#B99A59";
 const BURGUNDY = "#991313";
 
 const TITLES = [
-  { min: 0, name: "New Believer"},
-  { min: 3, name: "Rooted"},
-  { min: 7, name: "Set Apart"},
-  { min: 14, name: "Word Walker"},
-  { min: 30, name: "Unashamed"},
-  { min: 60, name: "Unshaken"},
-  { min: 100, name: "The Faithful"},
+  { min: 0, name: "New Believer" },
+  { min: 3, name: "Rooted" },
+  { min: 7, name: "Set Apart" },
+  { min: 14, name: "Word Walker" },
+  { min: 30, name: "Unashamed" },
+  { min: 60, name: "Unshaken" },
+  { min: 100, name: "The Faithful" },
 ];
 
 const MEDALS = {
@@ -208,31 +224,57 @@ function Avatar({ reader, size = 44, variant = "light" }) {
 /* ------------------------------------------------------------------ */
 /*  Previous Month Champion Hero                                      */
 /* ------------------------------------------------------------------ */
-
 function SovereignHero({ reader }) {
   const month = previousMonthName();
 
   if (!reader) {
     return (
-      <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-gradient-to-br from-[#2B0408] via-[#660C12] to-[#1D0205] px-6 py-16 text-white sm:px-12 lg:px-20">
-        <div className="lb-drift pointer-events-none absolute -right-32 top-1/4 h-[460px] w-[460px] rounded-full bg-[#B99A59]/12 blur-3xl" />
+      <section className="relative isolate w-full overflow-hidden bg-white text-[#111827]">
+        <div className="relative mx-auto min-h-[600px] max-w-[1440px] overflow-hidden sm:min-h-[560px] lg:min-h-[540px]">
 
-        <div className="relative z-10 mx-auto w-full max-w-[1200px]">
-          <div className="inline-flex items-center pb-2.5">
-            <span className="text-[18px] font-bold tracking-[3px] text-[#E7C988]">
-              MONTHLY CHAMPION
-            </span>
+          {/* Community artwork */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[57%] sm:h-[72%] lg:inset-y-0 lg:left-[38%] lg:right-0 lg:h-full">
+            <img
+              src="/machaira-champion-team.png"
+              alt="Machaira community members celebrating together with a trophy"
+              className="hero-image-in absolute bottom-0 right-0 h-full w-full object-contain object-bottom brightness-[0.86] contrast-[1.10] saturate-[0.90] lg:object-right-bottom"
+              loading="eager"
+              decoding="async"
+            />
           </div>
 
-          <h1 className="mt-8 max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-[68px]">
-            A new opportunity to build consistency.
-          </h1>
+          {/* Editorial typography */}
+          <div className="relative z-10 flex min-h-[600px] flex-col justify-center px-6 pb-[265px] pt-12 sm:min-h-[560px] sm:px-12 sm:pb-[235px] lg:min-h-[540px] lg:max-w-[790px] lg:pb-10 lg:pl-20 lg:pr-0">
 
-          <p className="mt-7 max-w-2xl text-base leading-8 text-white/85 sm:text-lg">
-            The {month} challenge has been completed. The next recognition
-            belongs to a reader whose daily commitment to Scripture will
-            stand out through consistency.
-          </p>
+            <h1
+              className="hero-text-in max-w-[680px] text-[46px] font-bold leading-[1.08] tracking-[-2px] text-[#991313] sm:text-[60px] lg:text-[72px]"
+              style={{ animationDelay: "120ms" }}
+            >
+              A heart that stays
+              <span className="block text-[#111827]">
+                rooted in the Word.
+              </span>
+            </h1>
+
+            <p
+              className="hero-text-in mt-6 max-w-[510px] text-[16px] leading-[1.9] text-[#4D5057] sm:mt-7 sm:text-[18px] sm:leading-[1.9]"
+              style={{ animationDelay: "260ms" }}
+            >
+              Some of the deepest growth happens quietly, one
+              EPISODE at a time.
+              Keep returning to the Word. Let its radical truth shape
+              your heart, renew your mind, guide your steps, and transform
+              you.
+            </p>
+
+            <p
+              className="hero-text-in mt-6 max-w-[490px] text-[16px] font-semibold leading-[1.8] text-[#991313] sm:mt-7 sm:text-[18px]"
+              style={{ animationDelay: "400ms" }}
+            >
+              Your journey of faithfulness is worth celebrating. </p><br />
+              <p>BE THE NEXT WINNER FOR THE MONTH! </p>
+            
+          </div>
         </div>
       </section>
     );
@@ -252,9 +294,7 @@ function SovereignHero({ reader }) {
             <span className="text-xs font-bold tracking-[3.2px] text-[#E7C988]">
               MONTHLY CHAMPION
             </span>
-
             <span className="h-3.5 w-px bg-white/25" />
-
             <span className="text-[11px] font-semibold uppercase tracking-[2px] text-white/65">
               {month}
             </span>
@@ -268,12 +308,10 @@ function SovereignHero({ reader }) {
             <span className="text-6xl font-bold tracking-tight text-[#E7C988] sm:text-7xl">
               {days}
             </span>
-
             <div className="flex flex-col">
               <span className="text-xs font-bold tracking-[2.4px] text-white">
                 {days === 1 ? "CONSECUTIVE DAY" : "CONSECUTIVE DAYS"}
               </span>
-
               <span className="mt-1 text-xs text-white/65">
                 Recorded during {month}
               </span>
@@ -282,14 +320,13 @@ function SovereignHero({ reader }) {
 
           <div className="my-8 h-px w-full max-w-2xl bg-gradient-to-r from-[#B99A59] via-white/25 to-transparent" />
 
-          <div className="max-w-2xl space-y-4 text-sm leading-8 text-white/85 sm:text-base">
+          <div className="max-w-2xl space-y-4 text-sm leading-8 text-white/85 sm:text-base sm:leading-8">
             <p>
               Consistency is built one day at a time.{" "}
               <strong className="font-semibold text-white">{name}</strong>{" "}
               achieved the leading consecutive reading streak in the
               Machaira community during {month}.
             </p>
-
             <p className="font-medium text-[#F5E0B3]">
               This recognition celebrates a commitment to engaging with
               Scripture. Your own consistency can put you among the
@@ -304,11 +341,9 @@ function SovereignHero({ reader }) {
         >
           <div className="relative flex flex-col items-center">
             <Avatar reader={reader} size={228} variant="dark" />
-
             <span className="mt-5 text-[10px] font-bold uppercase tracking-[2.8px] text-[#E7C988]">
               Machaira Champion
             </span>
-
             <span className="mt-1 text-xs text-white/60">
               Recognised for consistency
             </span>
@@ -318,6 +353,7 @@ function SovereignHero({ reader }) {
     </section>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /*  Podium                                                            */
@@ -537,9 +573,6 @@ function DailyStandings({ dailyReaders, currentUserId }) {
   );
 
   const topThree = ranked.slice(0, 3);
-
-  // Show only the next ten readers after the podium.
-  // These are positions 4 through 13.
   const nextTen = ranked.slice(3, 13);
 
   const me = ranked.find((reader) => reader.id === currentUserId);
@@ -889,14 +922,14 @@ function PlayerWatch({ reader, onRefresh, loading }) {
             ) : (
               <>
                 You have reached{" "}
-                <span className="text-[#991313]">Legend</span>
+                <span className="text-[#991313]">The Faithful</span>
               </>
             )}
           </h3>
 
           <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-[#6E625E] md:mx-0">
             {current > 0
-              ? `You are currently on a ${formatDays(current)} reading streak. Keep your consistency going by completing each day's devotional. Your next milestone is ${nextMilestone?.name || "Legend"}.`
+              ? `You are currently on a ${formatDays(current)} reading streak. Keep your consistency going by completing each day's devotional. Your next milestone is ${nextMilestone?.name || "The Faithful"}.`
               : "Your next streak begins with today's devotional. Complete your reading and start building a consistent daily habit."}
           </p>
 
